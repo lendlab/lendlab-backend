@@ -1,5 +1,5 @@
 import { Material } from "../../entity/material";
-import { Arg, Float, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
 import { MaterialInput } from "../../inputs/material/MaterialInput";
 import { MaterialUpdateInput } from "../../inputs/material/MaterialUpdateInput";
 
@@ -17,7 +17,7 @@ export class MaterialResolver {
   }
   //get by id
   @Query(() => [Material])
-  async getMaterial(@Arg("id_material", () => Float) id_material: number) {
+  async getMaterial(@Arg("id_material", () => Int) id_material: number) {
     const material = await Material.find({ id_material });
     return material;
   }
@@ -34,7 +34,7 @@ export class MaterialResolver {
   //update
   @Mutation(() => Material, { nullable: true })
   async updateMaterial(
-    @Arg("id_material", () => Float) id_material: number,
+    @Arg("id_material", () => Int) id_material: number,
     @Arg("data", () => MaterialUpdateInput)
     data: MaterialUpdateInput
   ): Promise<Material | null> {
@@ -44,7 +44,7 @@ export class MaterialResolver {
   //delete
   @Mutation(() => Material, { nullable: true })
   async deleteMaterial(
-    @Arg("id_material", () => Float) id_material: number
+    @Arg("id_material", () => Int) id_material: number
   ): Promise<Material | null> {
     const deletedMaterial = await Material.delete({ id_material });
     return deletedMaterial.raw[0];
