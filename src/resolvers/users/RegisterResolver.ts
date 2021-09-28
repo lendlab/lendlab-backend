@@ -1,5 +1,5 @@
 import { User } from "../../entity/user";
-import { Arg, Float, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
 import { UserInput } from "../../inputs/user/UserInput";
 
 @Resolver()
@@ -26,14 +26,14 @@ export class RegisterResolver {
   }
 
   @Query(() => [User])
-  async getUser(@Arg("cedula", () => Float) cedula: number) {
+  async getUser(@Arg("cedula", () => Int) cedula: number) {
     const user = await User.find({ cedula });
     return user;
   }
 
   @Mutation(() => User, { nullable: true })
-  async deleteUser(@Arg("cedula", () => Float) cedula: number) {
-    const user = await User.delete({ cedula });
-    return user;
+  async deleteUser(@Arg("cedula", () => Int) cedula: number): Promise<User | null> {
+    const deletedUser = await User.delete({ cedula });
+    return deletedUser.raw[0];
   }
 }
