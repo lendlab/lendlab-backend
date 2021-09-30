@@ -41,7 +41,7 @@ export class User extends BaseEntity {
 
   @Field()
   @Column({type: "date"})
-  fecha_nacimiento: Date;
+  fecha_nacimiento: String;
 
   @OneToMany(() => Reservation, (reservation) => reservation.user)
   reservation: Reservation[];
