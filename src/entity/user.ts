@@ -4,7 +4,6 @@ import {
   Column,
   Entity,
   PrimaryColumn,
-  CreateDateColumn,
   OneToMany,
 } from "typeorm";
 import { Reservation } from "./reservation";
@@ -40,8 +39,8 @@ export class User extends BaseEntity {
   @Column()
   tipo_usuario: string;
 
-  @Field(() => String)
-  @CreateDateColumn()
+  @Field()
+  @Column({type: "date"})
   fecha_nacimiento: Date;
 
   @OneToMany(() => Reservation, (reservation) => reservation.user)
