@@ -25,7 +25,4 @@ export class UserInput {
 
   @Field()
   fecha_nacimiento: string;
-
-  @Field()
-  reserva: string;
 }
