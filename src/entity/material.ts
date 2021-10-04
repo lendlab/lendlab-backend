@@ -45,7 +45,7 @@ export class Material extends BaseEntity {
   estado: string;
 
   @OneToMany(() => Reservation, (reservation) => reservation.material)
-  reservation: Reservation[];
+  reservation: Promise<Reservation[]>;
 
   @OneToMany(() => Lend, (lend) => lend.material)
   lend: Lend[];

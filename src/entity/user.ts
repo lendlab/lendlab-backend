@@ -1,11 +1,5 @@
 import { Field, ObjectType } from "type-graphql";
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  PrimaryColumn,
-  OneToMany,
-} from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryColumn, OneToMany } from "typeorm";
 import { Reservation } from "./reservation";
 
 @ObjectType()
@@ -39,10 +33,10 @@ export class User extends BaseEntity {
   @Column()
   tipo_usuario: string;
 
-  @Field()
-  @Column({type: "date"})
-  fecha_nacimiento: String;
+  //@Field()
+  //@Column({type: "date"})
+  //fecha_nacimiento: String;
 
   @OneToMany(() => Reservation, (reservation) => reservation.user)
-  reservation: Reservation[];
+  reservation: Promise<Reservation[]>;
 }
