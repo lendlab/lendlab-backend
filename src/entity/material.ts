@@ -6,7 +6,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Lend } from "./lend";
 import { Reservation } from "./reservation";
 
 @ObjectType()
@@ -46,7 +45,4 @@ export class Material extends BaseEntity {
 
   @OneToMany(() => Reservation, (reservation) => reservation.material)
   reservation: Promise<Reservation[]>;
-
-  @OneToMany(() => Lend, (lend) => lend.material)
-  lend: Lend[];
 }

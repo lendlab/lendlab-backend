@@ -2,6 +2,7 @@ import { ApolloServer } from "apollo-server-express";
 import Express from "express";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
+import { LendResolver } from "./resolvers/lend/LendResolver";
 import { MaterialResolver } from "./resolvers/material/MaterialResolver";
 import { ReservationResolver } from "./resolvers/reservation/ReservationResolver";
 import { RegisterResolver } from "./resolvers/users/RegisterResolver";
@@ -12,7 +13,12 @@ const main = async () => {
   const app = Express();
 
   const schema = await buildSchema({
-    resolvers: [MaterialResolver, RegisterResolver, ReservationResolver],
+    resolvers: [
+      MaterialResolver,
+      RegisterResolver,
+      ReservationResolver,
+      LendResolver,
+    ],
     validate: false,
   });
 

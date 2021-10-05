@@ -46,7 +46,7 @@ export class ReservationResolver {
   @Query(() => [Lend])
   async lend() {
     const lend = await Lend.find({
-      relations: ["reservation", "material"],
+      relations: ["reservation"],
     });
     console.log(lend);
     return lend;

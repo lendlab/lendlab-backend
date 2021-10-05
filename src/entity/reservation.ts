@@ -1,6 +1,7 @@
 import { Field, ObjectType } from "type-graphql";
 import {
   BaseEntity,
+  Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
@@ -19,9 +20,13 @@ export class Reservation extends BaseEntity {
   id_reserva: number;
 
   @Field(() => String, { nullable: true })
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamp" })
   @PrimaryColumn()
   fecha_hora: Date;
+
+  @Column({ type: "boolean" })
+  @Field(() => Boolean)
+  finalizada: boolean;
 
   @OneToMany(() => Lend, (lend) => lend.reservation)
   lend: Promise<Lend[]>;
