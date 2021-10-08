@@ -15,12 +15,12 @@ import { User } from "./user";
 @ObjectType()
 @Entity()
 export class Reservation extends BaseEntity {
-  @Field({ nullable: true })
+  @Field()
   @PrimaryColumn({ default: 1 })
   id_reserva: number;
 
   @Field(() => String, { nullable: true })
-  @CreateDateColumn({ type: "timestamp" })
+  @CreateDateColumn({ type: "timestamptz" })
   @PrimaryColumn()
   fecha_hora: Date;
 

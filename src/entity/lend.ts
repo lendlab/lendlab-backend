@@ -19,10 +19,13 @@ export class Lend extends BaseEntity {
   @PrimaryColumn({ default: 1 })
   id_lend: number;
 
+  //  necesito añadir una llave foranea desde la hora para
+  // poder acceder a los datos del usuario y el material ¿?
+
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
   @PrimaryColumn()
-  fecha_presta: Date;
+  fecha_hora_presta: Date;
 
   @Field(() => String, { nullable: true })
   @CreateDateColumn()
@@ -34,5 +37,5 @@ export class Lend extends BaseEntity {
 
   @Field(() => Reservation, { nullable: true })
   @ManyToOne(() => Reservation, (reservation) => reservation.lend)
-  reservation: Reservation;
+  reservation: [Reservation];
 }
