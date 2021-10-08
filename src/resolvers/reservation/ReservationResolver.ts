@@ -1,6 +1,5 @@
 import { Reservation } from "../../entity/reservation";
 import { Arg, Field, InputType, Mutation, Query, Resolver } from "type-graphql";
-import { Lend } from "../../entity/lend";
 
 @InputType()
 class UserReservationInput {
@@ -41,18 +40,9 @@ export class ReservationResolver {
   @Query(() => [Reservation])
   async getReservations() {
     const reservations = await Reservation.find({
-      relations: ["user", "material", "lend"],
+      relations: ["user", "material"],
     });
     return reservations;
-  }
-
-  @Query(() => [Lend])
-  async lend() {
-    const lend = await Lend.find({
-      relations: ["reservation"],
-    });
-    console.log(lend);
-    return lend;
   }
 
   @Mutation(() => Reservation)
