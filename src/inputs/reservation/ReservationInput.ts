@@ -9,6 +9,9 @@ export class ReservationInput {
   id_reserva: number;
 
   @Field()
+  finalidada: boolean;
+
+  @Field()
   fecha_reserva: Date;
 
   @Field()

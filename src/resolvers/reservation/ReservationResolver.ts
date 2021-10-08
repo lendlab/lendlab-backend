@@ -19,6 +19,9 @@ class ReservationInput {
   id_reserva: number;
 
   @Field()
+  finalizada: boolean;
+
+  @Field()
   fecha_hora: Date;
 
   @Field(() => UserReservationInput)
