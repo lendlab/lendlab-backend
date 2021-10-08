@@ -19,7 +19,7 @@ class LendInput {
   id_lend: number;
 
   @Field(() => String, { nullable: true })
-  fecha_presta: Date;
+  fecha_hora_presta: Date;
 
   @Field(() => String, { nullable: true })
   fecha_vencimiento: Date;

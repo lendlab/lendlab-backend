@@ -20,7 +20,7 @@ export class Reservation extends BaseEntity {
   id_reserva: number;
 
   @Field(() => String, { nullable: true })
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: "timestamp" })
   @PrimaryColumn()
   fecha_hora: Date;
 

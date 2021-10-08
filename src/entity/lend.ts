@@ -37,5 +37,5 @@ export class Lend extends BaseEntity {
 
   @Field(() => Reservation, { nullable: true })
   @ManyToOne(() => Reservation, (reservation) => reservation.lend)
-  reservation: [Reservation];
+  reservation: Reservation;
 }
