@@ -20,8 +20,8 @@ export class Reservation extends BaseEntity {
   id_reserva: number;
 
   @Field(() => String, { nullable: true })
-  @CreateDateColumn({ type: "timestamp" })
-  @PrimaryColumn()
+  @CreateDateColumn()
+  @PrimaryColumn({default: () => "CURRENT_TIMESTAMP(6)", type: "timestamp"})
   fecha_hora: Date;
 
   @Column({ type: "boolean" })
