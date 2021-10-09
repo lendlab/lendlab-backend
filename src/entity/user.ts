@@ -35,6 +35,10 @@ export class User extends BaseEntity {
   @Column()
   tipo_usuario: string;
 
+  @Field()
+  @Column({ type: "date" })
+  fecha_nacimiento: String;
+
   @OneToMany(() => Reservation, (reservation) => reservation.user)
   reservation: Promise<Reservation[]>;
 }
