@@ -15,7 +15,6 @@ export class User extends BaseEntity {
   @Column()
   nombre: string;
 
-  @Field()
   @Column()
   pass: string;
 

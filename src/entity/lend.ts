@@ -5,16 +5,12 @@ import {
   Entity,
   ManyToOne,
   PrimaryColumn,
-  PrimaryGeneratedColumn,
 } from "typeorm";
 import { Reservation } from "./reservation";
 
 @ObjectType()
 @Entity()
 export class Lend extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
   @Field({ nullable: false })
   @PrimaryColumn({ default: 1 })
   id_lend: number;
@@ -36,6 +32,8 @@ export class Lend extends BaseEntity {
   fecha_devolucion: Date;
 
   @Field(() => Reservation, { nullable: true })
-  @ManyToOne(() => Reservation, (reservation) => reservation.lend)
+  @ManyToOne(() => Reservation, (reservation) => reservation.lend, {
+    onDelete: "CASCADE",
+  })
   reservation: Reservation;
 }

@@ -47,8 +47,10 @@ export class LendResolver {
     return lend;
   }
 
-  @Mutation(() => Lend)
-  async createLend(@Arg("data", () => LendInput) data: LendInput) {
+  @Mutation(() => [Lend])
+  async createLend(
+    @Arg("data", () => LendInput) data: LendInput
+  ): Promise<Lend> {
     return Lend.create({ ...data }).save();
   }
 }

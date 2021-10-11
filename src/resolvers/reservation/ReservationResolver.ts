@@ -13,6 +13,8 @@ class MaterialReservationInput {
   id_material: number;
 }
 
+const hora = new Date();
+
 @InputType()
 class ReservationInput {
   @Field()
@@ -21,7 +23,7 @@ class ReservationInput {
   @Field()
   finalizada: boolean;
 
-  @Field()
+  @Field(() => Date, { nullable: true, defaultValue: hora })
   fecha_hora: Date;
 
   @Field(() => UserReservationInput)
@@ -37,6 +39,7 @@ export class ReservationResolver {
   async hello() {
     return "hello";
   }
+
   @Query(() => [Reservation])
   async getReservations() {
     const reservations = await Reservation.find({
