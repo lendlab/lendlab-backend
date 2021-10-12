@@ -6,14 +6,15 @@ import {
   Entity,
   ManyToOne,
   PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 import { Reservation } from "./reservation";
 
 @ObjectType()
 @Entity()
 export class Lend extends BaseEntity {
-  @Field({ nullable: false })
-  @PrimaryColumn({ default: 1 })
+  @Field()
+  @PrimaryGeneratedColumn()
   id_lend: number;
 
   //  necesito añadir una llave foranea desde la hora para
