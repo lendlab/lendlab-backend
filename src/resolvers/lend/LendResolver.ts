@@ -5,12 +5,6 @@ import { Lend } from "../../entity/lend";
 class ReservationInputa {
   @Field()
   id_reserva: number;
-
-  @Field(() => Date)
-  fecha_hora: Date;
-
-  @Field()
-  finalizada: boolean;
 }
 
 @InputType()
@@ -47,7 +41,7 @@ export class LendResolver {
     return lend;
   }
 
-  @Mutation(() => [Lend])
+  @Mutation(() => Lend)
   async createLend(
     @Arg("data", () => LendInput) data: LendInput
   ): Promise<Lend> {
