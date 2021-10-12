@@ -19,7 +19,7 @@ class LendInput {
   id_lend: number;
 
   @Field(() => String, { nullable: true })
-  fecha_presta: Date;
+  fecha_hora_presta: Date;
 
   @Field(() => String, { nullable: true })
   fecha_vencimiento: Date;
@@ -41,14 +41,16 @@ export class LendResolver {
   @Query(() => [Lend])
   async lend() {
     const lend = await Lend.find({
-      relations: ["reservation", "material"],
+      relations: ["reservation"],
     });
     console.log(lend);
     return lend;
   }
 
-  @Mutation(() => Lend)
-  async createLend(@Arg("data", () => LendInput) data: LendInput) {
+  @Mutation(() => [Lend])
+  async createLend(
+    @Arg("data", () => LendInput) data: LendInput
+  ): Promise<Lend> {
     return Lend.create({ ...data }).save();
   }
 }

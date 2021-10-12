@@ -2,7 +2,6 @@ import { Field, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
-  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -20,8 +19,7 @@ export class Reservation extends BaseEntity {
   id_reserva: number;
 
   @Field(() => String, { nullable: true })
-  @CreateDateColumn({ type: "timestamp" })
-  @PrimaryColumn()
+  @PrimaryColumn({ default: () => "CURRENT_TIMESTAMP(6)" })
   fecha_hora: Date;
 
   @Column({ type: "boolean" })
@@ -32,10 +30,12 @@ export class Reservation extends BaseEntity {
   lend: Promise<Lend[]>;
 
   @Field(() => User, { nullable: true })
-  @ManyToOne(() => User, (user) => user.reservation)
+  @ManyToOne(() => User, (user) => user.reservation, { onDelete: "CASCADE" })
   user: User;
 
-  @Field(() => Material, { nullable: true })
-  @ManyToOne(() => Material, (material) => material.reservation)
+  @Field(() => [Material], { nullable: true })
+  @ManyToOne(() => Material, (material) => material.reservation, {
+    onDelete: "CASCADE",
+  })
   material: Material;
 }
