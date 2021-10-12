@@ -30,12 +30,13 @@ export class Reservation extends BaseEntity {
   lend: Promise<Lend[]>;
 
   @Field(() => User, { nullable: true })
-  @ManyToOne(() => User, (user) => user.reservation, { onDelete: "CASCADE" })
+  @ManyToOne(() => User, (user) => user.reservation, { onDelete: "CASCADE", cascade: true })
   user: User;
 
   @Field(() => Material, { nullable: true })
   @ManyToOne(() => Material, (material) => material.reservation, {
     onDelete: "CASCADE",
+    cascade: true
   })
   material: Material;
 }
