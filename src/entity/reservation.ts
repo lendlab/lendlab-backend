@@ -33,7 +33,7 @@ export class Reservation extends BaseEntity {
   @ManyToOne(() => User, (user) => user.reservation, { onDelete: "CASCADE" })
   user: User;
 
-  @Field(() => [Material], { nullable: true })
+  @Field(() => Material, { nullable: true })
   @ManyToOne(() => Material, (material) => material.reservation, {
     onDelete: "CASCADE",
   })
