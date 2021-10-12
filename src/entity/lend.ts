@@ -1,6 +1,7 @@
 import { Field, ObjectType } from "type-graphql";
 import {
   BaseEntity,
+  Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
@@ -29,7 +30,7 @@ export class Lend extends BaseEntity {
   fecha_vencimiento: Date;
 
   @Field(() => String, { nullable: true })
-  @CreateDateColumn()
+  @Column({nullable: true})
   fecha_devolucion: Date;
 
   @Field(() => Reservation, { nullable: true })
