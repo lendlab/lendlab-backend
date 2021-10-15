@@ -4,8 +4,9 @@ Tu institución, ahora en forma online.
 
 ## ¿Como puedo correr el proyecto?
 
-* Clonar este repositorio y el de lendlab
+* Clonar este repositorio y el de lendlab https://github.com/LendLab/lendlab
 * Crear una base de datos VACÍA con el nombre `lendlab2`
+* Abrir Xampp e iniciar `Apache` y  `MySql`
 * Ejecutamos en la consola los siguientes comandos:
 
 ```bash
