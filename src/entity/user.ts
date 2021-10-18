@@ -1,13 +1,15 @@
-import { Length } from "class-validator";
-import { Field, ObjectType } from "type-graphql";
-import { BaseEntity, Column, Entity, PrimaryColumn, OneToMany } from "typeorm";
-import { Reservation } from "./reservation";
+import {Length} from "class-validator";
+import {Field, ObjectType} from "type-graphql";
+import {BaseEntity, Column, Entity, PrimaryColumn, OneToMany} from "typeorm";
+import {Belongs} from "./belongs";
+import {Laboratorist} from "./laboratorist";
+import {Reservation} from "./reservation";
 
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
   @Field()
-  @PrimaryColumn({ type: "int" })
+  @PrimaryColumn({type: "int"})
   @Length(8, 9)
   cedula: number;
 
@@ -35,9 +37,15 @@ export class User extends BaseEntity {
   tipo_usuario: string;
 
   @Field()
-  @Column({ type: "date" })
+  @Column({type: "date"})
   fecha_nacimiento: String;
 
   @OneToMany(() => Reservation, (reservation) => reservation.user)
   reservation: Promise<Reservation[]>;
+
+  @OneToMany(() => Laboratorist, (lab) => lab.ci_laboratorist)
+  laboratorist: Laboratorist;
+
+  @OneToMany(() => Belongs, (belongs) => belongs.user)
+  belongs: Promise<Belongs[]>;
 }
