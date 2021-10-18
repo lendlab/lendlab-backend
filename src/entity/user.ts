@@ -9,7 +9,7 @@ import {Reservation} from "./reservation";
 @Entity()
 export class User extends BaseEntity {
   @Field()
-  @PrimaryColumn({type: "int"})
+  @PrimaryColumn({type: "int", unique: true})
   @Length(8, 9)
   cedula: number;
 
@@ -18,7 +18,7 @@ export class User extends BaseEntity {
   nombre: string;
 
   @Column()
-  pass: string;
+  password: string;
 
   @Field()
   @Column()
