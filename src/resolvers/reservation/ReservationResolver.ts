@@ -1,5 +1,5 @@
 import {Reservation} from "../../entity/reservation";
-import {Arg, Mutation, Query, Resolver} from "type-graphql";
+import {Arg, Int, Mutation, Query, Resolver} from "type-graphql";
 import {ReservationInput} from "../../inputs/reservation/ReservationInput";
 import {ReservationEditInput} from "../../inputs/reservation/ReservationEditInput";
 
@@ -22,13 +22,21 @@ export class ReservationResolver {
   async createReservation(
     @Arg("data", () => ReservationInput) data: ReservationInput
   ) {
-    return Reservation.create({...data}).save();
+    return await Reservation.create({...data}).save();
   }
 
-  @Mutation(() => Reservation)
+  @Mutation(() => Reservation, {nullable: true})
   async editReservation(
     @Arg("data", () => ReservationEditInput) data: ReservationInput
   ) {
-    return Reservation.create({...data}).save();
+    return await Reservation.create({...data}).save();
+  }
+
+  @Mutation(() => Boolean, {nullable: true})
+  async deleteReservation(
+    @Arg("id_reserva", () => Int) id_reserva: number
+  ): Promise<Boolean> {
+    const deletedMaterial = await Reservation.delete({id_reserva});
+    return deletedMaterial.raw[0];
   }
 }
