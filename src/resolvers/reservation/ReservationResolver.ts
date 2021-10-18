@@ -1,37 +1,7 @@
-import { Reservation } from "../../entity/reservation";
-import { Arg, Field, InputType, Mutation, Query, Resolver } from "type-graphql";
-
-@InputType()
-class UserReservationInput {
-  @Field()
-  cedula: number;
-}
-
-@InputType()
-class MaterialReservationInput {
-  @Field()
-  id_material: number;
-}
-
-const hora = new Date();
-
-@InputType()
-class ReservationInput {
-  @Field()
-  id_reserva: number;
-
-  @Field()
-  finalizada: boolean;
-
-  @Field(() => Date, { nullable: true, defaultValue: hora })
-  fecha_hora: Date;
-
-  @Field(() => UserReservationInput)
-  user: UserReservationInput;
-
-  @Field(() => MaterialReservationInput)
-  material: MaterialReservationInput;
-}
+import {Reservation} from "../../entity/reservation";
+import {Arg, Mutation, Query, Resolver} from "type-graphql";
+import {ReservationInput} from "../../inputs/reservation/ReservationInput";
+import {ReservationEditInput} from "../../inputs/reservation/ReservationEditInput";
 
 @Resolver()
 export class ReservationResolver {
@@ -52,6 +22,13 @@ export class ReservationResolver {
   async createReservation(
     @Arg("data", () => ReservationInput) data: ReservationInput
   ) {
-    return Reservation.create({ ...data }).save();
+    return Reservation.create({...data}).save();
+  }
+
+  @Mutation(() => Reservation)
+  async editReservation(
+    @Arg("data", () => ReservationEditInput) data: ReservationInput
+  ) {
+    return Reservation.create({...data}).save();
   }
 }

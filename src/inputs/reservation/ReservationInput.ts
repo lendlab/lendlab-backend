@@ -1,19 +1,31 @@
-import { Field, InputType } from "type-graphql";
+import {Field, InputType} from "type-graphql";
+
+@InputType()
+class UserReservationInput {
+  @Field()
+  cedula: number;
+}
+
+@InputType()
+class MaterialReservationInput {
+  @Field()
+  id_material: number;
+}
 
 @InputType()
 export class ReservationInput {
   @Field()
-  ci_user: number;
-
-  @Field()
   id_reserva: number;
 
   @Field()
-  finalidada: boolean;
+  finalizada: boolean;
 
-  @Field()
-  fecha_reserva: Date;
+  @Field(() => Date, {nullable: true})
+  fecha_hora: Date;
 
-  @Field()
-  fecha_devolucion: Date;
+  @Field(() => UserReservationInput)
+  user: UserReservationInput;
+
+  @Field(() => MaterialReservationInput)
+  material: MaterialReservationInput;
 }
