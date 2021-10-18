@@ -1,5 +1,12 @@
 import {Field, ObjectType} from "type-graphql";
-import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import {Material} from "./material";
 
 @ObjectType()
 @Entity()
@@ -27,4 +34,7 @@ export class Incident extends BaseEntity {
   @Field(() => Date)
   @Column({type: "date"})
   date: Date;
+
+  @ManyToOne(() => Material)
+  material: Material;
 }
