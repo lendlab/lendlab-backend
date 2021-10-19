@@ -37,16 +37,20 @@ export class MaterialResolver {
     @Arg("id_material", () => Int) id_material: number,
     @Arg("data", () => MaterialUpdateInput)
     data: MaterialUpdateInput
-  ): Promise<Material | null> {
-    const updatedMaterial = await Material.update({ id_material }, data);
-    return updatedMaterial.raw[0];
+  ) {
+    await Material.update({ id_material }, data);
+    const updatedMaterial = Material.findOne(id_material);
+    if(!updatedMaterial) {
+      return null;
+    }
+    return updatedMaterial;
   }
   //delete
-  @Mutation(() => Material, { nullable: true })
+  @Mutation(() => Boolean )
   async deleteMaterial(
     @Arg("id_material", () => Int) id_material: number
-  ): Promise<Material | null> {
-    const deletedMaterial = await Material.delete({ id_material });
-    return deletedMaterial.raw[0];
+  ): Promise<Boolean> {
+    await Material.delete({ id_material });
+    return true;
   }
 }
