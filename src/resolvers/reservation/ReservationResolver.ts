@@ -25,18 +25,26 @@ export class ReservationResolver {
     return await Reservation.create({...data}).save();
   }
 
-  @Mutation(() => Reservation, {nullable: true})
-  async editReservation(
-    @Arg("data", () => ReservationEditInput) data: ReservationInput
+  @Mutation(() => [Reservation], { nullable: true })
+  async updateReservation(
+    @Arg("id_reserva", () => Int) id_reserva: number,
+    @Arg("data", () => ReservationEditInput)
+    data: ReservationEditInput
   ) {
-    return await Reservation.create({...data}).save();
+    await Reservation.update({ id_reserva }, data);
+    const updatedReservations = await Reservation.find({
+      id_reserva
+    });
+
+    return updatedReservations;
   }
+
 
   @Mutation(() => Boolean, {nullable: true})
   async deleteReservation(
-    @Arg("id_reserva", () => Int) id_reserva: number
+    @Arg("id_reserva", () => Int) id_reserva: number,
   ): Promise<Boolean> {
-    const deletedMaterial = await Reservation.delete({id_reserva});
-    return deletedMaterial.raw[0];
+    await Reservation.delete({id_reserva});
+    return true;
   }
 }
