@@ -2,7 +2,7 @@ import {Field, InputType} from "type-graphql";
 
 @InputType()
 class UserReservationEditInput {
-  @Field()
+  @Field({nullable: true})
   cedula: number;
 }
 
@@ -14,18 +14,15 @@ class MaterialReservationEditInput {
 
 @InputType()
 export class ReservationEditInput {
-  @Field()
-  id_reserva: number;
-
   @Field({nullable: true})
   finalizada: boolean;
 
   @Field(() => Date, {nullable: true})
   fecha_hora: Date;
 
-  @Field(() => UserReservationEditInput)
+  @Field(() => UserReservationEditInput, {nullable: true})
   user: UserReservationEditInput;
 
-  @Field(() => MaterialReservationEditInput)
+  @Field(() => MaterialReservationEditInput, {nullable: true})
   material: MaterialReservationEditInput;
 }
