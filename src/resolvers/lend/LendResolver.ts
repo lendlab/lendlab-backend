@@ -1,10 +1,13 @@
-import { Arg, Field, InputType, Mutation, Query, Resolver } from "type-graphql";
-import { Lend } from "../../entity/lend";
+import {Arg, Field, InputType, Mutation, Query, Resolver} from "type-graphql";
+import {Lend} from "../../entity/lend";
 
 @InputType()
 class ReservationInputa {
   @Field()
   id_reserva: number;
+
+  @Field(() => String)
+  fecha_hora: Date;
 }
 
 @InputType()
@@ -12,10 +15,10 @@ class LendInput {
   @Field()
   id_lend: number;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String, {nullable: true})
   fecha_hora_presta: Date;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String, {nullable: true})
   fecha_vencimiento: Date;
 
   @Field(() => String)
@@ -45,6 +48,6 @@ export class LendResolver {
   async createLend(
     @Arg("data", () => LendInput) data: LendInput
   ): Promise<Lend> {
-    return Lend.create({ ...data }).save();
+    return Lend.create({...data}).save();
   }
 }

@@ -9,7 +9,7 @@ export class Institution extends BaseEntity {
   id_institution: number;
 
   @Field(() => String)
-  @Column()
+  @Column({unique: true})
   institution_name: string;
 
   @Field(() => String)

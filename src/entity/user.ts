@@ -1,4 +1,3 @@
-import {Length} from "class-validator";
 import {Field, ObjectType} from "type-graphql";
 import {BaseEntity, Column, Entity, PrimaryColumn, OneToMany} from "typeorm";
 import {Belongs} from "./belongs";
@@ -9,8 +8,7 @@ import {Reservation} from "./reservation";
 @Entity()
 export class User extends BaseEntity {
   @Field()
-  @PrimaryColumn({type: "int", unique: true})
-  @Length(8, 9)
+  @PrimaryColumn({unique: true})
   cedula: number;
 
   @Field()

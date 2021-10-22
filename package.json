@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "apollo-server-express": "^3.3.0",
+    "apollo-server-express": "^2.16.1",
     "argon2": "^0.28.2",
     "class-validator": "^0.13.1",
     "connect-redis": "^6.0.0",

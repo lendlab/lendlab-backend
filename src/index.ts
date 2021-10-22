@@ -6,22 +6,28 @@ import {createConnection} from "typeorm";
 import session from "express-session";
 import connectRedis from "connect-redis";
 import redis from "redis";
-//import cors from "cors";
+import cors from "cors";
 
 import {LendResolver} from "./resolvers/lend/LendResolver";
 import {MaterialResolver} from "./resolvers/material/MaterialResolver";
 import {ReservationResolver} from "./resolvers/reservation/ReservationResolver";
 import {RegisterResolver} from "./resolvers/users/RegisterResolver";
+import {InstitutionResolver} from "./resolvers/institution/InstitutionResolver";
 
 const main = async () => {
   await createConnection();
 
   const app = Express();
 
+  app.use(
+    cors({
+      origin: "*",
+      credentials: true,
+    })
+  );
+
   const RedisStore = connectRedis(session);
   const redisClient = redis.createClient();
-
-  app.set("trust proxy", 1);
 
   app.use(
     session({
@@ -50,6 +56,7 @@ const main = async () => {
       RegisterResolver,
       ReservationResolver,
       LendResolver,
+      InstitutionResolver,
     ],
     validate: false,
   });
@@ -65,7 +72,10 @@ const main = async () => {
 
   await apolloServer.start();
 
-  apolloServer.applyMiddleware({app});
+  apolloServer.applyMiddleware({
+    app,
+    cors: true,
+  });
 
   app.listen(4000, () => {
     console.log("server running on port 4000 :)");
