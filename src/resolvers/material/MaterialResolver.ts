@@ -2,6 +2,7 @@ import { Material } from "../../entity/material";
 import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
 import { MaterialInput } from "../../inputs/material/MaterialInput";
 import { MaterialUpdateInput } from "../../inputs/material/MaterialUpdateInput";
+import { getManager, Like } from "typeorm";
 
 @Resolver()
 export class MaterialResolver {
@@ -20,6 +21,42 @@ export class MaterialResolver {
   async getMaterial(@Arg("id_material", () => Int) id_material: number) {
     const material = await Material.find({ id_material });
     return material;
+  }
+
+  @Query(() => [Material])
+  async getPopularMaterials() {
+    const popularMaterials = await getManager()
+    .createQueryBuilder(Material, "material")
+    .innerJoin("material.reservation", "reservation")
+    .groupBy("reservation.materialIdMaterial")
+    .orderBy("SUM(reservation.materialIdMaterial)", "DESC")
+    .limit(3)
+    .getMany();
+
+    return popularMaterials
+// select * 
+// from material
+// JOIN 
+// reservation where materialIdMaterial = material.id_material
+// group by materialIdMaterial 
+// order by sum(materialIdMaterial) desc 
+//  limit 5
+  }
+
+  @Query(() => [Material])
+  async getMaterialSearch(@Arg("nombre", () => String) nombre: string) {
+    const material = await Material.find({
+      nombre: Like(`${nombre}%`)
+    });
+    return material;
+
+// select * 
+// from material
+// JOIN 
+// reservation where materialIdMaterial = material.id_material
+// group by materialIdMaterial 
+// order by sum(materialIdMaterial) desc 
+//  limit 5
   }
 
   //post
