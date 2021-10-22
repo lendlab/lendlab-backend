@@ -85,17 +85,17 @@ export class RegisterResolver {
 
     console.log(user);
 
-    req.session.userId = user.cedula;
+    req.session.cedula = user.cedula;
     return {user};
   }
 
   @Query(() => User, {nullable: true})
   async me(@Ctx() {req}: MyContext) {
-    if (!req.session.userId) {
+    if (!req.session.cedula) {
       return null;
     }
 
-    return User.findOne(req.session.userId);
+    return User.findOne(req.session.cedula);
   }
 
   @Mutation(() => Boolean)

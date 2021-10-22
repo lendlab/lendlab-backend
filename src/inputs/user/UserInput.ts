@@ -1,4 +1,5 @@
 import {Field, InputType} from "type-graphql";
+import {InstitutionInput} from "../institution/InstitutionInput";
 
 @InputType()
 export class UserInput {
@@ -25,4 +26,7 @@ export class UserInput {
 
   @Field()
   fecha_nacimiento: string;
+
+  @Field(() => InstitutionInput)
+  institution: InstitutionInput;
 }

@@ -16,10 +16,10 @@ class LendInput {
   @Field()
   id_lend: number;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String, {nullable: true})
   fecha_hora_presta: Date;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String, {nullable: true})
   fecha_vencimiento: Date;
 
   @Field(() => String)
@@ -53,6 +53,6 @@ export class LendResolver {
   async createLend(
     @Arg("data", () => LendInput) data: LendInput
   ): Promise<Lend> {
-    return Lend.create({ ...data }).save();
+    return Lend.create({...data}).save();
   }
 }
