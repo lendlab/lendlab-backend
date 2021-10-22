@@ -1,10 +1,14 @@
 import { Arg, Field, InputType, Mutation, Query, Resolver } from "type-graphql";
+import { getRepository } from "typeorm";
 import { Lend } from "../../entity/lend";
 
 @InputType()
 class ReservationInputa {
   @Field()
   id_reserva: number;
+
+  @Field(() => Date)
+  fecha_hora: String;
 }
 
 @InputType()
@@ -34,10 +38,14 @@ export class LendResolver {
 
   @Query(() => [Lend])
   async lend() {
-    const lend = await Lend.find({
-      relations: ["reservation"],
-    });
-    console.log(lend);
+    const lend = await getRepository(Lend)
+    .createQueryBuilder("lend")
+    .innerJoinAndSelect("lend.reservation", "reservation")
+    .innerJoinAndSelect("reservation.material", "material")
+    .innerJoinAndSelect("reservation.user", "user")
+    .getMany();
+
+    // SELECT * from lend JOIN reservation on lend.reservationIdReserva = reservation.id_reserva JOIN user ON user.cedula = reservation.userCedula
     return lend;
   }
 
