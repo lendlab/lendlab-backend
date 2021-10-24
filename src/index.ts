@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import {ApolloServer} from "apollo-server-express";
 import Express from "express";
 import {buildSchema} from "type-graphql";
 import {createConnection} from "typeorm";
@@ -13,16 +12,21 @@ import {MaterialResolver} from "./resolvers/material/MaterialResolver";
 import {ReservationResolver} from "./resolvers/reservation/ReservationResolver";
 import {RegisterResolver} from "./resolvers/users/RegisterResolver";
 import {InstitutionResolver} from "./resolvers/institution/InstitutionResolver";
+import { ApolloServer } from "apollo-server-express";
 
 const main = async () => {
   await createConnection();
 
   const app = Express();
+  app.set("trust proxy", true);
 
   app.use(
     cors({
-      origin: "*",
       credentials: true,
+      origin: [
+        "https://studio.apollographql.com",
+        "http://localhost:4000/graphql",
+      ],
     })
   );
 
@@ -41,8 +45,8 @@ const main = async () => {
       cookie: {
         maxAge: 10000000000,
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
       },
       saveUninitialized: false,
       secret: "qiwroasdjlasddde",
@@ -74,7 +78,7 @@ const main = async () => {
 
   apolloServer.applyMiddleware({
     app,
-    cors: true,
+    cors: false,
   });
 
   app.listen(4000, () => {
