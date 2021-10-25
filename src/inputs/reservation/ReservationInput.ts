@@ -29,3 +29,33 @@ export class ReservationInput {
   @Field(() => MaterialReservationInput)
   material: MaterialReservationInput;
 }
+
+@InputType()
+class UserReservationSessionInput {
+  @Field()
+  cedula: number;
+}
+
+@InputType()
+class MaterialReservationSessionInput {
+  @Field()
+  id_material: number;
+}
+
+@InputType()
+export class ReservationSessionInput {
+  @Field()
+  id_reserva: number;
+
+  @Field()
+  finalizada: boolean;
+
+  @Field(() => Date, {nullable: true})
+  fecha_hora: Date;
+
+  @Field(() => UserReservationSessionInput)
+  cedula: UserReservationSessionInput;
+
+  @Field(() => MaterialReservationSessionInput)
+  material: MaterialReservationSessionInput;
+}

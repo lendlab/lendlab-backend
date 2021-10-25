@@ -25,24 +25,37 @@ export class ReservationResolver {
     return await Reservation.create({...data}).save();
   }
 
-  @Mutation(() => [Reservation], { nullable: true })
+  //Reserva usando sessiones
+
+  //@Mutation(() => Reservation)
+  //async createReservationUserSession(
+  //  @Arg("data", () => ReservationSessionInput) data: ReservationSessionInput,
+  //  @Ctx() {req}: MyContext
+  //): Promise<Reservation> {
+  //  const reservationSession = await Reservation.create({
+  //    ...data,
+  //    user: req.session.cedula
+  //  }).save();
+  //  return reservationSession;
+  //}
+
+  @Mutation(() => [Reservation], {nullable: true})
   async updateReservation(
     @Arg("id_reserva", () => Int) id_reserva: number,
     @Arg("data", () => ReservationEditInput)
     data: ReservationEditInput
   ) {
-    await Reservation.update({ id_reserva }, data);
+    await Reservation.update({id_reserva}, data);
     const updatedReservations = await Reservation.find({
-      id_reserva
+      id_reserva,
     });
 
     return updatedReservations;
   }
 
-
   @Mutation(() => Boolean, {nullable: true})
   async deleteReservation(
-    @Arg("id_reserva", () => Int) id_reserva: number,
+    @Arg("id_reserva", () => Int) id_reserva: number
   ): Promise<Boolean> {
     await Reservation.delete({id_reserva});
     return true;

@@ -20,7 +20,7 @@ export class Institution extends BaseEntity {
   @Column()
   type: string;
 
-  @Field(() => String)
+  @Field()
   @Column()
-  phone: string;
+  phone: number;
 }
