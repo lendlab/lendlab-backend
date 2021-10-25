@@ -13,9 +13,6 @@ class ReservationInputa {
 
 @InputType()
 class LendInput {
-  @Field()
-  id_lend: number;
-
   @Field(() => String, {nullable: true})
   fecha_hora_presta: Date;
 
