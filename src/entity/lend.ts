@@ -2,7 +2,6 @@ import {Field, ObjectType} from "type-graphql";
 import {
   BaseEntity,
   Column,
-  CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryColumn,
@@ -18,16 +17,12 @@ export class Lend extends BaseEntity {
   @PrimaryGeneratedColumn()
   id_lend: number;
 
-  //  necesito añadir una llave foranea desde la hora para
-  // poder acceder a los datos del usuario y el material ¿?
-
   @Field(() => String, {nullable: true})
-  @CreateDateColumn()
-  @PrimaryColumn()
+  @PrimaryColumn({default: () => "CURRENT_TIMESTAMP(6)", type: "timestamp"})
   fecha_hora_presta: Date;
 
   @Field(() => String, {nullable: true})
-  @CreateDateColumn()
+  @Column({default: () => "CURRENT_TIMESTAMP(6)", type: "timestamp"})
   fecha_vencimiento: Date;
 
   @Field(() => String, {nullable: true})

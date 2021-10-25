@@ -3,32 +3,35 @@ import "dotenv-safe";
 import express from "express";
 import redis from "redis";
 import {ApolloServer} from "apollo-server-express";
-import {createConnection} from "typeorm";
 import session from "express-session";
 import connectRedis from "connect-redis";
 import cors from "cors";
 
 import {schemaIndex} from "./resolvers";
-//import {connection} from "./slqconnection";
+import {createConnection} from "typeorm";
 //import {cloudConnection} from "./cloudConncection";
+//import {connection} from "./slqconnection";
 
 const main = async () => {
   //cloud connection
   //await cloudConnection();
-
+  //
   //connection.connect((err) => {
   //  if (err) {
   //    throw err;
   //  }
-  //  console.log("connected");
+  //  console.log("connected to scalegrid established");
   //});
 
-  //local databse
-
+  //localhost databse
   await createConnection();
 
   const RedisStore = connectRedis(session);
-  const redisClient = redis.createClient();
+  const redisClient = redis.createClient({
+    host: "SG-lendlab-47395.servers.mongodirector.com",
+    port: 6379,
+    auth_pass: "O6uYtPhc3Uy5lJ2dJxAnLxKgJFID01JZ",
+  });
 
   const app = express();
 
@@ -51,7 +54,7 @@ const main = async () => {
       store: new RedisStore({
         client: redisClient,
         disableTouch: true,
-        host: process.env.REDIS_URL,
+        host: "SG-lendlab-47395.servers.mongodirector.com:6379",
       }),
       cookie: {
         maxAge: 10000000000,
