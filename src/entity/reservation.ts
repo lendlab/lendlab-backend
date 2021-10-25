@@ -2,6 +2,7 @@ import {Field, ObjectType} from "type-graphql";
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -19,7 +20,8 @@ export class Reservation extends BaseEntity {
   id_reserva: number;
 
   @Field(() => String, {nullable: true})
-  @PrimaryColumn({default: () => "CURRENT_TIMESTAMP(6)"})
+  @CreateDateColumn()
+  @PrimaryColumn()
   fecha_hora: Date;
 
   @Column({type: "boolean", nullable: true})

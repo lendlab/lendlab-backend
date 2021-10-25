@@ -18,26 +18,29 @@ app.use(
     origin: [
       "https://studio.apollographql.com",
       "http://localhost:4000/graphql",
+      "http://localhost:3000",
     ],
   })
 );
 
-export const session_config = app.use(
-  session({
-    name: "qid",
-    store: new RedisStore({
-      client: redisClient,
-      disableTouch: true,
-      host: process.env.REDIS_URL,
-    }),
-    cookie: {
-      maxAge: 10000000000,
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-    },
-    saveUninitialized: false,
-    secret: "qiwroasdjlasddde",
-    resave: false,
-  })
-);
+export const sessioncfg = () => {
+  app.use(
+    session({
+      name: "qid",
+      store: new RedisStore({
+        client: redisClient,
+        disableTouch: true,
+        host: "SG-lendlab-47395.servers.mongodirector.com:6379",
+      }),
+      cookie: {
+        maxAge: 10000000000,
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      },
+      saveUninitialized: false,
+      secret: "qiwroasdjlasddde",
+      resave: false,
+    })
+  );
+};

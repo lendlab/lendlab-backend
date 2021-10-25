@@ -23,7 +23,7 @@ export class Lend extends BaseEntity {
 
   @Field(() => String, {nullable: true})
   @CreateDateColumn()
-  @PrimaryColumn({default: () => "CURRENT_TIMESTAMP(6)", type: "timestamp"})
+  @PrimaryColumn()
   fecha_hora_presta: Date;
 
   @Field(() => String, {nullable: true})
