@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "target": "esnext",
+  "module": "esnext",
   "dependencies": {
     "@types/mysql": "^2.15.19",
+    "@types/ncp": "^2.0.5",
     "apollo-server-express": "^3.3.4",
     "argon2": "^0.28.2",
     "class-validator": "^0.13.1",
@@ -17,6 +20,7 @@
     "graphql": "^15.5.3",
     "ioredis": "^4.27.9",
     "mysql": "^2.18.1",
+    "ncp": "^2.0.0",
     "pg": "^8.7.1",
     "redis": "^3.1.2",
     "reflect-metadata": "^0.1.13",
@@ -26,6 +30,7 @@
   "devDependencies": {
     "@types/connect-redis": "0.0.17",
     "@types/cors": "^2.8.12",
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.13",
     "@types/express-session": "^1.17.4",
     "@types/graphql": "^14.5.0",
@@ -37,7 +42,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --respawn ./src/index.ts"
+    "dev": "ts-node-dev --respawn ./src/index.ts",
+    "build": "tsc -p . && ncp ./src/entity ./dist/entity",
+    "watch": "tsc -w",
+    "start": "ts-node dist/index.js"
   },
   "keywords": [],
   "author": "",

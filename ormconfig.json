@@ -9,7 +9,7 @@
     "database": "lendlab2",
     "synchronize": "true",
     "logging": "true",
-    "entities": ["src/entity/*.*"]
+    "entities": ["src/entity/*.*", "./dist/src/entity"]
   },
   {
     "name": "default",
@@ -21,6 +21,6 @@
     "database": "defaultdb",
     "synchronize": "true",
     "logging": "true",
-    "entities": ["src/entity/*.*"]
+    "entities": ["dist/entity/*.js"]
   }
 ]
