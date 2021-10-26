@@ -1,42 +1,21 @@
+import "dotenv/config";
 import fs from "fs";
-
 import {createConnection} from "typeorm";
-import {Belongs} from "./entity/belongs";
-import {Course} from "./entity/course";
-import {Incident} from "./entity/incident";
-import {Institution} from "./entity/institution";
-import {Laboratorist} from "./entity/laboratorist";
-import {Lend} from "./entity/lend";
-import {Material} from "./entity/material";
-import {Occupies} from "./entity/occupies";
-import {Reservation} from "./entity/reservation";
-import {Room} from "./entity/room";
-import {User} from "./entity/user";
 
 export const cloudConnection = async () => {
   await createConnection({
-    name: "default",
+    name: "prod",
     type: "mysql",
-    username: "admin2",
-    password: "Mizapatofavorito1!",
-    database: "testdb",
-    host: "SG-testcluster-5163-mysql-master.servers.mongodirector.com",
+    username: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    host: process.env.MYSQL_URI,
+    database: process.env.MYSQL_DATABASE,
+    port: 25060,
+    connectTimeout: 60 * 60 * 1000,
+    acquireTimeout: 60 * 60 * 1000,
     synchronize: true,
     logging: false,
-    port: 3306,
-    ssl: {ca: fs.readFileSync("./ca.cert.txt")},
-    entities: [
-      User,
-      Reservation,
-      Lend,
-      Material,
-      Laboratorist,
-      Belongs,
-      Course,
-      Room,
-      Institution,
-      Incident,
-      Occupies,
-    ],
+    ssl: {ca: fs.readFileSync("./ca-certificate.crt")},
+    entities: [__dirname, "./entity"],
   });
 };

@@ -1,36 +1,38 @@
 import "reflect-metadata";
-import "dotenv-safe";
+import "dotenv";
 import express from "express";
 import redis from "redis";
 import {ApolloServer} from "apollo-server-express";
 import session from "express-session";
 import connectRedis from "connect-redis";
+import {createConnection} from "typeorm";
 import cors from "cors";
 
 import {schemaIndex} from "./resolvers";
-import {createConnection} from "typeorm";
-//import {cloudConnection} from "./cloudConncection";
-//import {connection} from "./slqconnection";
+import {cloudConnection} from "./cloudConncection";
 
 const main = async () => {
   //cloud connection
-  //await cloudConnection();
-  //
-  //connection.connect((err) => {
-  //  if (err) {
-  //    throw err;
-  //  }
-  //  console.log("connected to scalegrid established");
-  //});
+  await cloudConnection();
+
+  if (!cloudConnection) {
+    throw new Error();
+  } else {
+    console.log("conectado a digitalocean");
+  }
 
   //localhost databse
   await createConnection();
 
   const RedisStore = connectRedis(session);
   const redisClient = redis.createClient({
-    host: "SG-lendlab-47395.servers.mongodirector.com",
-    port: 6379,
-    auth_pass: "O6uYtPhc3Uy5lJ2dJxAnLxKgJFID01JZ",
+    host: process.env.REDIS_URL,
+    auth_pass: process.env.REDIS_PASS,
+    port: 25061,
+  });
+
+  redisClient.on("message", () => {
+    console.log("connected");
   });
 
   const app = express();
@@ -54,7 +56,6 @@ const main = async () => {
       store: new RedisStore({
         client: redisClient,
         disableTouch: true,
-        host: "SG-lendlab-47395.servers.mongodirector.com:6379",
       }),
       cookie: {
         maxAge: 10000000000,

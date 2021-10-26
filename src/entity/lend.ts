@@ -5,6 +5,7 @@ import {
   Entity,
   ManyToOne,
   PrimaryColumn,
+  CreateDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import {Laboratorist} from "./laboratorist";
@@ -18,11 +19,11 @@ export class Lend extends BaseEntity {
   id_lend: number;
 
   @Field(() => String, {nullable: true})
-  @PrimaryColumn({default: () => "CURRENT_TIMESTAMP(6)", type: "timestamp"})
+  @PrimaryColumn({default: () => "now()", type: "timestamp"})
   fecha_hora_presta: Date;
 
   @Field(() => String, {nullable: true})
-  @Column({default: () => "CURRENT_TIMESTAMP(6)", type: "timestamp"})
+  @CreateDateColumn()
   fecha_vencimiento: Date;
 
   @Field(() => String, {nullable: true})
