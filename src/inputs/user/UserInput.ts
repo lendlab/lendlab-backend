@@ -1,5 +1,11 @@
 import {Field, InputType} from "type-graphql";
 
+//enum userTypes {
+//  laboratorista = "laboratorista",
+//  alumno = "alumno",
+//  profesor = "profesor",
+//}
+
 @InputType()
 export class UserInput {
   @Field()

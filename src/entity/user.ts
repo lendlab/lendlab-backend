@@ -4,6 +4,11 @@ import {Belongs} from "./belongs";
 import {Laboratorist} from "./laboratorist";
 import {Reservation} from "./reservation";
 
+enum userType {
+  laboratorista = "Laboratorista",
+  alumno = "Alumno",
+}
+
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
@@ -31,7 +36,7 @@ export class User extends BaseEntity {
   telefono: number;
 
   @Field()
-  @Column()
+  @Column({enum: userType, type: "enum"})
   tipo_usuario: string;
 
   @Field()

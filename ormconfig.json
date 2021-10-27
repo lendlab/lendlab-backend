@@ -1,6 +1,6 @@
 [
   {
-    "name": "local",
+    "name": "default",
     "type": "mysql",
     "host": "localhost",
     "port": 3306,
@@ -9,10 +9,10 @@
     "database": "lendlab2",
     "synchronize": "true",
     "logging": "true",
-    "entities": ["src/entity/*.*", "./dist/src/entity"]
+    "entities": ["./src/entity/*.*"]
   },
   {
-    "name": "default",
+    "name": "prod",
     "type": "mysql",
     "host": "lendlab-backend-do-user-10117491-0-bf77.b.db.ondigitalocean.com",
     "port": 25060,
@@ -21,6 +21,6 @@
     "database": "defaultdb",
     "synchronize": "true",
     "logging": "true",
-    "entities": ["dist/entity/*.js"]
+    "entities": ["./dist/entity/*.js"]
   }
 ]

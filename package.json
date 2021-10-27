@@ -2,7 +2,7 @@
   "name": "lendlab_preview",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "target": "esnext",
   "module": "esnext",
   "dependencies": {
@@ -45,7 +45,8 @@
     "dev": "ts-node-dev --respawn ./src/index.ts",
     "build": "tsc -p . && ncp ./src/entity ./dist/entity",
     "watch": "tsc -w",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "publish": "npm run build && npx vercel --prod"
   },
   "keywords": [],
   "author": "",

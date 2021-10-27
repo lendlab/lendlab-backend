@@ -16,7 +16,7 @@ export class Course extends BaseEntity {
   id_course: number;
 
   @Field(() => String)
-  @Column()
+  @Column({unique: true})
   course_name: string;
 
   @OneToMany(() => Belongs, (belongs) => belongs.course)
