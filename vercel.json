@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "./dist/index.js",
+      "src": "dist/index.js",
       "use": "@vercel/node",
       "config": {
         "inculdeFiles": ["dist/entity/*.js"]
@@ -11,8 +11,17 @@
   ],
   "routes": [
     {
-      "src": "./.*",
-      "dest": "./dist/index.js"
+      "src": "./(.*)",
+      "dest": "dist/index.js"
     }
-  ]
+  ],
+  "env": {
+    "REDIS_URL": "@redis_url",
+    "REDIS_USER": "@redis_user",
+    "REDIS_PASS": "@redis_pass",
+    "MYSQL_URI": "@mysql_uri",
+    "MYSQL_USER": "@mysql_user",
+    "MYSQL_PASSWORD": "@mysql_password",
+    "MYSQL_DATABASE": "@mysql_database"
+  }
 }
