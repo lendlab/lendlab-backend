@@ -9,6 +9,7 @@ import {createConnection} from "typeorm";
 import cors from "cors";
 
 import {schemaIndex} from "./resolvers";
+import { createServer } from "http";
 //import {cloudConnection} from "./cloudConncection";
 
 const main = async () => {
@@ -23,6 +24,7 @@ const main = async () => {
 
   //localhost databse
   await createConnection();
+  
 
   const RedisStore = connectRedis(session);
   const redisClient = redis.createClient();
@@ -31,6 +33,8 @@ const main = async () => {
   });
 
   const app = express();
+
+  const httpServer = createServer(app)
 
   app.set("trust proxy", true);
 
@@ -79,14 +83,13 @@ const main = async () => {
   await apolloServer.start();
 
   apolloServer.applyMiddleware({
-    path: '/graphql',
+    path: '/api',
     app,
     cors: false,
   });
 
-  const port = process.env.PORT || 4000;
-  app.listen({port}, () => {
-    console.log(`server running on http://localhost:${port}/graphql :)`);
+  httpServer.listen({port: process.env.PORT || 4000}, () => {
+    console.log(`Server listening on localhost:4000${apolloServer.graphqlPath}`);
   });
 };
 

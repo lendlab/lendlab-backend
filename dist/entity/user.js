@@ -15,6 +15,11 @@ const typeorm_1 = require("typeorm");
 const belongs_1 = require("./belongs");
 const laboratorist_1 = require("./laboratorist");
 const reservation_1 = require("./reservation");
+var userType;
+(function (userType) {
+    userType["laboratorista"] = "Laboratorista";
+    userType["alumno"] = "Alumno";
+})(userType || (userType = {}));
 let User = class User extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -48,7 +53,7 @@ __decorate([
 ], User.prototype, "telefono", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ enum: userType, type: "enum" }),
     __metadata("design:type", String)
 ], User.prototype, "tipo_usuario", void 0);
 __decorate([

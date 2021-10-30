@@ -9,29 +9,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Course = void 0;
+exports.CourseInput = void 0;
 const type_graphql_1 = require("type-graphql");
-const typeorm_1 = require("typeorm");
-const belongs_1 = require("./belongs");
-let Course = class Course extends typeorm_1.BaseEntity {
+let CourseInput = class CourseInput {
 };
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], Course.prototype, "id_course", void 0);
+], CourseInput.prototype, "id_course", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => String),
-    (0, typeorm_1.Column)({ unique: true }),
+    (0, type_graphql_1.Field)(),
     __metadata("design:type", String)
-], Course.prototype, "course_name", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => belongs_1.Belongs, (belongs) => belongs.course),
-    __metadata("design:type", Promise)
-], Course.prototype, "belongs", void 0);
-Course = __decorate([
-    (0, type_graphql_1.ObjectType)(),
-    (0, typeorm_1.Entity)()
-], Course);
-exports.Course = Course;
-//# sourceMappingURL=course.js.map
+], CourseInput.prototype, "course_name", void 0);
+CourseInput = __decorate([
+    (0, type_graphql_1.InputType)()
+], CourseInput);
+exports.CourseInput = CourseInput;
+//# sourceMappingURL=course.input.js.map

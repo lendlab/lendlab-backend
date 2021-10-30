@@ -13,15 +13,8 @@ const connect_redis_1 = __importDefault(require("connect-redis"));
 const typeorm_1 = require("typeorm");
 const cors_1 = __importDefault(require("cors"));
 const resolvers_1 = require("./resolvers");
-const cloudConncection_1 = require("./cloudConncection");
+const http_1 = require("http");
 const main = async () => {
-    await (0, cloudConncection_1.cloudConnection)();
-    if (!cloudConncection_1.cloudConnection) {
-        throw new Error();
-    }
-    else {
-        console.log("conectado a digitalocean");
-    }
     await (0, typeorm_1.createConnection)();
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
     const redisClient = redis_1.default.createClient();
@@ -29,6 +22,7 @@ const main = async () => {
         console.log("connected");
     });
     const app = (0, express_1.default)();
+    const httpServer = (0, http_1.createServer)(app);
     app.set("trust proxy", true);
     app.use((0, cors_1.default)({
         credentials: true,
@@ -66,13 +60,12 @@ const main = async () => {
     });
     await apolloServer.start();
     apolloServer.applyMiddleware({
+        path: '/api',
         app,
         cors: false,
-        path: '/graphql'
     });
-    const port = process.env.PORT || 4000;
-    app.listen({ port }, () => {
-        console.log(`server running on http://localhost:${port}/graphql :)`);
+    httpServer.listen({ port: process.env.PORT || 4000 }, () => {
+        console.log(`Server listening on localhost:4000${apolloServer.graphqlPath}`);
     });
 };
 main();
