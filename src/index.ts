@@ -73,13 +73,13 @@ const main = async () => {
       res,
       redis,
     }),
-    introspection: true
+    introspection: true,
   });
 
   await apolloServer.start();
 
   apolloServer.applyMiddleware({
-    path: "/graphql",
+    path: '/graphql',
     app,
     cors: false,
   });

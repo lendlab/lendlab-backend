@@ -62,11 +62,13 @@ const main = async () => {
             res,
             redis: redis_1.default,
         }),
+        introspection: true,
     });
     await apolloServer.start();
     apolloServer.applyMiddleware({
         app,
         cors: false,
+        path: '/graphql'
     });
     const port = process.env.PORT || 4000;
     app.listen({ port }, () => {
