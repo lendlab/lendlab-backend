@@ -1,6 +1,6 @@
 [
   {
-    "name": "default",
+    "name": "prod",
     "type": "mysql",
     "host": "localhost",
     "port": 3306,
@@ -12,7 +12,7 @@
     "entities": ["./src/entity/*.*"]
   },
   {
-    "name": "prod",
+    "name": "default",
     "type": "mysql",
     "host": "lendlab-backend-do-user-10117491-0-bf77.b.db.ondigitalocean.com",
     "port": 25060,
