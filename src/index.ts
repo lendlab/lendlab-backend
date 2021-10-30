@@ -3,38 +3,39 @@ import "dotenv";
 import express from "express";
 import redis from "redis";
 import {ApolloServer} from "apollo-server-express";
-import session from "express-session";
-import connectRedis from "connect-redis";
+//import session from "express-session";
+//import connectRedis from "connect-redis";
 import {createConnection} from "typeorm";
 import cors from "cors";
 
 import {schemaIndex} from "./resolvers";
-import { createServer } from "http";
-//import {cloudConnection} from "./cloudConncection";
+import {createServer} from "http";
+import {cloudConnection} from "./cloudConncection";
 
 const main = async () => {
   //cloud connection
-  //await cloudConnection();
-  //
-  //if (!cloudConnection) {
-  //  throw new Error();
-  //} else {
-  //  console.log("conectado a digitalocean");
-  //}
+  await createConnection();
+
+  await cloudConnection();
+
+  if (!cloudConnection) {
+    throw new Error();
+  } else {
+    console.log("conectado a digitalocean");
+  }
 
   //localhost databse
-  await createConnection();
-  
+  //await localcon()
 
-  const RedisStore = connectRedis(session);
-  const redisClient = redis.createClient();
-  redisClient.on("message", () => {
-    console.log("connected");
-  });
+  //const RedisStore = connectRedis(session);
+  //const redisClient = redis.createClient();
+  //redisClient.on("message", () => {
+  //  console.log("connected");
+  //});
 
   const app = express();
 
-  const httpServer = createServer(app)
+  const httpServer = createServer(app);
 
   app.set("trust proxy", true);
 
@@ -49,24 +50,24 @@ const main = async () => {
     })
   );
 
-  app.use(
-    session({
-      name: "qid",
-      store: new RedisStore({
-        client: redisClient,
-        disableTouch: true,
-      }),
-      cookie: {
-        maxAge: 10000000000,
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-      },
-      saveUninitialized: false,
-      secret: "qiwroasdjlasddde",
-      resave: false,
-    })
-  );
+  //app.use(
+  //  session({
+  //    name: "qid",
+  //    store: new RedisStore({
+  //      client: redisClient,
+  //      disableTouch: true,
+  //    }),
+  //    cookie: {
+  //      maxAge: 10000000000,
+  //      httpOnly: true,
+  //      secure: true,
+  //      sameSite: "none",
+  //    },
+  //    saveUninitialized: false,
+  //    secret: "qiwroasdjlasddde",
+  //    resave: false,
+  //  })
+  //);
 
   const schema = await schemaIndex;
 
@@ -83,13 +84,15 @@ const main = async () => {
   await apolloServer.start();
 
   apolloServer.applyMiddleware({
-    path: '/api',
+    path: "/api",
     app,
     cors: false,
   });
 
   httpServer.listen({port: process.env.PORT || 4000}, () => {
-    console.log(`Server listening on localhost:4000${apolloServer.graphqlPath}`);
+    console.log(
+      `Server listening on localhost:4000${apolloServer.graphqlPath}`
+    );
   });
 };
 
