@@ -21,7 +21,7 @@ const cloudConnection = async () => {
         synchronize: true,
         logging: false,
         ssl: { ca: fs_1.default.readFileSync("./ca-certificate.crt") },
-        entities: [__dirname, "./entity/*.*"],
+        entities: [__dirname, "./dist/entity/*.*"],
     });
 };
 exports.cloudConnection = cloudConnection;

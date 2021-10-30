@@ -21,6 +21,6 @@
     "database": "defaultdb",
     "synchronize": "true",
     "logging": "true",
-    "entities": ["./src/entity/*.*"]
+    "entities": ["./dist/entity/*.*"]
   }
 ]
