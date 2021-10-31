@@ -52,7 +52,7 @@ const main = async () => {
         "https://studio.apollographql.com",
         "http://localhost:4000/graphql",
         "http://localhost:3000",
-        "https://lend-lab.com"
+        "https://lend-lab.com",
       ],
     })
   );
@@ -65,7 +65,7 @@ const main = async () => {
         disableTouch: true,
       }),
       cookie: {
-        maxAge: 10000000000,
+        maxAge: 24 * 60 * 60 * 60,
         httpOnly: true,
         secure: true,
         sameSite: "none",
