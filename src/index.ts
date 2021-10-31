@@ -52,6 +52,7 @@ const main = async () => {
         "https://studio.apollographql.com",
         "http://localhost:4000/graphql",
         "http://localhost:3000",
+        "https://lend-lab.com"
       ],
     })
   );
