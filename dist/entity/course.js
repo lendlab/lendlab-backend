@@ -16,13 +16,8 @@ const belongs_1 = require("./belongs");
 let Course = class Course extends typeorm_1.BaseEntity {
 };
 __decorate([
-    (0, type_graphql_1.Field)(),
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], Course.prototype, "id_course", void 0);
-__decorate([
     (0, type_graphql_1.Field)(() => String),
-    (0, typeorm_1.Column)({ unique: true }),
+    (0, typeorm_1.PrimaryColumn)({ unique: true }),
     __metadata("design:type", String)
 ], Course.prototype, "course_name", void 0);
 __decorate([

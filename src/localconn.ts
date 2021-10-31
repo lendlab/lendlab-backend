@@ -1,5 +1,4 @@
 import {createConnection} from "typeorm";
-import {User} from "./entity/user";
 
 export const localcon = async () => {
   await createConnection({
@@ -12,6 +11,6 @@ export const localcon = async () => {
     port: 3306,
     synchronize: true,
     logging: true,
-    entities: [User],
+    entities: [__dirname, "./src/entity/*.*"],
   });
 };

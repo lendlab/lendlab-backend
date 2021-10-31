@@ -24,9 +24,6 @@ const main = async () => {
     console.log("conectado a digitalocean");
   }
 
-  //localhost databse
-  //await localcon()
-
   const RedisStore = connectRedis(session);
   const redisClient = redis.createClient({
     host: process.env.REDIS_URL,

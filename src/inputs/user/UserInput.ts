@@ -7,6 +7,12 @@ import {Field, InputType} from "type-graphql";
 //}
 
 @InputType()
+class userCourse {
+  @Field()
+  course_name: string;
+}
+
+@InputType()
 export class UserInput {
   @Field()
   cedula: number;
@@ -31,4 +37,7 @@ export class UserInput {
 
   @Field()
   fecha_nacimiento: string;
+
+  @Field(() => userCourse)
+  course: userCourse;
 }
