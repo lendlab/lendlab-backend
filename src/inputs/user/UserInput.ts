@@ -1,15 +1,15 @@
 import {Field, InputType} from "type-graphql";
 
-//enum userTypes {
-//  laboratorista = "laboratorista",
-//  alumno = "alumno",
-//  profesor = "profesor",
-//}
+@InputType()
+class user_course {
+  @Field()
+  course_id: number;
+}
 
 @InputType()
-class userCourse {
+class user_institution {
   @Field()
-  course_name: string;
+  id_institution: number;
 }
 
 @InputType()
@@ -38,6 +38,9 @@ export class UserInput {
   @Field()
   fecha_nacimiento: string;
 
-  @Field(() => userCourse)
-  course: userCourse;
+  @Field(() => user_institution)
+  institution: user_institution;
+
+  @Field(() => user_course)
+  course: user_course;
 }

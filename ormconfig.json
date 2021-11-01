@@ -1,6 +1,6 @@
 [
   {
-    "name": "prod",
+    "name": "local",
     "type": "mysql",
     "host": "localhost",
     "port": 3306,

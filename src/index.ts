@@ -16,7 +16,7 @@ const main = async () => {
   //cloud connection
   await createConnection();
 
-  await cloudConnection();
+  //await cloudConnection();
 
   if (!cloudConnection) {
     throw new Error();

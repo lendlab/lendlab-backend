@@ -12,7 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
-const belongs_1 = require("./belongs");
+const course_1 = require("./course");
+const institution_1 = require("./institution");
 const laboratorist_1 = require("./laboratorist");
 const reservation_1 = require("./reservation");
 var userType;
@@ -62,6 +63,16 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "fecha_nacimiento", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(() => institution_1.Institution),
+    (0, typeorm_1.ManyToOne)(() => institution_1.Institution, (institution) => institution.user),
+    __metadata("design:type", institution_1.Institution)
+], User.prototype, "institution", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => course_1.Course),
+    (0, typeorm_1.ManyToOne)(() => course_1.Course, (course) => course.user),
+    __metadata("design:type", course_1.Course)
+], User.prototype, "course", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => reservation_1.Reservation, (reservation) => reservation.user),
     __metadata("design:type", Promise)
 ], User.prototype, "reservation", void 0);
@@ -69,10 +80,6 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => laboratorist_1.Laboratorist, (lab) => lab.ci_laboratorist),
     __metadata("design:type", laboratorist_1.Laboratorist)
 ], User.prototype, "laboratorist", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => belongs_1.Belongs, (belongs) => belongs.user),
-    __metadata("design:type", Promise)
-], User.prototype, "belongs", void 0);
 User = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()

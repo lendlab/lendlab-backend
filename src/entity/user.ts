@@ -1,6 +1,14 @@
 import {Field, ObjectType} from "type-graphql";
-import {BaseEntity, Column, Entity, PrimaryColumn, OneToMany} from "typeorm";
-import {Belongs} from "./belongs";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  PrimaryColumn,
+  OneToMany,
+  ManyToOne,
+} from "typeorm";
+import {Course} from "./course";
+import {Institution} from "./institution";
 import {Laboratorist} from "./laboratorist";
 import {Reservation} from "./reservation";
 
@@ -43,12 +51,17 @@ export class User extends BaseEntity {
   @Column({type: "date"})
   fecha_nacimiento: String;
 
+  @Field(() => Institution)
+  @ManyToOne(() => Institution, (institution) => institution.user)
+  institution: Institution;
+
+  @Field(() => Course)
+  @ManyToOne(() => Course, (course) => course.user)
+  course: Course;
+
   @OneToMany(() => Reservation, (reservation) => reservation.user)
   reservation: Promise<Reservation[]>;
 
   @OneToMany(() => Laboratorist, (lab) => lab.ci_laboratorist)
   laboratorist: Laboratorist;
-
-  @OneToMany(() => Belongs, (belongs) => belongs.user)
-  belongs: Promise<Belongs[]>;
 }

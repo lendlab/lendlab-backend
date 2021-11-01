@@ -12,6 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Institution = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
+const corresponds_1 = require("./corresponds");
+const user_1 = require("./user");
 let Institution = class Institution extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -20,17 +22,17 @@ __decorate([
     __metadata("design:type", Number)
 ], Institution.prototype, "id_institution", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => String),
+    (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)({ unique: true }),
     __metadata("design:type", String)
 ], Institution.prototype, "institution_name", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => String),
+    (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Institution.prototype, "city", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => String),
+    (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Institution.prototype, "type", void 0);
@@ -39,6 +41,14 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Institution.prototype, "phone", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => user_1.User, (user) => user.institution),
+    __metadata("design:type", Promise)
+], Institution.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => corresponds_1.Corresponds, (corresponds) => corresponds.institution),
+    __metadata("design:type", Promise)
+], Institution.prototype, "corresponds", void 0);
 Institution = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()

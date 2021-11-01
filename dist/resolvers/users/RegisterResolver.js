@@ -16,16 +16,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RegisterResolver = void 0;
-const user_1 = require("../../entity/user");
 const type_graphql_1 = require("type-graphql");
 const argon2_1 = __importDefault(require("argon2"));
+const user_1 = require("../../entity/user");
 const UserInput_1 = require("../../inputs/user/UserInput");
 let RegisterResolver = class RegisterResolver {
     async hello() {
         return "hello";
     }
     async getUsers() {
-        const usersList = await user_1.User.find();
+        const usersList = await user_1.User.find({ relations: ["course", "institution"] });
         return usersList;
     }
     async getUser(cedula) {
@@ -43,6 +43,8 @@ let RegisterResolver = class RegisterResolver {
             telefono: data.telefono,
             tipo_usuario: data.tipo_usuario,
             fecha_nacimiento: data.fecha_nacimiento,
+            institution: data.institution,
+            course: data.course,
         }).save();
         return user;
     }

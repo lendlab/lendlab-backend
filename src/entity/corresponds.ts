@@ -6,13 +6,13 @@ import {Institution} from "./institution";
 @ObjectType()
 @Entity()
 export class Corresponds extends BaseEntity {
-  @Field()
+  @Field(() => Institution)
   @ManyToOne(() => Institution, (institution) => institution.id_institution, {
     primary: true,
   })
   institution: Institution;
 
-  @Field()
+  @Field(() => Course)
   @ManyToOne(() => Course, (course) => course.course_name, {
     primary: true,
   })

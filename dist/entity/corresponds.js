@@ -17,14 +17,14 @@ const institution_1 = require("./institution");
 let Corresponds = class Corresponds extends typeorm_1.BaseEntity {
 };
 __decorate([
-    (0, type_graphql_1.Field)(),
+    (0, type_graphql_1.Field)(() => institution_1.Institution),
     (0, typeorm_1.ManyToOne)(() => institution_1.Institution, (institution) => institution.id_institution, {
         primary: true,
     }),
     __metadata("design:type", institution_1.Institution)
 ], Corresponds.prototype, "institution", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(),
+    (0, type_graphql_1.Field)(() => course_1.Course),
     (0, typeorm_1.ManyToOne)(() => course_1.Course, (course) => course.course_name, {
         primary: true,
     }),

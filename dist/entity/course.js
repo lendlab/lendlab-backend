@@ -12,18 +12,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Course = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
-const belongs_1 = require("./belongs");
+const corresponds_1 = require("./corresponds");
+const user_1 = require("./user");
 let Course = class Course extends typeorm_1.BaseEntity {
 };
 __decorate([
+    (0, type_graphql_1.Field)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], Course.prototype, "course_id", void 0);
+__decorate([
     (0, type_graphql_1.Field)(() => String),
-    (0, typeorm_1.PrimaryColumn)({ unique: true }),
+    (0, typeorm_1.Column)({ unique: true }),
     __metadata("design:type", String)
 ], Course.prototype, "course_name", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => belongs_1.Belongs, (belongs) => belongs.course),
+    (0, typeorm_1.OneToMany)(() => corresponds_1.Corresponds, (corresponds) => corresponds.course),
     __metadata("design:type", Promise)
-], Course.prototype, "belongs", void 0);
+], Course.prototype, "corresponds", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => user_1.User, (user) => user.course),
+    __metadata("design:type", Promise)
+], Course.prototype, "user", void 0);
 Course = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()

@@ -1,5 +1,13 @@
 import {Field, ObjectType} from "type-graphql";
-import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import {Corresponds} from "./corresponds";
+import {User} from "./user";
 
 @ObjectType()
 @Entity()
@@ -8,19 +16,25 @@ export class Institution extends BaseEntity {
   @PrimaryGeneratedColumn()
   id_institution: number;
 
-  @Field(() => String)
+  @Field()
   @Column({unique: true})
   institution_name: string;
 
-  @Field(() => String)
+  @Field()
   @Column()
   city: string;
 
-  @Field(() => String)
+  @Field()
   @Column()
   type: string;
 
   @Field()
   @Column()
   phone: number;
+
+  @OneToMany(() => User, (user) => user.institution)
+  user: Promise<User[]>;
+
+  @OneToMany(() => Corresponds, (corresponds) => corresponds.institution)
+  corresponds: Promise<Corresponds[]>;
 }
