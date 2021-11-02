@@ -41,12 +41,13 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Incident.prototype, "solved", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => Date),
+    (0, type_graphql_1.Field)(() => String),
     (0, typeorm_1.Column)({ type: "date" }),
     __metadata("design:type", Date)
 ], Incident.prototype, "date", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => material_1.Material),
+    (0, type_graphql_1.Field)(() => material_1.Material),
+    (0, typeorm_1.ManyToOne)(() => material_1.Material, (material) => material.incident),
     __metadata("design:type", material_1.Material)
 ], Incident.prototype, "material", void 0);
 Incident = __decorate([

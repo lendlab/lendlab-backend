@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import {Corresponds} from "./corresponds";
+import {Material} from "./material";
 import {User} from "./user";
 
 @ObjectType()
@@ -37,4 +38,7 @@ export class Institution extends BaseEntity {
 
   @OneToMany(() => Corresponds, (corresponds) => corresponds.institution)
   corresponds: Promise<Corresponds[]>;
+
+  @OneToMany(() => Material, (material) => material.institution)
+  material: Promise<Material[]>;
 }

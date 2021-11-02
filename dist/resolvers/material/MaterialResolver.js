@@ -23,7 +23,7 @@ let MaterialResolver = class MaterialResolver {
         return "hello";
     }
     async getMaterials() {
-        const material_list = await material_1.Material.find();
+        const material_list = await material_1.Material.find({ relations: ["institution"] });
         return material_list;
     }
     async getMaterial(id_material) {
@@ -42,7 +42,7 @@ let MaterialResolver = class MaterialResolver {
     }
     async getMaterialSearch(nombre) {
         const material = await material_1.Material.find({
-            nombre: (0, typeorm_1.Like)(`${nombre}%`)
+            nombre: (0, typeorm_1.Like)(`${nombre}%`),
         });
         return material;
     }

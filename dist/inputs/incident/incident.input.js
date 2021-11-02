@@ -9,53 +9,45 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MaterialInput = void 0;
+exports.IncidentInput = void 0;
 const type_graphql_1 = require("type-graphql");
-let institution_material = class institution_material {
+let material_incident_id = class material_incident_id {
 };
 __decorate([
     (0, type_graphql_1.Field)(),
     __metadata("design:type", Number)
-], institution_material.prototype, "id_institution", void 0);
-institution_material = __decorate([
+], material_incident_id.prototype, "id_material", void 0);
+material_incident_id = __decorate([
     (0, type_graphql_1.InputType)()
-], institution_material);
-let MaterialInput = class MaterialInput {
+], material_incident_id);
+let IncidentInput = class IncidentInput {
 };
 __decorate([
     (0, type_graphql_1.Field)(),
     __metadata("design:type", String)
-], MaterialInput.prototype, "nombre", void 0);
+], IncidentInput.prototype, "observations", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    __metadata("design:type", String)
-], MaterialInput.prototype, "etiqueta", void 0);
+    __metadata("design:type", Boolean)
+], IncidentInput.prototype, "repairs", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    __metadata("design:type", String)
-], MaterialInput.prototype, "categoria", void 0);
+    __metadata("design:type", Boolean)
+], IncidentInput.prototype, "complaint", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    __metadata("design:type", String)
-], MaterialInput.prototype, "descripcion", void 0);
+    __metadata("design:type", Boolean)
+], IncidentInput.prototype, "solved", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(),
-    __metadata("design:type", Number)
-], MaterialInput.prototype, "cantidad", void 0);
+    (0, type_graphql_1.Field)(() => String),
+    __metadata("design:type", Date)
+], IncidentInput.prototype, "date", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(),
-    __metadata("design:type", String)
-], MaterialInput.prototype, "foto", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(),
-    __metadata("design:type", String)
-], MaterialInput.prototype, "estado", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => institution_material),
-    __metadata("design:type", institution_material)
-], MaterialInput.prototype, "institution", void 0);
-MaterialInput = __decorate([
+    (0, type_graphql_1.Field)(() => material_incident_id),
+    __metadata("design:type", material_incident_id)
+], IncidentInput.prototype, "material", void 0);
+IncidentInput = __decorate([
     (0, type_graphql_1.InputType)()
-], MaterialInput);
-exports.MaterialInput = MaterialInput;
-//# sourceMappingURL=MaterialInput.js.map
+], IncidentInput);
+exports.IncidentInput = IncidentInput;
+//# sourceMappingURL=incident.input.js.map

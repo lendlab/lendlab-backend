@@ -9,6 +9,7 @@ import {LogOutResolver} from "./users/LogoutResolver";
 import {MeResolver} from "./users/MeResolver";
 import {RegisterResolver} from "./users/RegisterResolver";
 import {CourseResolver} from "./course/CourseResolver";
+import {IncidentResolver} from "./incident/IncidentResolver";
 
 export const schemaIndex = buildSchema({
   resolvers: [
@@ -27,6 +28,8 @@ export const schemaIndex = buildSchema({
     InstitutionResolver,
     //course actions
     CourseResolver,
+    //incident actions
+    IncidentResolver,
   ],
   validate: false,
 });

@@ -12,6 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Material = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
+const incident_1 = require("./incident");
+const institution_1 = require("./institution");
 const reservation_1 = require("./reservation");
 let Material = class Material extends typeorm_1.BaseEntity {
 };
@@ -56,9 +58,18 @@ __decorate([
     __metadata("design:type", String)
 ], Material.prototype, "estado", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(() => institution_1.Institution),
+    (0, typeorm_1.ManyToOne)(() => institution_1.Institution, (institution) => institution.material),
+    __metadata("design:type", institution_1.Institution)
+], Material.prototype, "institution", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => reservation_1.Reservation, (reservation) => reservation.material),
     __metadata("design:type", Promise)
 ], Material.prototype, "reservation", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => incident_1.Incident, (incident) => incident.material),
+    __metadata("design:type", Promise)
+], Material.prototype, "incident", void 0);
 Material = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()

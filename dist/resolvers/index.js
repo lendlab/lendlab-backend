@@ -11,6 +11,7 @@ const LogoutResolver_1 = require("./users/LogoutResolver");
 const MeResolver_1 = require("./users/MeResolver");
 const RegisterResolver_1 = require("./users/RegisterResolver");
 const CourseResolver_1 = require("./course/CourseResolver");
+const IncidentResolver_1 = require("./incident/IncidentResolver");
 exports.schemaIndex = (0, type_graphql_1.buildSchema)({
     resolvers: [
         RegisterResolver_1.RegisterResolver,
@@ -22,6 +23,7 @@ exports.schemaIndex = (0, type_graphql_1.buildSchema)({
         LendResolver_1.LendResolver,
         InstitutionResolver_1.InstitutionResolver,
         CourseResolver_1.CourseResolver,
+        IncidentResolver_1.IncidentResolver,
     ],
     validate: false,
 });

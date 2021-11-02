@@ -13,6 +13,7 @@ exports.Institution = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const corresponds_1 = require("./corresponds");
+const material_1 = require("./material");
 const user_1 = require("./user");
 let Institution = class Institution extends typeorm_1.BaseEntity {
 };
@@ -49,6 +50,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => corresponds_1.Corresponds, (corresponds) => corresponds.institution),
     __metadata("design:type", Promise)
 ], Institution.prototype, "corresponds", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => material_1.Material, (material) => material.institution),
+    __metadata("design:type", Promise)
+], Institution.prototype, "material", void 0);
 Institution = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()
