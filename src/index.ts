@@ -14,7 +14,7 @@ import {execute, subscribe} from "graphql";
 import {PubSub} from "type-graphql";
 
 import {schemaIndex} from "./resolvers/index";
-//import {cloudConnection} from "./cloudConncection";
+import {cloudConnection} from "./cloudConncection";
 
 const main = async () => {
   //cloud connection
@@ -22,11 +22,11 @@ const main = async () => {
 
   //await cloudConnection();
 
-  //if (!cloudConnection) {
-  //  throw new Error();
-  //} else {
-  //  console.log("conectado a digitalocean");
-  //}
+  if (!cloudConnection) {
+    throw new Error();
+  } else {
+    console.log("conectado a digitalocean");
+  }
 
   const RedisStore = connectRedis(session);
   const redisClient = redis.createClient({

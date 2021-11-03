@@ -17,8 +17,15 @@ const subscriptions_transport_ws_1 = require("subscriptions-transport-ws");
 const graphql_1 = require("graphql");
 const type_graphql_1 = require("type-graphql");
 const index_1 = require("./resolvers/index");
+const cloudConncection_1 = require("./cloudConncection");
 const main = async () => {
     await (0, typeorm_1.createConnection)();
+    if (!cloudConncection_1.cloudConnection) {
+        throw new Error();
+    }
+    else {
+        console.log("conectado a digitalocean");
+    }
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
     const redisClient = redis_1.default.createClient({
         host: process.env.REDIS_URL,
