@@ -1,15 +1,11 @@
 import {Arg, Mutation, Query, Resolver} from "type-graphql";
 import {getRepository} from "typeorm";
-import {IncidentInput} from "../../inputs/incident/incident.input";
 
+import {IncidentInput} from "../../inputs/incident/incident.input";
 import {Incident} from "../../entity/incident";
 
 @Resolver()
 export class IncidentResolver {
-  @Query(() => [Incident])
-  async getIn() {
-    return Incident.find({relations: ["material"]});
-  }
   @Query(() => [Incident])
   async getIncidents() {
     const incident = await getRepository(Incident)

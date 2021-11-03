@@ -1,28 +1,32 @@
 import "reflect-metadata";
 import "dotenv";
-import express from "express";
-import redis from "redis";
 import {ApolloServer} from "apollo-server-express";
+import express from "express";
 import session from "express-session";
-import connectRedis from "connect-redis";
-import {createConnection} from "typeorm";
 import cors from "cors";
-
-import {schemaIndex} from "./resolvers";
+import connectRedis from "connect-redis";
+import redis from "redis";
+import {createConnection} from "typeorm";
+//Subscriptions
 import {createServer} from "http";
-import {cloudConnection} from "./cloudConncection";
+import {SubscriptionServer} from "subscriptions-transport-ws";
+import {execute, subscribe} from "graphql";
+import {PubSub} from "type-graphql";
+
+import {schemaIndex} from "./resolvers/index";
+//import {cloudConnection} from "./cloudConncection";
 
 const main = async () => {
   //cloud connection
   await createConnection();
 
-  await cloudConnection();
+  //await cloudConnection();
 
-  if (!cloudConnection) {
-    throw new Error();
-  } else {
-    console.log("conectado a digitalocean");
-  }
+  //if (!cloudConnection) {
+  //  throw new Error();
+  //} else {
+  //  console.log("conectado a digitalocean");
+  //}
 
   const RedisStore = connectRedis(session);
   const redisClient = redis.createClient({
@@ -73,6 +77,8 @@ const main = async () => {
     })
   );
 
+  const pubSub = PubSub();
+
   const schema = await schemaIndex;
 
   const apolloServer = new ApolloServer({
@@ -81,6 +87,7 @@ const main = async () => {
       req,
       res,
       redis,
+      pubSub,
     }),
     introspection: true,
   });
@@ -92,6 +99,11 @@ const main = async () => {
     app,
     cors: false,
   });
+
+  SubscriptionServer.create(
+    {schema, subscribe, execute},
+    {server: httpServer, path: apolloServer.graphqlPath}
+  );
 
   httpServer.listen({port: process.env.PORT || 4000}, () => {
     console.log(

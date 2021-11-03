@@ -18,9 +18,6 @@ const typeorm_1 = require("typeorm");
 const incident_input_1 = require("../../inputs/incident/incident.input");
 const incident_1 = require("../../entity/incident");
 let IncidentResolver = class IncidentResolver {
-    async getIn() {
-        return incident_1.Incident.find({ relations: ["material"] });
-    }
     async getIncidents() {
         const incident = await (0, typeorm_1.getRepository)(incident_1.Incident)
             .createQueryBuilder("incident")
@@ -42,12 +39,6 @@ let IncidentResolver = class IncidentResolver {
         return incident;
     }
 };
-__decorate([
-    (0, type_graphql_1.Query)(() => [incident_1.Incident]),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], IncidentResolver.prototype, "getIn", null);
 __decorate([
     (0, type_graphql_1.Query)(() => [incident_1.Incident]),
     __metadata("design:type", Function),

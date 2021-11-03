@@ -5,25 +5,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 require("dotenv");
-const express_1 = __importDefault(require("express"));
-const redis_1 = __importDefault(require("redis"));
 const apollo_server_express_1 = require("apollo-server-express");
+const express_1 = __importDefault(require("express"));
 const express_session_1 = __importDefault(require("express-session"));
-const connect_redis_1 = __importDefault(require("connect-redis"));
-const typeorm_1 = require("typeorm");
 const cors_1 = __importDefault(require("cors"));
-const resolvers_1 = require("./resolvers");
+const connect_redis_1 = __importDefault(require("connect-redis"));
+const redis_1 = __importDefault(require("redis"));
+const typeorm_1 = require("typeorm");
 const http_1 = require("http");
-const cloudConncection_1 = require("./cloudConncection");
+const subscriptions_transport_ws_1 = require("subscriptions-transport-ws");
+const graphql_1 = require("graphql");
+const type_graphql_1 = require("type-graphql");
+const index_1 = require("./resolvers/index");
 const main = async () => {
     await (0, typeorm_1.createConnection)();
-    await (0, cloudConncection_1.cloudConnection)();
-    if (!cloudConncection_1.cloudConnection) {
-        throw new Error();
-    }
-    else {
-        console.log("conectado a digitalocean");
-    }
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
     const redisClient = redis_1.default.createClient({
         host: process.env.REDIS_URL,
@@ -62,13 +57,15 @@ const main = async () => {
         secret: "qiwroasdjlasddde",
         resave: false,
     }));
-    const schema = await resolvers_1.schemaIndex;
+    const pubSub = (0, type_graphql_1.PubSub)();
+    const schema = await index_1.schemaIndex;
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema,
         context: ({ req, res }) => ({
             req,
             res,
             redis: redis_1.default,
+            pubSub,
         }),
         introspection: true,
     });
@@ -78,6 +75,7 @@ const main = async () => {
         app,
         cors: false,
     });
+    subscriptions_transport_ws_1.SubscriptionServer.create({ schema, subscribe: graphql_1.subscribe, execute: graphql_1.execute }, { server: httpServer, path: apolloServer.graphqlPath });
     httpServer.listen({ port: process.env.PORT || 4000 }, () => {
         console.log(`Server listening on localhost:4000${apolloServer.graphqlPath}`);
     });
