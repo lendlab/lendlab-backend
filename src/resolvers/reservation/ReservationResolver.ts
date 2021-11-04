@@ -52,8 +52,10 @@ export class ReservationResolver {
     return count;
   }
 
+  // change this newReservationSubscription(@Root() payload: Reservation): Reservation {
+
   @Subscription({topics: "CREATE_RESERVATION"})
-  newReservationSubscription(@Root() payload: Reservation): Reservation {
+  newReservationSubscription(@Root() payload: ReservationInput): ReservationInput {
     return payload;
   }
 
