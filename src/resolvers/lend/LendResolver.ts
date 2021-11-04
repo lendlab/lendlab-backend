@@ -1,30 +1,8 @@
-import { Arg, Field, InputType, Int, Mutation, Query, Resolver } from "type-graphql";
-import { createQueryBuilder, getRepository } from "typeorm";
-import { Lend } from "../../entity/lend";
-
-@InputType()
-class ReservationInputa {
-  @Field()
-  id_reserva: number;
-
-  @Field(() => Date)
-  fecha_hora: String;
-}
-
-@InputType()
-class LendInput {
-  @Field(() => String, {nullable: true})
-  fecha_hora_presta: Date;
-
-  @Field(() => String, {nullable: true})
-  fecha_vencimiento: Date;
-
-  @Field(() => String)
-  fecha_devolucion: Date;
-
-  @Field(() => ReservationInputa)
-  reservation: ReservationInputa;
-}
+import {Arg, Int, Mutation, Query, Resolver} from "type-graphql";
+import {createQueryBuilder, getRepository} from "typeorm";
+import {Lend} from "../../entity/lend";
+import {LendInput} from "../../inputs/lend/lend.input";
+import {LendUpdateInput} from "../../inputs/lend/lend.update.input";
 
 @Resolver()
 export class LendResolver {
@@ -36,31 +14,47 @@ export class LendResolver {
   @Query(() => [Lend])
   async lend() {
     const lend = await getRepository(Lend)
-    .createQueryBuilder("lend")
-    .innerJoinAndSelect("lend.reservation", "reservation")
-    .innerJoinAndSelect("reservation.material", "material")
-    .innerJoinAndSelect("reservation.user", "user")
-    .getMany();
+      .createQueryBuilder("lend")
+      .innerJoinAndSelect("lend.reservation", "reservation")
+      .innerJoinAndSelect("reservation.material", "material")
+      .innerJoinAndSelect("reservation.user", "user")
+      .getMany();
 
     // SELECT * from lend JOIN reservation on lend.reservationIdReserva = reservation.id_reserva JOIN user ON user.cedula = reservation.userCedula
     return lend;
   }
 
-
   @Query(() => Int)
   async getLendsCount() {
     const {count} = await createQueryBuilder("lend")
-    .select("COUNT(*)", "count")
-    .getRawOne();
+      .select("COUNT(*)", "count")
+      .getRawOne();
 
     return count;
   }
-  
 
   @Mutation(() => Lend)
   async createLend(
     @Arg("data", () => LendInput) data: LendInput
   ): Promise<Lend> {
     return Lend.create({...data}).save();
+  }
+
+  @Mutation(() => Lend)
+  async updateLend(
+    @Arg("id_lend", () => Int) id_lend: number,
+    @Arg("data", () => LendUpdateInput) data: LendUpdateInput
+  ) {
+    const lend = await Lend.update({id_lend}, data);
+    return lend;
+  }
+
+  @Mutation(() => Boolean)
+  async deleteLend(
+    @Arg("id_lend", () => Int) id_lend: number,
+    @Arg("fecha_hora_presta", () => String) fecha_hora_presta: string
+  ): Promise<Boolean> {
+    await Lend.delete({id_lend, fecha_hora_presta});
+    return true;
   }
 }

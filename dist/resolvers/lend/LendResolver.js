@@ -16,40 +16,8 @@ exports.LendResolver = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const lend_1 = require("../../entity/lend");
-let ReservationInputa = class ReservationInputa {
-};
-__decorate([
-    (0, type_graphql_1.Field)(),
-    __metadata("design:type", Number)
-], ReservationInputa.prototype, "id_reserva", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => Date),
-    __metadata("design:type", String)
-], ReservationInputa.prototype, "fecha_hora", void 0);
-ReservationInputa = __decorate([
-    (0, type_graphql_1.InputType)()
-], ReservationInputa);
-let LendInput = class LendInput {
-};
-__decorate([
-    (0, type_graphql_1.Field)(() => String, { nullable: true }),
-    __metadata("design:type", Date)
-], LendInput.prototype, "fecha_hora_presta", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => String, { nullable: true }),
-    __metadata("design:type", Date)
-], LendInput.prototype, "fecha_vencimiento", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => String),
-    __metadata("design:type", Date)
-], LendInput.prototype, "fecha_devolucion", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => ReservationInputa),
-    __metadata("design:type", ReservationInputa)
-], LendInput.prototype, "reservation", void 0);
-LendInput = __decorate([
-    (0, type_graphql_1.InputType)()
-], LendInput);
+const lend_input_1 = require("../../inputs/lend/lend.input");
+const lend_update_input_1 = require("../../inputs/lend/lend.update.input");
 let LendResolver = class LendResolver {
     async hello() {
         return "hello";
@@ -63,8 +31,22 @@ let LendResolver = class LendResolver {
             .getMany();
         return lend;
     }
+    async getLendsCount() {
+        const { count } = await (0, typeorm_1.createQueryBuilder)("lend")
+            .select("COUNT(*)", "count")
+            .getRawOne();
+        return count;
+    }
     async createLend(data) {
         return lend_1.Lend.create(Object.assign({}, data)).save();
+    }
+    async updateLend(id_lend, data) {
+        const lend = await lend_1.Lend.update({ id_lend }, data);
+        return lend;
+    }
+    async deleteLend(id_lend, fecha_hora_presta) {
+        await lend_1.Lend.delete({ id_lend, fecha_hora_presta });
+        return true;
     }
 };
 __decorate([
@@ -80,12 +62,34 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], LendResolver.prototype, "lend", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => lend_1.Lend),
-    __param(0, (0, type_graphql_1.Arg)("data", () => LendInput)),
+    (0, type_graphql_1.Query)(() => type_graphql_1.Int),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [LendInput]),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], LendResolver.prototype, "getLendsCount", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => lend_1.Lend),
+    __param(0, (0, type_graphql_1.Arg)("data", () => lend_input_1.LendInput)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [lend_input_1.LendInput]),
     __metadata("design:returntype", Promise)
 ], LendResolver.prototype, "createLend", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => lend_1.Lend),
+    __param(0, (0, type_graphql_1.Arg)("id_lend", () => type_graphql_1.Int)),
+    __param(1, (0, type_graphql_1.Arg)("data", () => lend_update_input_1.LendUpdateInput)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, lend_update_input_1.LendUpdateInput]),
+    __metadata("design:returntype", Promise)
+], LendResolver.prototype, "updateLend", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => Boolean),
+    __param(0, (0, type_graphql_1.Arg)("id_lend", () => type_graphql_1.Int)),
+    __param(1, (0, type_graphql_1.Arg)("fecha_hora_presta", () => String)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, String]),
+    __metadata("design:returntype", Promise)
+], LendResolver.prototype, "deleteLend", null);
 LendResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], LendResolver);

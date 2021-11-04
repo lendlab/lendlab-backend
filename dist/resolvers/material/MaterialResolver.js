@@ -36,6 +36,12 @@ let MaterialResolver = class MaterialResolver {
         const material = await material_1.Material.find({ id_material });
         return material;
     }
+    async getMaterialsCount() {
+        const { count } = await (0, typeorm_1.createQueryBuilder)("material")
+            .select("COUNT(*)", "count")
+            .getRawOne();
+        return count;
+    }
     async getPopularMaterials() {
         const popularMaterials = await (0, typeorm_1.getManager)()
             .createQueryBuilder(material_1.Material, "material")
@@ -103,6 +109,12 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], MaterialResolver.prototype, "getMaterial", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => type_graphql_1.Int),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], MaterialResolver.prototype, "getMaterialsCount", null);
 __decorate([
     (0, type_graphql_1.Query)(() => [material_1.Material]),
     __metadata("design:type", Function),

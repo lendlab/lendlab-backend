@@ -49,8 +49,8 @@ let RegisterResolver = class RegisterResolver {
         return user;
     }
     async deleteUser(cedula) {
-        const deletedUser = await user_1.User.delete({ cedula });
-        return deletedUser.raw[0];
+        await user_1.User.delete({ cedula });
+        return true;
     }
 };
 __decorate([
@@ -80,7 +80,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], RegisterResolver.prototype, "register", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => user_1.User, { nullable: true }),
+    (0, type_graphql_1.Mutation)(() => Boolean),
     __param(0, (0, type_graphql_1.Arg)("cedula", () => type_graphql_1.Int)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

@@ -17,6 +17,7 @@ const reservation_1 = require("../../entity/reservation");
 const type_graphql_1 = require("type-graphql");
 const ReservationInput_1 = require("../../inputs/reservation/ReservationInput");
 const ReservationEditInput_1 = require("../../inputs/reservation/ReservationEditInput");
+const typeorm_1 = require("typeorm");
 let ReservationResolver = class ReservationResolver {
     async hello() {
         return "hello";
@@ -26,6 +27,18 @@ let ReservationResolver = class ReservationResolver {
             relations: ["user", "material"],
         });
         return reservations;
+    }
+    async getMaxId() {
+        const { max } = await (0, typeorm_1.createQueryBuilder)("reservation")
+            .select("MAX(id_reserva)", "max")
+            .getRawOne();
+        return max;
+    }
+    async getReservationsCount() {
+        const { count } = await (0, typeorm_1.createQueryBuilder)("reservation")
+            .select("COUNT(distinct id_reserva)", "count")
+            .getRawOne();
+        return count;
     }
     async createReservation(data) {
         return await reservation_1.Reservation.create(Object.assign({}, data)).save();
@@ -60,6 +73,18 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ReservationResolver.prototype, "getReservations", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => type_graphql_1.Int),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], ReservationResolver.prototype, "getMaxId", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => type_graphql_1.Int),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], ReservationResolver.prototype, "getReservationsCount", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => reservation_1.Reservation),
     __param(0, (0, type_graphql_1.Arg)("data", () => ReservationInput_1.ReservationInput)),
