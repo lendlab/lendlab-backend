@@ -7,12 +7,16 @@ import {
   PubSubEngine,
   Query,
   Resolver,
-  Root,
-  Subscription,
 } from "type-graphql";
 import {MaterialInput} from "../../inputs/material/MaterialInput";
 import {MaterialUpdateInput} from "../../inputs/material/MaterialUpdateInput";
-import {createQueryBuilder, getConnection, getManager, Like} from "typeorm";
+import {
+  createQueryBuilder,
+  getConnection,
+  getManager,
+  getRepository,
+  Like,
+} from "typeorm";
 
 @Resolver()
 export class MaterialResolver {
@@ -42,17 +46,22 @@ export class MaterialResolver {
   //get all
 
   //get by id
-  @Query(() => [Material])
+  @Query(() => Material)
   async getMaterial(@Arg("id_material", () => Int) id_material: number) {
-    const material = await Material.find({id_material});
+    const material = getRepository(Material)
+      .createQueryBuilder("material")
+      .innerJoinAndSelect("material.institution", "institution")
+      .where(`material.id_material = ${id_material}`)
+      .getOne();
+
     return material;
   }
 
   @Query(() => Int)
   async getMaterialsCount() {
     const {count} = await createQueryBuilder("material")
-    .select("COUNT(*)", "count")
-    .getRawOne();
+      .select("COUNT(*)", "count")
+      .getRawOne();
 
     return count;
   }
@@ -125,11 +134,6 @@ export class MaterialResolver {
     return true;
   }
 
-  @Subscription({topics: "NOTIFICATIONS"})
-  newNotification(@Root() payload: Material): Material {
-    return payload;
-  }
-
   @Mutation(() => Material)
   async subMaterial(
     @Arg("data", () => MaterialInput)
@@ -137,7 +141,7 @@ export class MaterialResolver {
     @PubSub() pubsub: PubSubEngine
   ): Promise<Material> {
     const material = await Material.create(data).save();
-    pubsub.publish("NOTIFICATIONS", material);
+    pubsub.publish("CREATE_MATERIAL", material);
     return material;
   }
 

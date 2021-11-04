@@ -33,7 +33,11 @@ let MaterialResolver = class MaterialResolver {
         return material;
     }
     async getMaterial(id_material) {
-        const material = await material_1.Material.find({ id_material });
+        const material = (0, typeorm_1.getRepository)(material_1.Material)
+            .createQueryBuilder("material")
+            .innerJoinAndSelect("material.institution", "institution")
+            .where(`material.id_material = ${id_material}`)
+            .getOne();
         return material;
     }
     async getMaterialsCount() {
@@ -74,12 +78,9 @@ let MaterialResolver = class MaterialResolver {
         await material_1.Material.delete({ id_material });
         return true;
     }
-    newNotification(payload) {
-        return payload;
-    }
     async subMaterial(data, pubsub) {
         const material = await material_1.Material.create(data).save();
-        pubsub.publish("NOTIFICATIONS", material);
+        pubsub.publish("CREATE_MATERIAL", material);
         return material;
     }
 };
@@ -103,7 +104,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], MaterialResolver.prototype, "paginatedMaterials", null);
 __decorate([
-    (0, type_graphql_1.Query)(() => [material_1.Material]),
+    (0, type_graphql_1.Query)(() => material_1.Material),
     __param(0, (0, type_graphql_1.Arg)("id_material", () => type_graphql_1.Int)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
@@ -150,13 +151,6 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], MaterialResolver.prototype, "deleteMaterial", null);
-__decorate([
-    (0, type_graphql_1.Subscription)({ topics: "NOTIFICATIONS" }),
-    __param(0, (0, type_graphql_1.Root)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [material_1.Material]),
-    __metadata("design:returntype", material_1.Material)
-], MaterialResolver.prototype, "newNotification", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => material_1.Material),
     __param(0, (0, type_graphql_1.Arg)("data", () => MaterialInput_1.MaterialInput)),
