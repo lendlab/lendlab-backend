@@ -26,7 +26,7 @@ export class ReservationResolver {
   @Query(() => Int)
   async getMaxId() {
     const {max} = await createQueryBuilder("reservation")
-    .select("MAX(reservation.id_reserva)", "max")
+    .select("MAX(id_reserva)", "max")
     .getRawOne();
 
     return max;
