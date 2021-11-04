@@ -3,9 +3,12 @@ import {
   BaseEntity,
   Column,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import {Incident} from "./incident";
+import {Institution} from "./institution";
 import {Reservation} from "./reservation";
 
 @ObjectType()
@@ -43,6 +46,13 @@ export class Material extends BaseEntity {
   @Column()
   estado: string;
 
+  @Field(() => Institution)
+  @ManyToOne(() => Institution, (institution) => institution.material)
+  institution: Institution;
+
   @OneToMany(() => Reservation, (reservation) => reservation.material)
   reservation: Promise<Reservation[]>;
+
+  @OneToMany(() => Incident, (incident) => incident.material)
+  incident: Promise<Incident[]>;
 }

@@ -30,6 +30,12 @@ let ReservationResolver = class ReservationResolver {
     async createReservation(data) {
         return await reservation_1.Reservation.create(Object.assign({}, data)).save();
     }
+    async createReservationUserSession(data, { req }) {
+        const ci = req.session.cedula;
+        console.log(ci);
+        const reservationSession = await reservation_1.Reservation.create(Object.assign({}, data)).save();
+        return reservationSession;
+    }
     async updateReservation(id_reserva, data) {
         await reservation_1.Reservation.update({ id_reserva }, data);
         const updatedReservations = await reservation_1.Reservation.find({
@@ -61,6 +67,14 @@ __decorate([
     __metadata("design:paramtypes", [ReservationInput_1.ReservationInput]),
     __metadata("design:returntype", Promise)
 ], ReservationResolver.prototype, "createReservation", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => reservation_1.Reservation),
+    __param(0, (0, type_graphql_1.Arg)("data", () => ReservationInput_1.ReservationSessionInput)),
+    __param(1, (0, type_graphql_1.Ctx)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [ReservationInput_1.ReservationSessionInput, Object]),
+    __metadata("design:returntype", Promise)
+], ReservationResolver.prototype, "createReservationUserSession", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => [reservation_1.Reservation], { nullable: true }),
     __param(0, (0, type_graphql_1.Arg)("id_reserva", () => type_graphql_1.Int)),

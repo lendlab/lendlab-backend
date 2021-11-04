@@ -53,8 +53,8 @@ export class ReservationSessionInput {
   @Field(() => Date, {nullable: true})
   fecha_hora: Date;
 
-  @Field(() => UserReservationSessionInput)
-  cedula: UserReservationSessionInput;
+  @Field(() => UserReservationSessionInput, {nullable: true})
+  user: UserReservationSessionInput;
 
   @Field(() => MaterialReservationSessionInput)
   material: MaterialReservationSessionInput;

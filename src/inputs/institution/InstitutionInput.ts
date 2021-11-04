@@ -29,3 +29,24 @@ export class InstitutionUpdateInput {
   @Field({nullable: true})
   phone: number;
 }
+
+@InputType()
+class course_data_institutio {
+  @Field()
+  course_name: string;
+}
+
+@InputType()
+class institution_data {
+  @Field()
+  id_institution: number;
+}
+
+@InputType()
+export class AddCourseToInstitution {
+  @Field(() => institution_data)
+  institution: institution_data;
+
+  @Field(() => course_data_institutio)
+  course: course_data_institutio;
+}

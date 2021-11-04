@@ -31,10 +31,11 @@ export class Incident extends BaseEntity {
   @Column()
   solved: Boolean;
 
-  @Field(() => Date)
+  @Field(() => String)
   @Column({type: "date"})
   date: Date;
 
-  @ManyToOne(() => Material)
+  @Field(() => Material)
+  @ManyToOne(() => Material, (material) => material.incident)
   material: Material;
 }

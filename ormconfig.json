@@ -1,6 +1,6 @@
 [
   {
-    "name": "prod",
+    "name": "local",
     "type": "mysql",
     "host": "localhost",
     "port": 3306,
@@ -21,6 +21,6 @@
     "database": "defaultdb",
     "synchronize": "true",
     "logging": "true",
-    "entities": ["./dist/entity/*.js"]
+    "entities": ["./dist/entity/*.*"]
   }
 ]

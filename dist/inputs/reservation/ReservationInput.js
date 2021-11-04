@@ -88,9 +88,9 @@ __decorate([
     __metadata("design:type", Date)
 ], ReservationSessionInput.prototype, "fecha_hora", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => UserReservationSessionInput),
+    (0, type_graphql_1.Field)(() => UserReservationSessionInput, { nullable: true }),
     __metadata("design:type", UserReservationSessionInput)
-], ReservationSessionInput.prototype, "cedula", void 0);
+], ReservationSessionInput.prototype, "user", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => MaterialReservationSessionInput),
     __metadata("design:type", MaterialReservationSessionInput)

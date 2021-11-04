@@ -1,7 +1,11 @@
 import {Reservation} from "../../entity/reservation";
-import {Arg, Int, Mutation, Query, Resolver} from "type-graphql";
-import {ReservationInput} from "../../inputs/reservation/ReservationInput";
+import {Arg, Ctx, Int, Mutation, Query, Resolver} from "type-graphql";
+import {
+  ReservationInput,
+  ReservationSessionInput,
+} from "../../inputs/reservation/ReservationInput";
 import {ReservationEditInput} from "../../inputs/reservation/ReservationEditInput";
+import {MyContext} from "src/types/MyContext";
 import { createQueryBuilder } from "typeorm";
 
 @Resolver()
@@ -46,17 +50,18 @@ export class ReservationResolver {
 
   //Reserva usando sessiones
 
-  //@Mutation(() => Reservation)
-  //async createReservationUserSession(
-  //  @Arg("data", () => ReservationSessionInput) data: ReservationSessionInput,
-  //  @Ctx() {req}: MyContext
-  //): Promise<Reservation> {
-  //  const reservationSession = await Reservation.create({
-  //    ...data,
-  //    user: req.session.cedula
-  //  }).save();
-  //  return reservationSession;
-  //}
+  @Mutation(() => Reservation)
+  async createReservationUserSession(
+    @Arg("data", () => ReservationSessionInput) data: ReservationSessionInput,
+    @Ctx() {req}: MyContext
+  ): Promise<Reservation> {
+    const ci = req.session.cedula;
+    console.log(ci);
+    const reservationSession = await Reservation.create({
+      ...data,
+    }).save();
+    return reservationSession;
+  }
 
   @Mutation(() => [Reservation], {nullable: true})
   async updateReservation(

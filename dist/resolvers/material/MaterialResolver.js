@@ -23,8 +23,14 @@ let MaterialResolver = class MaterialResolver {
         return "hello";
     }
     async getMaterials() {
-        const material_list = await material_1.Material.find();
+        const material_list = await material_1.Material.find({ relations: ["institution"] });
         return material_list;
+    }
+    async paginatedMaterials(limit) {
+        const material = await (0, typeorm_1.getConnection)().query(`
+      SELECT * from material order by nombre DESC LIMIT ${limit}
+      `);
+        return material;
     }
     async getMaterial(id_material) {
         const material = await material_1.Material.find({ id_material });
@@ -42,7 +48,7 @@ let MaterialResolver = class MaterialResolver {
     }
     async getMaterialSearch(nombre) {
         const material = await material_1.Material.find({
-            nombre: (0, typeorm_1.Like)(`${nombre}%`)
+            nombre: (0, typeorm_1.Like)(`${nombre}%`),
         });
         return material;
     }
@@ -62,6 +68,14 @@ let MaterialResolver = class MaterialResolver {
         await material_1.Material.delete({ id_material });
         return true;
     }
+    newNotification(payload) {
+        return payload;
+    }
+    async subMaterial(data, pubsub) {
+        const material = await material_1.Material.create(data).save();
+        pubsub.publish("NOTIFICATIONS", material);
+        return material;
+    }
 };
 __decorate([
     (0, type_graphql_1.Query)(() => String),
@@ -75,6 +89,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], MaterialResolver.prototype, "getMaterials", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => [material_1.Material]),
+    __param(0, (0, type_graphql_1.Arg)("limit", () => type_graphql_1.Int, { nullable: true })),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], MaterialResolver.prototype, "paginatedMaterials", null);
 __decorate([
     (0, type_graphql_1.Query)(() => [material_1.Material]),
     __param(0, (0, type_graphql_1.Arg)("id_material", () => type_graphql_1.Int)),
@@ -117,6 +138,22 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], MaterialResolver.prototype, "deleteMaterial", null);
+__decorate([
+    (0, type_graphql_1.Subscription)({ topics: "NOTIFICATIONS" }),
+    __param(0, (0, type_graphql_1.Root)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [material_1.Material]),
+    __metadata("design:returntype", material_1.Material)
+], MaterialResolver.prototype, "newNotification", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => material_1.Material),
+    __param(0, (0, type_graphql_1.Arg)("data", () => MaterialInput_1.MaterialInput)),
+    __param(1, (0, type_graphql_1.PubSub)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [MaterialInput_1.MaterialInput,
+        type_graphql_1.PubSubEngine]),
+    __metadata("design:returntype", Promise)
+], MaterialResolver.prototype, "subMaterial", null);
 MaterialResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], MaterialResolver);

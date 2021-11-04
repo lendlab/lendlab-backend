@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InstitutionResolver = void 0;
 const type_graphql_1 = require("type-graphql");
+const corresponds_1 = require("../../entity/corresponds");
 const institution_1 = require("../../entity/institution");
 const InstitutionInput_1 = require("../../inputs/institution/InstitutionInput");
 let InstitutionResolver = class InstitutionResolver {
@@ -31,6 +32,10 @@ let InstitutionResolver = class InstitutionResolver {
     async deleteInstitution(id_institution) {
         await institution_1.Institution.delete({ id_institution });
         return true;
+    }
+    async addCourseToInstitution(data) {
+        const addCourseToInstitution = await corresponds_1.Corresponds.create(Object.assign({}, data)).save();
+        return addCourseToInstitution;
     }
 };
 __decorate([
@@ -61,6 +66,13 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], InstitutionResolver.prototype, "deleteInstitution", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => corresponds_1.Corresponds),
+    __param(0, (0, type_graphql_1.Arg)("data")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [InstitutionInput_1.AddCourseToInstitution]),
+    __metadata("design:returntype", Promise)
+], InstitutionResolver.prototype, "addCourseToInstitution", null);
 InstitutionResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], InstitutionResolver);

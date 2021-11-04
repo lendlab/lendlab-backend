@@ -11,6 +11,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserInput = void 0;
 const type_graphql_1 = require("type-graphql");
+let user_course = class user_course {
+};
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", Number)
+], user_course.prototype, "course_id", void 0);
+user_course = __decorate([
+    (0, type_graphql_1.InputType)()
+], user_course);
+let user_institution = class user_institution {
+};
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", Number)
+], user_institution.prototype, "id_institution", void 0);
+user_institution = __decorate([
+    (0, type_graphql_1.InputType)()
+], user_institution);
 let UserInput = class UserInput {
 };
 __decorate([
@@ -45,6 +63,14 @@ __decorate([
     (0, type_graphql_1.Field)(),
     __metadata("design:type", String)
 ], UserInput.prototype, "fecha_nacimiento", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => user_institution),
+    __metadata("design:type", user_institution)
+], UserInput.prototype, "institution", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => user_course),
+    __metadata("design:type", user_course)
+], UserInput.prototype, "course", void 0);
 UserInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], UserInput);

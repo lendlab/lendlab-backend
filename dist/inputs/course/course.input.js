@@ -9,20 +9,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CourseInput = void 0;
+exports.NewCourse = void 0;
 const type_graphql_1 = require("type-graphql");
-let CourseInput = class CourseInput {
+let NewCourse = class NewCourse {
 };
 __decorate([
     (0, type_graphql_1.Field)(),
-    __metadata("design:type", Number)
-], CourseInput.prototype, "id_course", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(),
     __metadata("design:type", String)
-], CourseInput.prototype, "course_name", void 0);
-CourseInput = __decorate([
+], NewCourse.prototype, "course_name", void 0);
+NewCourse = __decorate([
     (0, type_graphql_1.InputType)()
-], CourseInput);
-exports.CourseInput = CourseInput;
+], NewCourse);
+exports.NewCourse = NewCourse;
 //# sourceMappingURL=course.input.js.map

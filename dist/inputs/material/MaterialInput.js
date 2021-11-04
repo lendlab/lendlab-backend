@@ -11,6 +11,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MaterialInput = void 0;
 const type_graphql_1 = require("type-graphql");
+let institution_material = class institution_material {
+};
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", Number)
+], institution_material.prototype, "id_institution", void 0);
+institution_material = __decorate([
+    (0, type_graphql_1.InputType)()
+], institution_material);
 let MaterialInput = class MaterialInput {
 };
 __decorate([
@@ -41,6 +50,10 @@ __decorate([
     (0, type_graphql_1.Field)(),
     __metadata("design:type", String)
 ], MaterialInput.prototype, "estado", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => institution_material),
+    __metadata("design:type", institution_material)
+], MaterialInput.prototype, "institution", void 0);
 MaterialInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], MaterialInput);

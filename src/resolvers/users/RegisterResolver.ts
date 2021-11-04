@@ -1,7 +1,7 @@
-import {User} from "../../entity/user";
 import {Arg, Int, Mutation, Query, Resolver} from "type-graphql";
 import argon2 from "argon2";
 
+import {User} from "../../entity/user";
 import {UserInput} from "../../inputs/user/UserInput";
 
 @Resolver()
@@ -13,7 +13,7 @@ export class RegisterResolver {
 
   @Query(() => [User])
   async getUsers() {
-    const usersList = await User.find();
+    const usersList = await User.find({relations: ["course", "institution"]});
     return usersList;
   }
 
@@ -39,6 +39,8 @@ export class RegisterResolver {
       telefono: data.telefono,
       tipo_usuario: data.tipo_usuario,
       fecha_nacimiento: data.fecha_nacimiento,
+      institution: data.institution,
+      course: data.course,
     }).save();
     return user;
   }

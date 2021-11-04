@@ -1,4 +1,10 @@
-import { Field, InputType } from "type-graphql";
+import {Field, InputType} from "type-graphql";
+
+@InputType()
+class institution_material {
+  @Field()
+  id_institution: number;
+}
 
 @InputType()
 export class MaterialInput {
@@ -22,4 +28,7 @@ export class MaterialInput {
 
   @Field()
   estado: string;
+
+  @Field(() => institution_material)
+  institution: institution_material;
 }
