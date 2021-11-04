@@ -1,12 +1,23 @@
 import {Reservation} from "../../entity/reservation";
-import {Arg, Ctx, Int, Mutation, Query, Resolver} from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  Int,
+  Mutation,
+  PubSub,
+  PubSubEngine,
+  Query,
+  Resolver,
+  Root,
+  Subscription,
+} from "type-graphql";
 import {
   ReservationInput,
   ReservationSessionInput,
 } from "../../inputs/reservation/ReservationInput";
 import {ReservationEditInput} from "../../inputs/reservation/ReservationEditInput";
 import {MyContext} from "src/types/MyContext";
-import { createQueryBuilder } from "typeorm";
+import {createQueryBuilder} from "typeorm";
 
 @Resolver()
 export class ReservationResolver {
@@ -26,8 +37,8 @@ export class ReservationResolver {
   @Query(() => Int)
   async getMaxId() {
     const {max} = await createQueryBuilder("reservation")
-    .select("MAX(id_reserva)", "max")
-    .getRawOne();
+      .select("MAX(id_reserva)", "max")
+      .getRawOne();
 
     return max;
   }
@@ -35,17 +46,25 @@ export class ReservationResolver {
   @Query(() => Int)
   async getReservationsCount() {
     const {count} = await createQueryBuilder("reservation")
-    .select("COUNT(distinct id_reserva)", "count")
-    .getRawOne();
+      .select("COUNT(distinct id_reserva)", "count")
+      .getRawOne();
 
     return count;
   }
 
+  @Subscription({topics: "CREATE_RESERVATION"})
+  newReservationSubscription(@Root() payload: Reservation): Reservation {
+    return payload;
+  }
+
   @Mutation(() => Reservation)
   async createReservation(
-    @Arg("data", () => ReservationInput) data: ReservationInput
+    @Arg("data", () => ReservationInput) data: ReservationInput,
+    @PubSub() pubsub: PubSubEngine
   ) {
-    return await Reservation.create({...data}).save();
+    const reservation = await Reservation.create({...data}).save();
+    pubsub.publish("CREATE_RESERVATION", reservation);
+    return reservation;
   }
 
   //Reserva usando sessiones
@@ -73,7 +92,6 @@ export class ReservationResolver {
     const updatedReservations = await Reservation.find({
       id_reserva,
     });
-
     return updatedReservations;
   }
 

@@ -40,8 +40,13 @@ let ReservationResolver = class ReservationResolver {
             .getRawOne();
         return count;
     }
-    async createReservation(data) {
-        return await reservation_1.Reservation.create(Object.assign({}, data)).save();
+    newReservationSubscription(payload) {
+        return payload;
+    }
+    async createReservation(data, pubsub) {
+        const reservation = await reservation_1.Reservation.create(Object.assign({}, data)).save();
+        pubsub.publish("CREATE_RESERVATION", reservation);
+        return reservation;
     }
     async createReservationUserSession(data, { req }) {
         const ci = req.session.cedula;
@@ -86,10 +91,19 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ReservationResolver.prototype, "getReservationsCount", null);
 __decorate([
+    (0, type_graphql_1.Subscription)({ topics: "CREATE_RESERVATION" }),
+    __param(0, (0, type_graphql_1.Root)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [reservation_1.Reservation]),
+    __metadata("design:returntype", reservation_1.Reservation)
+], ReservationResolver.prototype, "newReservationSubscription", null);
+__decorate([
     (0, type_graphql_1.Mutation)(() => reservation_1.Reservation),
     __param(0, (0, type_graphql_1.Arg)("data", () => ReservationInput_1.ReservationInput)),
+    __param(1, (0, type_graphql_1.PubSub)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [ReservationInput_1.ReservationInput]),
+    __metadata("design:paramtypes", [ReservationInput_1.ReservationInput,
+        type_graphql_1.PubSubEngine]),
     __metadata("design:returntype", Promise)
 ], ReservationResolver.prototype, "createReservation", null);
 __decorate([

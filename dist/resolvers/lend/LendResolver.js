@@ -37,8 +37,13 @@ let LendResolver = class LendResolver {
             .getRawOne();
         return count;
     }
-    async createLend(data) {
-        return lend_1.Lend.create(Object.assign({}, data)).save();
+    newLendSubscription(payload) {
+        return payload;
+    }
+    async createLend(data, pubsub) {
+        const lend = lend_1.Lend.create(Object.assign({}, data)).save();
+        pubsub.publish("CREATE_LEND", lend);
+        return lend;
     }
     async updateLend(id_lend, data) {
         const lend = await lend_1.Lend.update({ id_lend }, data);
@@ -68,10 +73,19 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], LendResolver.prototype, "getLendsCount", null);
 __decorate([
+    (0, type_graphql_1.Subscription)({ topics: "CREATE_LEND" }),
+    __param(0, (0, type_graphql_1.Root)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [lend_1.Lend]),
+    __metadata("design:returntype", lend_1.Lend)
+], LendResolver.prototype, "newLendSubscription", null);
+__decorate([
     (0, type_graphql_1.Mutation)(() => lend_1.Lend),
     __param(0, (0, type_graphql_1.Arg)("data", () => lend_input_1.LendInput)),
+    __param(1, (0, type_graphql_1.PubSub)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [lend_input_1.LendInput]),
+    __metadata("design:paramtypes", [lend_input_1.LendInput,
+        type_graphql_1.PubSubEngine]),
     __metadata("design:returntype", Promise)
 ], LendResolver.prototype, "createLend", null);
 __decorate([

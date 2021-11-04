@@ -1,4 +1,14 @@
-import {Arg, Int, Mutation, Query, Resolver} from "type-graphql";
+import {
+  Arg,
+  Int,
+  Mutation,
+  PubSub,
+  PubSubEngine,
+  Query,
+  Resolver,
+  Root,
+  Subscription,
+} from "type-graphql";
 import {createQueryBuilder, getRepository} from "typeorm";
 import {Lend} from "../../entity/lend";
 import {LendInput} from "../../inputs/lend/lend.input";
@@ -33,11 +43,19 @@ export class LendResolver {
     return count;
   }
 
+  @Subscription({topics: "CREATE_LEND"})
+  newLendSubscription(@Root() payload: Lend): Lend {
+    return payload;
+  }
+
   @Mutation(() => Lend)
   async createLend(
-    @Arg("data", () => LendInput) data: LendInput
+    @Arg("data", () => LendInput) data: LendInput,
+    @PubSub() pubsub: PubSubEngine
   ): Promise<Lend> {
-    return Lend.create({...data}).save();
+    const lend = Lend.create({...data}).save();
+    pubsub.publish("CREATE_LEND", lend);
+    return lend;
   }
 
   @Mutation(() => Lend)
