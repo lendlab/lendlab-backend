@@ -2,7 +2,7 @@ import { Material } from "../../entity/material";
 import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
 import { MaterialInput } from "../../inputs/material/MaterialInput";
 import { MaterialUpdateInput } from "../../inputs/material/MaterialUpdateInput";
-import { getManager, Like } from "typeorm";
+import { createQueryBuilder, getManager, Like } from "typeorm";
 
 @Resolver()
 export class MaterialResolver {
@@ -21,6 +21,15 @@ export class MaterialResolver {
   async getMaterial(@Arg("id_material", () => Int) id_material: number) {
     const material = await Material.find({ id_material });
     return material;
+  }
+
+  @Query(() => Int)
+  async getMaterialsCount() {
+    const {count} = await createQueryBuilder("material")
+    .select("COUNT(*)", "count")
+    .getRawOne();
+
+    return count;
   }
 
   @Query(() => [Material])
