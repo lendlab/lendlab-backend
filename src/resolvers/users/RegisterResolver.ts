@@ -45,11 +45,12 @@ export class RegisterResolver {
     return user;
   }
 
-  @Mutation(() => User, {nullable: true})
+  @Mutation(() => Boolean)
   async deleteUser(
     @Arg("cedula", () => Int) cedula: number
-  ): Promise<User | null> {
-    const deletedUser = await User.delete({cedula});
-    return deletedUser.raw[0];
+  ): Promise<Boolean> {
+    await User.delete({cedula});
+    return true;
   }
+
 }
