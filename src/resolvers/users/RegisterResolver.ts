@@ -3,6 +3,7 @@ import argon2 from "argon2";
 
 import {User} from "../../entity/user";
 import {UserInput} from "../../inputs/user/UserInput";
+import {UserUpdateInput} from "../../inputs/user/UserUpdateInput";
 
 @Resolver()
 export class RegisterResolver {
@@ -46,11 +47,21 @@ export class RegisterResolver {
   }
 
   @Mutation(() => Boolean)
-  async deleteUser(
-    @Arg("cedula", () => Int) cedula: number
-  ): Promise<Boolean> {
-    await User.delete({cedula});
+  async updateUser(
+    @Arg("cedula", () => Int) cedula: number,
+    @Arg("data", () => UserUpdateInput) data: UserUpdateInput
+  ) {
+    await User.update({cedula}, data);
+    const updatedUser = User.findOne({cedula});
+    if (!updatedUser) {
+      return null;
+    }
     return true;
   }
 
+  @Mutation(() => Boolean)
+  async deleteUser(@Arg("cedula", () => Int) cedula: number): Promise<Boolean> {
+    await User.delete({cedula});
+    return true;
+  }
 }

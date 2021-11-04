@@ -20,6 +20,7 @@ const type_graphql_1 = require("type-graphql");
 const argon2_1 = __importDefault(require("argon2"));
 const user_1 = require("../../entity/user");
 const UserInput_1 = require("../../inputs/user/UserInput");
+const UserUpdateInput_1 = require("../../inputs/user/UserUpdateInput");
 let RegisterResolver = class RegisterResolver {
     async hello() {
         return "hello";
@@ -47,6 +48,14 @@ let RegisterResolver = class RegisterResolver {
             course: data.course,
         }).save();
         return user;
+    }
+    async updateUser(cedula, data) {
+        await user_1.User.update({ cedula }, data);
+        const updatedUser = user_1.User.findOne({ cedula });
+        if (!updatedUser) {
+            return null;
+        }
+        return true;
     }
     async deleteUser(cedula) {
         await user_1.User.delete({ cedula });
@@ -79,6 +88,14 @@ __decorate([
     __metadata("design:paramtypes", [UserInput_1.UserInput]),
     __metadata("design:returntype", Promise)
 ], RegisterResolver.prototype, "register", null);
+__decorate([
+    (0, type_graphql_1.Mutation)(() => Boolean),
+    __param(0, (0, type_graphql_1.Arg)("cedula", () => type_graphql_1.Int)),
+    __param(1, (0, type_graphql_1.Arg)("data", () => UserUpdateInput_1.UserUpdateInput)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, UserUpdateInput_1.UserUpdateInput]),
+    __metadata("design:returntype", Promise)
+], RegisterResolver.prototype, "updateUser", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => Boolean),
     __param(0, (0, type_graphql_1.Arg)("cedula", () => type_graphql_1.Int)),
