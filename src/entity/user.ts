@@ -15,6 +15,8 @@ import {Reservation} from "./reservation";
 enum userType {
   laboratorista = "Laboratorista",
   alumno = "Alumno",
+  director = "Director",
+  admin = "Admin"
 }
 
 @ObjectType()
