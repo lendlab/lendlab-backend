@@ -1,4 +1,4 @@
-import {Arg, Mutation, Query, Resolver} from "type-graphql";
+import {Arg, Int, Mutation, Query, Resolver} from "type-graphql";
 import {getRepository} from "typeorm";
 
 import {IncidentInput} from "../../inputs/incident/incident.input";
@@ -30,9 +30,9 @@ export class IncidentResolver {
     return incident;
   }
 
-  @Mutation(() => Incident)
-  async deleteIncident() {
-    const incident = Incident.create({}).save();
-    return incident;
+  @Mutation(() => Boolean)
+  async deleteIncident(@Arg("id_incident", () => Int) id_incident: number): Promise<Boolean> {
+    await Incident.delete({id_incident});
+    return true;
   }
 }
