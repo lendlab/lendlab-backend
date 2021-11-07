@@ -13,7 +13,10 @@ exports.Institution = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const corresponds_1 = require("./corresponds");
+const lend_1 = require("./lend");
 const material_1 = require("./material");
+const reservation_1 = require("./reservation");
+const room_1 = require("./room");
 const user_1 = require("./user");
 let Institution = class Institution extends typeorm_1.BaseEntity {
 };
@@ -54,6 +57,18 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => material_1.Material, (material) => material.institution),
     __metadata("design:type", Promise)
 ], Institution.prototype, "material", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => room_1.Room, (room) => room.institution),
+    __metadata("design:type", Promise)
+], Institution.prototype, "room", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => reservation_1.Reservation, (reservation) => reservation.institution),
+    __metadata("design:type", Promise)
+], Institution.prototype, "reservation", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => lend_1.Lend, (lend) => lend.institution),
+    __metadata("design:type", Promise)
+], Institution.prototype, "lend", void 0);
 Institution = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()

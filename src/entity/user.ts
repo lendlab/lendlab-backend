@@ -10,6 +10,7 @@ import {
 import {Course} from "./course";
 import {Institution} from "./institution";
 import {Lend} from "./lend";
+import {Occupies} from "./occupies";
 import {Reservation} from "./reservation";
 
 enum userType {
@@ -66,4 +67,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Lend, (lend) => lend.laboratorist)
   lend: Promise<Lend>;
+
+  @OneToMany(() => Occupies, (occupies) => occupies.room)
+  ocuppies: Promise<Occupies>;
 }

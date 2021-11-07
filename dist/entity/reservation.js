@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Reservation = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
+const institution_1 = require("./institution");
 const lend_1 = require("./lend");
 const material_1 = require("./material");
 const user_1 = require("./user");
@@ -53,6 +54,11 @@ __decorate([
     }),
     __metadata("design:type", material_1.Material)
 ], Reservation.prototype, "material", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => institution_1.Institution),
+    (0, typeorm_1.ManyToOne)(() => institution_1.Institution, (institution) => institution.reservation),
+    __metadata("design:type", institution_1.Institution)
+], Reservation.prototype, "institution", void 0);
 Reservation = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()

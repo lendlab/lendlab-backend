@@ -7,7 +7,10 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import {Corresponds} from "./corresponds";
+import {Lend} from "./lend";
 import {Material} from "./material";
+import {Reservation} from "./reservation";
+import {Room} from "./room";
 import {User} from "./user";
 
 @ObjectType()
@@ -41,4 +44,13 @@ export class Institution extends BaseEntity {
 
   @OneToMany(() => Material, (material) => material.institution)
   material: Promise<Material[]>;
+
+  @OneToMany(() => Room, (room) => room.institution)
+  room: Promise<Room>;
+
+  @OneToMany(() => Reservation, (reservation) => reservation.institution)
+  reservation: Promise<Reservation>;
+
+  @OneToMany(() => Lend, (lend) => lend.institution)
+  lend: Promise<Lend>;
 }

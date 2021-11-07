@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Lend = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
+const institution_1 = require("./institution");
 const reservation_1 = require("./reservation");
 const user_1 = require("./user");
 let Lend = class Lend extends typeorm_1.BaseEntity {
@@ -48,6 +49,11 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => user_1.User, { onDelete: "CASCADE", nullable: true }),
     __metadata("design:type", user_1.User)
 ], Lend.prototype, "laboratorist", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => institution_1.Institution),
+    (0, typeorm_1.ManyToOne)(() => institution_1.Institution, (institution) => institution.lend),
+    __metadata("design:type", institution_1.Institution)
+], Lend.prototype, "institution", void 0);
 Lend = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()

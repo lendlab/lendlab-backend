@@ -11,6 +11,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReservationSessionInput = exports.ReservationInput = void 0;
 const type_graphql_1 = require("type-graphql");
+let Reservation_Institution = class Reservation_Institution {
+};
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", Number)
+], Reservation_Institution.prototype, "id_institution", void 0);
+Reservation_Institution = __decorate([
+    (0, type_graphql_1.InputType)()
+], Reservation_Institution);
 let UserReservationInput = class UserReservationInput {
 };
 __decorate([
@@ -51,6 +60,10 @@ __decorate([
     (0, type_graphql_1.Field)(() => MaterialReservationInput),
     __metadata("design:type", MaterialReservationInput)
 ], ReservationInput.prototype, "material", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => Reservation_Institution),
+    __metadata("design:type", Reservation_Institution)
+], ReservationInput.prototype, "institution", void 0);
 ReservationInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], ReservationInput);
