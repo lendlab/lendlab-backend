@@ -6,7 +6,7 @@ class ReservationInputa {
   id_reserva: number;
 
   @Field(() => Date)
-  fecha_hora: Date;
+  fecha_hora: String;
 }
 
 @InputType()
@@ -23,7 +23,7 @@ export class LendInput {
   @Field(() => String, {nullable: true})
   fecha_vencimiento: Date;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   fecha_devolucion: Date;
 
   @Field(() => ReservationInputa)
