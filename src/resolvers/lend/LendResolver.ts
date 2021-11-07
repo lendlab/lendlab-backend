@@ -56,7 +56,12 @@ export class LendResolver {
     @Arg("id_lend", () => Int) id_lend: number,
     @Arg("data", () => LendUpdateInput) data: LendUpdateInput
   ) {
-    const lend = await Lend.update({id_lend}, data);
+    await Lend.update({id_lend}, data);
+    const lend = Lend.findOne(id_lend);
+    if (!lend) {
+      return null;
+    }
+
     return lend;
   }
 

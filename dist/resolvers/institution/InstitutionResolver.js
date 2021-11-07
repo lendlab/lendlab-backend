@@ -27,7 +27,11 @@ let InstitutionResolver = class InstitutionResolver {
     }
     async updateInstitution(data, id_institution) {
         await institution_1.Institution.update({ id_institution }, data);
-        return true;
+        const updatedInstitution = institution_1.Institution.findOne(id_institution);
+        if (!updatedInstitution) {
+            return null;
+        }
+        return updatedInstitution;
     }
     async deleteInstitution(id_institution) {
         await institution_1.Institution.delete({ id_institution });
@@ -52,7 +56,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], InstitutionResolver.prototype, "newInstitution", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => Boolean, { nullable: true }),
+    (0, type_graphql_1.Mutation)(() => institution_1.Institution, { nullable: true }),
     __param(0, (0, type_graphql_1.Arg)("data")),
     __param(1, (0, type_graphql_1.Arg)("id_institution", () => type_graphql_1.Int)),
     __metadata("design:type", Function),

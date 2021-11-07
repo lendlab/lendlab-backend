@@ -17,10 +17,10 @@ const user_1 = require("./user");
 let Course = class Course extends typeorm_1.BaseEntity {
 };
 __decorate([
-    (0, type_graphql_1.Field)(),
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], Course.prototype, "course_id", void 0);
+    (0, type_graphql_1.Field)(() => String),
+    (0, typeorm_1.PrimaryColumn)({ unique: true }),
+    __metadata("design:type", String)
+], Course.prototype, "course_token", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => String),
     (0, typeorm_1.Column)({ unique: true }),

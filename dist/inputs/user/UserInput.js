@@ -15,8 +15,8 @@ let user_course = class user_course {
 };
 __decorate([
     (0, type_graphql_1.Field)(),
-    __metadata("design:type", Number)
-], user_course.prototype, "course_id", void 0);
+    __metadata("design:type", String)
+], user_course.prototype, "course_token", void 0);
 user_course = __decorate([
     (0, type_graphql_1.InputType)()
 ], user_course);

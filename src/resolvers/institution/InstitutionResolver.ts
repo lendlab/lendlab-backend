@@ -23,13 +23,17 @@ export class InstitutionResolver {
     return createInstitution;
   }
 
-  @Mutation(() => Boolean, {nullable: true})
+  @Mutation(() => Institution, {nullable: true})
   async updateInstitution(
     @Arg("data") data: InstitutionUpdateInput,
     @Arg("id_institution", () => Int) id_institution: number
-  ): Promise<Boolean> {
+  ) {
     await Institution.update({id_institution}, data);
-    return true;
+    const updatedInstitution = Institution.findOne(id_institution);
+    if (!updatedInstitution) {
+      return null;
+    }
+    return updatedInstitution;
   }
 
   @Mutation(() => Boolean)

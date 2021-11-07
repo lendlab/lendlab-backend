@@ -1,20 +1,13 @@
 import {Field, ObjectType} from "type-graphql";
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import {BaseEntity, Column, Entity, OneToMany, PrimaryColumn} from "typeorm";
 import {Corresponds} from "./corresponds";
 import {User} from "./user";
-
 @ObjectType()
 @Entity()
 export class Course extends BaseEntity {
-  @Field()
-  @PrimaryGeneratedColumn()
-  course_id: number;
+  @Field(() => String)
+  @PrimaryColumn({unique: true})
+  course_token: string;
 
   @Field(() => String)
   @Column({unique: true})

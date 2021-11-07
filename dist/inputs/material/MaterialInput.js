@@ -45,10 +45,6 @@ __decorate([
 __decorate([
     (0, type_graphql_1.Field)(),
     __metadata("design:type", String)
-], MaterialInput.prototype, "foto", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(),
-    __metadata("design:type", String)
 ], MaterialInput.prototype, "estado", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => institution_material),

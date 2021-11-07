@@ -43,7 +43,11 @@ let LendResolver = class LendResolver {
         return lend;
     }
     async updateLend(id_lend, data) {
-        const lend = await lend_1.Lend.update({ id_lend }, data);
+        await lend_1.Lend.update({ id_lend }, data);
+        const lend = lend_1.Lend.findOne(id_lend);
+        if (!lend) {
+            return null;
+        }
         return lend;
     }
     async deleteLend(id_lend, fecha_hora_presta) {

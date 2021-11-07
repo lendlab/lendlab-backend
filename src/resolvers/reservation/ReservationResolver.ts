@@ -87,9 +87,7 @@ export class ReservationResolver {
   ): Promise<Reservation> {
     const ci = req.session.cedula;
     console.log(ci);
-    const reservationSession = await Reservation.create({
-      ...data,
-    }).save();
+    const reservationSession = await Reservation.create({...data}).save();
     return reservationSession;
   }
 
