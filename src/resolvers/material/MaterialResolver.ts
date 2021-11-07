@@ -41,6 +41,19 @@ export class MaterialResolver {
     return material;
   }
 
+  @Query(() => Material)
+  async getMaterialByInstitution(
+    @Arg("id_material", () => Int) id_material: number
+  ) {
+    const material = getRepository(Material)
+      .createQueryBuilder("material")
+      .innerJoinAndSelect("material.institution", "institution")
+      .where(`institution.id_institution = ${id_material}`)
+      .getOne();
+
+    return material;
+  }
+
   @Query(() => Int)
   async getMaterialsCount() {
     const {count} = await createQueryBuilder("material")

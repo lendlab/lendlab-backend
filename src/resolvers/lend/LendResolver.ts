@@ -25,8 +25,27 @@ export class LendResolver {
     const lend = await getRepository(Lend)
       .createQueryBuilder("lend")
       .innerJoinAndSelect("lend.reservation", "reservation")
+      .innerJoinAndSelect("lend.institution", "institution")
       .innerJoinAndSelect("reservation.material", "material")
       .innerJoinAndSelect("reservation.user", "user")
+      .where("lend.laboratoristCedula")
+      .getMany();
+
+    // SELECT * from lend JOIN reservation on lend.reservationIdReserva = reservation.id_reserva JOIN user ON user.cedula = reservation.userCedula
+    return lend;
+  }
+
+  @Query(() => [Lend])
+  async getLendByInstitution(
+    @Arg("id_institution", () => Int) id_institution: number
+  ) {
+    const lend = await getRepository(Lend)
+      .createQueryBuilder("lend")
+      .innerJoinAndSelect("lend.reservation", "reservation")
+      .innerJoinAndSelect("lend.institution", "institution")
+      .innerJoinAndSelect("reservation.material", "material")
+      .innerJoinAndSelect("reservation.user", "user")
+      .where(`institution.id_institution = ${id_institution}`)
       .getMany();
 
     // SELECT * from lend JOIN reservation on lend.reservationIdReserva = reservation.id_reserva JOIN user ON user.cedula = reservation.userCedula

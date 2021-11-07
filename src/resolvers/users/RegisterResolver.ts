@@ -29,6 +29,20 @@ export class RegisterResolver {
     return user;
   }
 
+  @Query(() => [User])
+  async getUsersByInstitution(
+    @Arg("id_institution", () => Int) id_institution: number
+  ) {
+    const user = getRepository(User)
+      .createQueryBuilder("user")
+      .innerJoinAndSelect("user.institution", "institution")
+      .innerJoinAndSelect("user.course", "course")
+      .where(`institution.id_institution = ${id_institution}`)
+      .getMany();
+
+    return user;
+  }
+
   @Query(() => User)
   async getUser(@Arg("cedula", () => Int) cedula: number) {
     const user = getRepository(User)
