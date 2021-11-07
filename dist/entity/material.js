@@ -51,11 +51,6 @@ __decorate([
     (0, type_graphql_1.Field)(),
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Material.prototype, "foto", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
 ], Material.prototype, "estado", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => institution_1.Institution),

@@ -8,12 +8,13 @@ import {
   Resolver,
 } from "type-graphql";
 import argon2 from "argon2";
+import {getRepository} from "typeorm";
+//import yup from "yup";
 
 import {User} from "../../entity/user";
 import {UserInput} from "../../inputs/user/UserInput";
 import {UserUpdateInput} from "../../inputs/user/UserUpdateInput";
 import {UserResponse} from "../../errors/User.errors";
-import {getRepository} from "typeorm";
 
 @Resolver()
 export class RegisterResolver {
@@ -31,9 +32,15 @@ export class RegisterResolver {
     return user;
   }
 
-  @Query(() => [User])
+  @Query(() => User)
   async getUser(@Arg("cedula", () => Int) cedula: number) {
-    const user = await User.find({cedula});
+    const user = getRepository(User)
+      .createQueryBuilder("user")
+      .innerJoinAndSelect("user.course", "course")
+      .innerJoinAndSelect("user.institution", "institution")
+      .where(`user.cedula = ${cedula} `)
+      .getOne();
+
     return user;
   }
 
@@ -60,21 +67,10 @@ export class RegisterResolver {
 
     pubsub.publish("CREATE_USER", user);
 
-    if (!user) {
-      return {
-        errors: [{field: "cedula", message: "Cedula actualmente en uso."}],
-      };
-    }
-    if (data.password.length < 5) {
-      return {
-        errors: [
-          {
-            field: "password",
-            message: "Tu contraseña debe tener mas de cinco caracteres.",
-          },
-        ],
-      };
-    }
+    //const validationSchema = yup.object().shape({
+    //  cedula: yup.number().required().moreThan(8).lessThan(8),
+    //});
+
     return {user};
   }
 

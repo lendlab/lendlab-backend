@@ -40,10 +40,6 @@ export class Material extends BaseEntity {
 
   @Field()
   @Column()
-  foto: string;
-
-  @Field()
-  @Column()
   estado: string;
 
   @Field(() => Institution)

@@ -24,9 +24,6 @@ export class MaterialInput {
   cantidad: number;
 
   @Field()
-  foto: string;
-
-  @Field()
   estado: string;
 
   @Field(() => institution_material)

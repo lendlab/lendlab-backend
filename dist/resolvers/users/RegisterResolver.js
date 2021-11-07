@@ -18,11 +18,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RegisterResolver = void 0;
 const type_graphql_1 = require("type-graphql");
 const argon2_1 = __importDefault(require("argon2"));
+const typeorm_1 = require("typeorm");
 const user_1 = require("../../entity/user");
 const UserInput_1 = require("../../inputs/user/UserInput");
 const UserUpdateInput_1 = require("../../inputs/user/UserUpdateInput");
 const User_errors_1 = require("../../errors/User.errors");
-const typeorm_1 = require("typeorm");
 let RegisterResolver = class RegisterResolver {
     async getUsers() {
         const user = (0, typeorm_1.getRepository)(user_1.User)
@@ -33,7 +33,12 @@ let RegisterResolver = class RegisterResolver {
         return user;
     }
     async getUser(cedula) {
-        const user = await user_1.User.find({ cedula });
+        const user = (0, typeorm_1.getRepository)(user_1.User)
+            .createQueryBuilder("user")
+            .innerJoinAndSelect("user.course", "course")
+            .innerJoinAndSelect("user.institution", "institution")
+            .where(`user.cedula = ${cedula} `)
+            .getOne();
         return user;
     }
     async register(data, pubsub) {
@@ -51,21 +56,6 @@ let RegisterResolver = class RegisterResolver {
             course: data.course,
         }).save();
         pubsub.publish("CREATE_USER", user);
-        if (!user) {
-            return {
-                errors: [{ field: "cedula", message: "Cedula actualmente en uso." }],
-            };
-        }
-        if (data.password.length < 5) {
-            return {
-                errors: [
-                    {
-                        field: "password",
-                        message: "Tu contraseña debe tener mas de cinco caracteres.",
-                    },
-                ],
-            };
-        }
         return { user };
     }
     async updateUser(cedula, data) {
@@ -88,7 +78,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], RegisterResolver.prototype, "getUsers", null);
 __decorate([
-    (0, type_graphql_1.Query)(() => [user_1.User]),
+    (0, type_graphql_1.Query)(() => user_1.User),
     __param(0, (0, type_graphql_1.Arg)("cedula", () => type_graphql_1.Int)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

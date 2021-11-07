@@ -9,12 +9,13 @@ export class Corresponds extends BaseEntity {
   @Field(() => Institution)
   @ManyToOne(() => Institution, (institution) => institution.id_institution, {
     primary: true,
+    onDelete: "CASCADE",
   })
   institution: Institution;
 
   @Field(() => Course)
-  @ManyToOne(() => Course, (course) => course.course_name, {
-    primary: true,
+  @ManyToOne(() => Course, (course) => course.course_token, {
+    onDelete: "CASCADE",
   })
   course: Course;
 }

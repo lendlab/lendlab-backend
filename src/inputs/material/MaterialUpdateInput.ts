@@ -23,9 +23,6 @@ export class MaterialUpdateInput {
   cantidad: number;
 
   @Field({nullable: true})
-  foto: string;
-
-  @Field({nullable: true})
   estado: string;
 
   @Field(() => institution_material_update, {nullable: true})

@@ -14,13 +14,21 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MeResolver = void 0;
 const type_graphql_1 = require("type-graphql");
+const typeorm_1 = require("typeorm");
 const user_1 = require("../../entity/user");
 class MeResolver {
     async me({ req }) {
         if (!req.session.cedula) {
             return null;
         }
-        return user_1.User.findOne(req.session.cedula);
+        const ci = req.session.cedula;
+        const user = (0, typeorm_1.getRepository)(user_1.User)
+            .createQueryBuilder("user")
+            .innerJoinAndSelect("user.institution", "institution")
+            .innerJoinAndSelect("user.course", "course")
+            .where(`user.cedula = ${ci}`)
+            .getOne();
+        return user;
     }
 }
 __decorate([

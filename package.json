@@ -29,7 +29,8 @@
     "reflect-metadata": "^0.1.13",
     "subscriptions-transport-ws": "^0.11.0",
     "type-graphql": "^1.1.1",
-    "typeorm": "^0.2.37"
+    "typeorm": "^0.2.37",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/connect-redis": "0.0.17",
@@ -41,6 +42,7 @@
     "@types/ioredis": "^4.27.2",
     "@types/node": "^16.9.1",
     "@types/redis": "^2.8.32",
+    "@types/yup": "^0.29.13",
     "rimraf": "^3.0.2",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.4.3"

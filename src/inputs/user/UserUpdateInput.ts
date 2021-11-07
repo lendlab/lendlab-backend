@@ -3,7 +3,7 @@ import {Field, InputType} from "type-graphql";
 @InputType()
 class user_course_update {
   @Field({nullable: true})
-  course_id: number;
+  course_token: string;
 }
 
 @InputType()
