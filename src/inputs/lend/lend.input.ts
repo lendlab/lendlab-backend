@@ -23,7 +23,7 @@ export class LendInput {
   @Field(() => String, {nullable: true})
   fecha_vencimiento: Date;
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   fecha_devolucion: Date;
 
   @Field(() => ReservationInputa)
