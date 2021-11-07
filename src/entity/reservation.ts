@@ -8,6 +8,7 @@ import {
   OneToMany,
   PrimaryColumn,
 } from "typeorm";
+import {Institution} from "./institution";
 import {Lend} from "./lend";
 import {Material} from "./material";
 import {User} from "./user";
@@ -44,4 +45,8 @@ export class Reservation extends BaseEntity {
     cascade: true,
   })
   material: Material;
+
+  @Field(() => Institution)
+  @ManyToOne(() => Institution, (institution) => institution.reservation)
+  institution: Institution;
 }

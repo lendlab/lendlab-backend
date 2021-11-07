@@ -18,6 +18,7 @@ const typeorm_1 = require("typeorm");
 const lend_1 = require("../../entity/lend");
 const lend_input_1 = require("../../inputs/lend/lend.input");
 const lend_update_input_1 = require("../../inputs/lend/lend.update.input");
+const Lend_errors_1 = require("../../errors/Lend.errors");
 let LendResolver = class LendResolver {
     async hello() {
         return "hello";
@@ -83,7 +84,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], LendResolver.prototype, "createLend", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => lend_1.Lend),
+    (0, type_graphql_1.Mutation)(() => Lend_errors_1.LendResponse),
     __param(0, (0, type_graphql_1.Arg)("id_lend", () => type_graphql_1.Int)),
     __param(1, (0, type_graphql_1.Arg)("data", () => lend_update_input_1.LendUpdateInput)),
     __metadata("design:type", Function),

@@ -20,9 +20,6 @@ import {UserResponse} from "../../errors/User.errors";
 export class RegisterResolver {
   @Query(() => [User])
   async getUsers() {
-    //const usersList = await User.find({relations: ["course", "institution"]});
-    //return usersList;
-
     const user = getRepository(User)
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.institution", "institution")
@@ -42,6 +39,18 @@ export class RegisterResolver {
       .getOne();
 
     return user;
+  }
+
+  @Query(() => [User])
+  async getLaboratorist() {
+    const laboratorists = getRepository(User)
+      .createQueryBuilder("user")
+      .innerJoinAndSelect("user.course", "course")
+      .innerJoinAndSelect("user.institution", "institution")
+      .where(`user.tipo_usuario = "laboratorista"`)
+      .getMany();
+
+    return laboratorists;
   }
 
   @Mutation(() => UserResponse)

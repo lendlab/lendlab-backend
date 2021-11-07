@@ -1,6 +1,12 @@
 import {Field, InputType} from "type-graphql";
 
 @InputType()
+class Reservation_Institution {
+  @Field()
+  id_institution: number;
+}
+
+@InputType()
 class UserReservationInput {
   @Field()
   cedula: number;
@@ -28,6 +34,9 @@ export class ReservationInput {
 
   @Field(() => MaterialReservationInput)
   material: MaterialReservationInput;
+
+  @Field(() => Reservation_Institution)
+  institution: Reservation_Institution;
 }
 
 @InputType()

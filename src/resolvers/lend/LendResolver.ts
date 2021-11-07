@@ -11,6 +11,7 @@ import {createQueryBuilder, getRepository} from "typeorm";
 import {Lend} from "../../entity/lend";
 import {LendInput} from "../../inputs/lend/lend.input";
 import {LendUpdateInput} from "../../inputs/lend/lend.update.input";
+import {LendResponse} from "../../errors/Lend.errors";
 
 @Resolver()
 export class LendResolver {
@@ -48,10 +49,11 @@ export class LendResolver {
   ): Promise<Lend> {
     const lend = await Lend.create({...data}).save();
     pubsub.publish("CREATE_LEND", lend);
+
     return lend;
   }
 
-  @Mutation(() => Lend)
+  @Mutation(() => LendResponse)
   async updateLend(
     @Arg("id_lend", () => Int) id_lend: number,
     @Arg("data", () => LendUpdateInput) data: LendUpdateInput

@@ -11,6 +11,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LendInput = void 0;
 const type_graphql_1 = require("type-graphql");
+let lendInstitution = class lendInstitution {
+};
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", Number)
+], lendInstitution.prototype, "id_institution", void 0);
+lendInstitution = __decorate([
+    (0, type_graphql_1.InputType)()
+], lendInstitution);
+let Laboratorist = class Laboratorist {
+};
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", Number)
+], Laboratorist.prototype, "cedula", void 0);
+Laboratorist = __decorate([
+    (0, type_graphql_1.InputType)()
+], Laboratorist);
 let ReservationInputa = class ReservationInputa {
 };
 __decorate([
@@ -19,7 +37,7 @@ __decorate([
 ], ReservationInputa.prototype, "id_reserva", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => Date),
-    __metadata("design:type", Date)
+    __metadata("design:type", String)
 ], ReservationInputa.prototype, "fecha_hora", void 0);
 ReservationInputa = __decorate([
     (0, type_graphql_1.InputType)()
@@ -44,7 +62,7 @@ __decorate([
     __metadata("design:type", Date)
 ], LendInput.prototype, "fecha_vencimiento", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => String),
+    (0, type_graphql_1.Field)(() => String, { nullable: true }),
     __metadata("design:type", Date)
 ], LendInput.prototype, "fecha_devolucion", void 0);
 __decorate([
@@ -55,6 +73,14 @@ __decorate([
     (0, type_graphql_1.Field)(() => LendUser),
     __metadata("design:type", LendUser)
 ], LendInput.prototype, "user", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => Laboratorist),
+    __metadata("design:type", Laboratorist)
+], LendInput.prototype, "laboratorist", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => lendInstitution),
+    __metadata("design:type", lendInstitution)
+], LendInput.prototype, "institution", void 0);
 LendInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], LendInput);

@@ -8,6 +8,7 @@ import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import {Institution} from "./institution";
 import {Reservation} from "./reservation";
 import {User} from "./user";
 
@@ -39,4 +40,8 @@ export class Lend extends BaseEntity {
   @Field(() => User, {nullable: true})
   @ManyToOne(() => User, {onDelete: "CASCADE", nullable: true})
   laboratorist: User;
+
+  @Field(() => Institution)
+  @ManyToOne(() => Institution, (institution) => institution.lend)
+  institution: Institution;
 }

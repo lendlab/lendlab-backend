@@ -1,5 +1,12 @@
 import {Field, ObjectType} from "type-graphql";
-import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import {Institution} from "./institution";
 
 @ObjectType()
 @Entity()
@@ -14,7 +21,7 @@ export class Room extends BaseEntity {
 
   @Field()
   @Column()
-  roomNumber: number;
+  room_number: number;
 
   @Field()
   @Column()
@@ -23,4 +30,8 @@ export class Room extends BaseEntity {
   @Field()
   @Column()
   state: string;
+
+  @Field(() => Institution)
+  @ManyToOne(() => Institution, (institution) => institution.room)
+  institution: Institution;
 }

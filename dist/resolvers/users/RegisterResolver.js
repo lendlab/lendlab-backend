@@ -41,6 +41,15 @@ let RegisterResolver = class RegisterResolver {
             .getOne();
         return user;
     }
+    async getLaboratorist() {
+        const laboratorists = (0, typeorm_1.getRepository)(user_1.User)
+            .createQueryBuilder("user")
+            .innerJoinAndSelect("user.course", "course")
+            .innerJoinAndSelect("user.institution", "institution")
+            .where(`user.tipo_usuario = "laboratorista"`)
+            .getMany();
+        return laboratorists;
+    }
     async register(data, pubsub) {
         const hashedPassword = await argon2_1.default.hash(data.password);
         const user = await user_1.User.create({
@@ -84,6 +93,12 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], RegisterResolver.prototype, "getUser", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => [user_1.User]),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], RegisterResolver.prototype, "getLaboratorist", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => User_errors_1.UserResponse),
     __param(0, (0, type_graphql_1.Arg)("data", () => UserInput_1.UserInput)),
