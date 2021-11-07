@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import {Reservation} from "./reservation";
+import {User} from "./user";
 
 @ObjectType()
 @Entity()
@@ -34,4 +35,8 @@ export class Lend extends BaseEntity {
     onDelete: "CASCADE",
   })
   reservation: Reservation;
+
+  @Field(() => User, {nullable: true})
+  @ManyToOne(() => User, {onDelete: "CASCADE", nullable: true})
+  laboratorist: User;
 }

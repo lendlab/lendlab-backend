@@ -13,6 +13,7 @@ exports.Lend = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const reservation_1 = require("./reservation");
+const user_1 = require("./user");
 let Lend = class Lend extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -42,6 +43,11 @@ __decorate([
     }),
     __metadata("design:type", reservation_1.Reservation)
 ], Lend.prototype, "reservation", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => user_1.User, { nullable: true }),
+    (0, typeorm_1.ManyToOne)(() => user_1.User, { onDelete: "CASCADE", nullable: true }),
+    __metadata("design:type", user_1.User)
+], Lend.prototype, "laboratorist", void 0);
 Lend = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()

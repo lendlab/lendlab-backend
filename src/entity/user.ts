@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import {Course} from "./course";
 import {Institution} from "./institution";
+import {Lend} from "./lend";
 import {Reservation} from "./reservation";
 
 enum userType {
@@ -62,4 +63,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Reservation, (reservation) => reservation.user)
   reservation: Promise<Reservation[]>;
+
+  @OneToMany(() => Lend, (lend) => lend.laboratorist)
+  lend: Promise<Lend>;
 }

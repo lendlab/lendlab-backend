@@ -14,6 +14,7 @@ const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const course_1 = require("./course");
 const institution_1 = require("./institution");
+const lend_1 = require("./lend");
 const reservation_1 = require("./reservation");
 var userType;
 (function (userType) {
@@ -77,6 +78,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => reservation_1.Reservation, (reservation) => reservation.user),
     __metadata("design:type", Promise)
 ], User.prototype, "reservation", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => lend_1.Lend, (lend) => lend.laboratorist),
+    __metadata("design:type", Promise)
+], User.prototype, "lend", void 0);
 User = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()

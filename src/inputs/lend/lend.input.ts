@@ -10,6 +10,12 @@ class ReservationInputa {
 }
 
 @InputType()
+class LendUser {
+  @Field()
+  cedula: number;
+}
+
+@InputType()
 export class LendInput {
   @Field(() => String, {nullable: true})
   fecha_hora_presta: Date;
@@ -22,4 +28,7 @@ export class LendInput {
 
   @Field(() => ReservationInputa)
   reservation: ReservationInputa;
+
+  @Field(() => LendUser)
+  user: LendUser;
 }

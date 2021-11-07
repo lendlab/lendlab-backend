@@ -24,6 +24,15 @@ __decorate([
 ReservationInputa = __decorate([
     (0, type_graphql_1.InputType)()
 ], ReservationInputa);
+let LendUser = class LendUser {
+};
+__decorate([
+    (0, type_graphql_1.Field)(),
+    __metadata("design:type", Number)
+], LendUser.prototype, "cedula", void 0);
+LendUser = __decorate([
+    (0, type_graphql_1.InputType)()
+], LendUser);
 let LendInput = class LendInput {
 };
 __decorate([
@@ -42,6 +51,10 @@ __decorate([
     (0, type_graphql_1.Field)(() => ReservationInputa),
     __metadata("design:type", ReservationInputa)
 ], LendInput.prototype, "reservation", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => LendUser),
+    __metadata("design:type", LendUser)
+], LendInput.prototype, "user", void 0);
 LendInput = __decorate([
     (0, type_graphql_1.InputType)()
 ], LendInput);
