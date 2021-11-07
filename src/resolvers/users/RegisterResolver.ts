@@ -1,21 +1,34 @@
-import {Arg, Int, Mutation, Query, Resolver} from "type-graphql";
+import {
+  Arg,
+  Int,
+  Mutation,
+  PubSub,
+  PubSubEngine,
+  Query,
+  Resolver,
+} from "type-graphql";
 import argon2 from "argon2";
 
 import {User} from "../../entity/user";
 import {UserInput} from "../../inputs/user/UserInput";
 import {UserUpdateInput} from "../../inputs/user/UserUpdateInput";
+import {UserResponse} from "../../errors/User.errors";
+import {getRepository} from "typeorm";
 
 @Resolver()
 export class RegisterResolver {
-  @Query(() => String)
-  async hello() {
-    return "hello";
-  }
-
   @Query(() => [User])
   async getUsers() {
-    const usersList = await User.find({relations: ["course", "institution"]});
-    return usersList;
+    //const usersList = await User.find({relations: ["course", "institution"]});
+    //return usersList;
+
+    const user = getRepository(User)
+      .createQueryBuilder("user")
+      .innerJoinAndSelect("user.institution", "institution")
+      .innerJoinAndSelect("user.course", "course")
+      .getMany();
+
+    return user;
   }
 
   @Query(() => [User])
@@ -24,11 +37,12 @@ export class RegisterResolver {
     return user;
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserResponse)
   async register(
     @Arg("data", () => UserInput)
-    data: UserInput
-  ): Promise<User> {
+    data: UserInput,
+    @PubSub() pubsub: PubSubEngine
+  ): Promise<UserResponse> {
     const hashedPassword = await argon2.hash(data.password);
 
     const user = await User.create({
@@ -43,10 +57,28 @@ export class RegisterResolver {
       institution: data.institution,
       course: data.course,
     }).save();
-    return user;
+
+    pubsub.publish("CREATE_USER", user);
+
+    if (!user) {
+      return {
+        errors: [{field: "cedula", message: "Cedula actualmente en uso."}],
+      };
+    }
+    if (data.password.length < 5) {
+      return {
+        errors: [
+          {
+            field: "password",
+            message: "Tu contraseña debe tener mas de cinco caracteres.",
+          },
+        ],
+      };
+    }
+    return {user};
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => User, {nullable: true})
   async updateUser(
     @Arg("cedula", () => Int) cedula: number,
     @Arg("data", () => UserUpdateInput) data: UserUpdateInput
@@ -56,7 +88,7 @@ export class RegisterResolver {
     if (!updatedUser) {
       return null;
     }
-    return true;
+    return updatedUser;
   }
 
   @Mutation(() => Boolean)

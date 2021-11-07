@@ -21,19 +21,22 @@ const argon2_1 = __importDefault(require("argon2"));
 const user_1 = require("../../entity/user");
 const UserInput_1 = require("../../inputs/user/UserInput");
 const UserUpdateInput_1 = require("../../inputs/user/UserUpdateInput");
+const User_errors_1 = require("../../errors/User.errors");
+const typeorm_1 = require("typeorm");
 let RegisterResolver = class RegisterResolver {
-    async hello() {
-        return "hello";
-    }
     async getUsers() {
-        const usersList = await user_1.User.find({ relations: ["course", "institution"] });
-        return usersList;
+        const user = (0, typeorm_1.getRepository)(user_1.User)
+            .createQueryBuilder("user")
+            .innerJoinAndSelect("user.institution", "institution")
+            .innerJoinAndSelect("user.course", "course")
+            .getMany();
+        return user;
     }
     async getUser(cedula) {
         const user = await user_1.User.find({ cedula });
         return user;
     }
-    async register(data) {
+    async register(data, pubsub) {
         const hashedPassword = await argon2_1.default.hash(data.password);
         const user = await user_1.User.create({
             cedula: data.cedula,
@@ -47,7 +50,23 @@ let RegisterResolver = class RegisterResolver {
             institution: data.institution,
             course: data.course,
         }).save();
-        return user;
+        pubsub.publish("CREATE_USER", user);
+        if (!user) {
+            return {
+                errors: [{ field: "cedula", message: "Cedula actualmente en uso." }],
+            };
+        }
+        if (data.password.length < 5) {
+            return {
+                errors: [
+                    {
+                        field: "password",
+                        message: "Tu contraseña debe tener mas de cinco caracteres.",
+                    },
+                ],
+            };
+        }
+        return { user };
     }
     async updateUser(cedula, data) {
         await user_1.User.update({ cedula }, data);
@@ -55,19 +74,13 @@ let RegisterResolver = class RegisterResolver {
         if (!updatedUser) {
             return null;
         }
-        return true;
+        return updatedUser;
     }
     async deleteUser(cedula) {
         await user_1.User.delete({ cedula });
         return true;
     }
 };
-__decorate([
-    (0, type_graphql_1.Query)(() => String),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], RegisterResolver.prototype, "hello", null);
 __decorate([
     (0, type_graphql_1.Query)(() => [user_1.User]),
     __metadata("design:type", Function),
@@ -82,14 +95,16 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], RegisterResolver.prototype, "getUser", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => user_1.User),
+    (0, type_graphql_1.Mutation)(() => User_errors_1.UserResponse),
     __param(0, (0, type_graphql_1.Arg)("data", () => UserInput_1.UserInput)),
+    __param(1, (0, type_graphql_1.PubSub)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [UserInput_1.UserInput]),
+    __metadata("design:paramtypes", [UserInput_1.UserInput,
+        type_graphql_1.PubSubEngine]),
     __metadata("design:returntype", Promise)
 ], RegisterResolver.prototype, "register", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => Boolean),
+    (0, type_graphql_1.Mutation)(() => user_1.User, { nullable: true }),
     __param(0, (0, type_graphql_1.Arg)("cedula", () => type_graphql_1.Int)),
     __param(1, (0, type_graphql_1.Arg)("data", () => UserUpdateInput_1.UserUpdateInput)),
     __metadata("design:type", Function),

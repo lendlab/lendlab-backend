@@ -13,23 +13,17 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MaterialResolver = void 0;
-const material_1 = require("../../entity/material");
 const type_graphql_1 = require("type-graphql");
+const typeorm_1 = require("typeorm");
 const MaterialInput_1 = require("../../inputs/material/MaterialInput");
 const MaterialUpdateInput_1 = require("../../inputs/material/MaterialUpdateInput");
-const typeorm_1 = require("typeorm");
+const material_1 = require("../../entity/material");
 let MaterialResolver = class MaterialResolver {
-    async hello() {
-        return "hello";
-    }
     async getMaterials() {
-        const material_list = await material_1.Material.find({ relations: ["institution"] });
-        return material_list;
-    }
-    async paginatedMaterials(limit) {
-        const material = await (0, typeorm_1.getConnection)().query(`
-      SELECT * from material order by nombre DESC LIMIT ${limit}
-      `);
+        const material = (0, typeorm_1.getRepository)(material_1.Material)
+            .createQueryBuilder("material")
+            .innerJoinAndSelect("material.institution", "institution")
+            .getMany();
         return material;
     }
     async getMaterial(id_material) {
@@ -62,8 +56,9 @@ let MaterialResolver = class MaterialResolver {
         });
         return material;
     }
-    async newMaterial(data) {
+    async subMaterial(data, pubsub) {
         const material = await material_1.Material.create(data).save();
+        pubsub.publish("CREATE_MATERIAL", material);
         return material;
     }
     async updateMaterial(id_material, data) {
@@ -78,31 +73,13 @@ let MaterialResolver = class MaterialResolver {
         await material_1.Material.delete({ id_material });
         return true;
     }
-    async subMaterial(data, pubsub) {
-        const material = await material_1.Material.create(data).save();
-        pubsub.publish("CREATE_MATERIAL", material);
-        return material;
-    }
 };
-__decorate([
-    (0, type_graphql_1.Query)(() => String),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], MaterialResolver.prototype, "hello", null);
 __decorate([
     (0, type_graphql_1.Query)(() => [material_1.Material]),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], MaterialResolver.prototype, "getMaterials", null);
-__decorate([
-    (0, type_graphql_1.Query)(() => [material_1.Material]),
-    __param(0, (0, type_graphql_1.Arg)("limit", () => type_graphql_1.Int, { nullable: true })),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", Promise)
-], MaterialResolver.prototype, "paginatedMaterials", null);
 __decorate([
     (0, type_graphql_1.Query)(() => material_1.Material),
     __param(0, (0, type_graphql_1.Arg)("id_material", () => type_graphql_1.Int)),
@@ -132,10 +109,12 @@ __decorate([
 __decorate([
     (0, type_graphql_1.Mutation)(() => material_1.Material),
     __param(0, (0, type_graphql_1.Arg)("data", () => MaterialInput_1.MaterialInput)),
+    __param(1, (0, type_graphql_1.PubSub)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [MaterialInput_1.MaterialInput]),
+    __metadata("design:paramtypes", [MaterialInput_1.MaterialInput,
+        type_graphql_1.PubSubEngine]),
     __metadata("design:returntype", Promise)
-], MaterialResolver.prototype, "newMaterial", null);
+], MaterialResolver.prototype, "subMaterial", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => material_1.Material, { nullable: true }),
     __param(0, (0, type_graphql_1.Arg)("id_material", () => type_graphql_1.Int)),
@@ -151,15 +130,6 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], MaterialResolver.prototype, "deleteMaterial", null);
-__decorate([
-    (0, type_graphql_1.Mutation)(() => material_1.Material),
-    __param(0, (0, type_graphql_1.Arg)("data", () => MaterialInput_1.MaterialInput)),
-    __param(1, (0, type_graphql_1.PubSub)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [MaterialInput_1.MaterialInput,
-        type_graphql_1.PubSubEngine]),
-    __metadata("design:returntype", Promise)
-], MaterialResolver.prototype, "subMaterial", null);
 MaterialResolver = __decorate([
     (0, type_graphql_1.Resolver)()
 ], MaterialResolver);

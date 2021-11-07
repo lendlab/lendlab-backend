@@ -10,25 +10,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserResponse = void 0;
-const user_1 = require("../entity/user");
 const type_graphql_1 = require("type-graphql");
-let UserFieldErrors = class UserFieldErrors {
+const user_1 = require("../entity/user");
+let UserErrors = class UserErrors {
 };
 __decorate([
     (0, type_graphql_1.Field)(),
     __metadata("design:type", String)
-], UserFieldErrors.prototype, "field", void 0);
+], UserErrors.prototype, "field", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
     __metadata("design:type", String)
-], UserFieldErrors.prototype, "message", void 0);
-UserFieldErrors = __decorate([
+], UserErrors.prototype, "message", void 0);
+UserErrors = __decorate([
     (0, type_graphql_1.ObjectType)()
-], UserFieldErrors);
+], UserErrors);
 let UserResponse = class UserResponse {
 };
 __decorate([
-    (0, type_graphql_1.Field)(() => [UserFieldErrors], { nullable: true }),
+    (0, type_graphql_1.Field)(() => [UserErrors], { nullable: true }),
     __metadata("design:type", Array)
 ], UserResponse.prototype, "errors", void 0);
 __decorate([

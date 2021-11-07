@@ -6,8 +6,6 @@ import {
   PubSubEngine,
   Query,
   Resolver,
-  Root,
-  Subscription,
 } from "type-graphql";
 import {createQueryBuilder, getRepository} from "typeorm";
 import {Lend} from "../../entity/lend";
@@ -43,17 +41,12 @@ export class LendResolver {
     return count;
   }
 
-  @Subscription({topics: "CREATE_LEND"})
-  newLendSubscription(@Root() payload: Lend): Lend {
-    return payload;
-  }
-
   @Mutation(() => Lend)
   async createLend(
     @Arg("data", () => LendInput) data: LendInput,
     @PubSub() pubsub: PubSubEngine
   ): Promise<Lend> {
-    const lend = Lend.create({...data}).save();
+    const lend = await Lend.create({...data}).save();
     pubsub.publish("CREATE_LEND", lend);
     return lend;
   }

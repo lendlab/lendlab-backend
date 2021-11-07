@@ -1,3 +1,5 @@
+import {createQueryBuilder, getRepository} from "typeorm";
+
 import {Reservation} from "../../entity/reservation";
 import {
   Arg,
@@ -8,16 +10,14 @@ import {
   PubSubEngine,
   Query,
   Resolver,
-  Root,
-  Subscription,
 } from "type-graphql";
 import {
   ReservationInput,
   ReservationSessionInput,
 } from "../../inputs/reservation/ReservationInput";
 import {ReservationEditInput} from "../../inputs/reservation/ReservationEditInput";
-import {MyContext} from "src/types/MyContext";
-import {createQueryBuilder} from "typeorm";
+import {MyContext} from "../../types/MyContext";
+import {ReservationResponse} from "../../errors/Reservation.errors";
 
 @Resolver()
 export class ReservationResolver {
@@ -28,10 +28,20 @@ export class ReservationResolver {
 
   @Query(() => [Reservation])
   async getReservations() {
-    const reservations = await Reservation.find({
-      relations: ["user", "material"],
-    });
-    return reservations;
+    //const reservations = await Reservation.find({
+    //  relations: ["user", "material"],
+    //});
+    // return reservations;
+
+    const rs = getRepository(Reservation)
+      .createQueryBuilder("reservation")
+      .innerJoinAndSelect("reservation.material", "material")
+      .innerJoinAndSelect("reservation.user", "user")
+      .innerJoinAndSelect("user.course", "course")
+      .innerJoinAndSelect("user.institution", "institution")
+      .getMany();
+
+    return rs;
   }
 
   @Query(() => Int)
@@ -52,21 +62,20 @@ export class ReservationResolver {
     return count;
   }
 
-  // change this newReservationSubscription(@Root() payload: Reservation): Reservation {
-
-  @Subscription({topics: "CREATE_RESERVATION"})
-  newReservationSubscription(@Root() payload: ReservationInput): ReservationInput {
-    return payload;
-  }
-
-  @Mutation(() => Reservation)
+  @Mutation(() => ReservationResponse, {nullable: false})
   async createReservation(
     @Arg("data", () => ReservationInput) data: ReservationInput,
     @PubSub() pubsub: PubSubEngine
-  ) {
+  ): Promise<ReservationResponse> {
     const reservation = await Reservation.create({...data}).save();
     pubsub.publish("CREATE_RESERVATION", reservation);
-    return reservation;
+
+    if (!reservation) {
+      return {
+        errors: [{field: "a", message: "a"}],
+      };
+    }
+    return {reservation};
   }
 
   //Reserva usando sessiones

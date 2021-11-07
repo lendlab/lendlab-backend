@@ -59,7 +59,9 @@ __decorate([
 ], Material.prototype, "estado", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => institution_1.Institution),
-    (0, typeorm_1.ManyToOne)(() => institution_1.Institution, (institution) => institution.material),
+    (0, typeorm_1.ManyToOne)(() => institution_1.Institution, (institution) => institution.material, {
+        onDelete: "CASCADE",
+    }),
     __metadata("design:type", institution_1.Institution)
 ], Material.prototype, "institution", void 0);
 __decorate([

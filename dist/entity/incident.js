@@ -47,7 +47,9 @@ __decorate([
 ], Incident.prototype, "date", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => material_1.Material),
-    (0, typeorm_1.ManyToOne)(() => material_1.Material, (material) => material.incident),
+    (0, typeorm_1.ManyToOne)(() => material_1.Material, (material) => material.incident, {
+        onDelete: "CASCADE",
+    }),
     __metadata("design:type", material_1.Material)
 ], Incident.prototype, "material", void 0);
 Incident = __decorate([

@@ -20,6 +20,7 @@ const index_1 = require("./resolvers/index");
 const cloudConncection_1 = require("./cloudConncection");
 const main = async () => {
     await (0, typeorm_1.createConnection)();
+    await (0, cloudConncection_1.cloudConnection)();
     if (!cloudConncection_1.cloudConnection) {
         throw new Error();
     }

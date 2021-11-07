@@ -36,6 +36,8 @@ export class Incident extends BaseEntity {
   date: Date;
 
   @Field(() => Material)
-  @ManyToOne(() => Material, (material) => material.incident)
+  @ManyToOne(() => Material, (material) => material.incident, {
+    onDelete: "CASCADE",
+  })
   material: Material;
 }

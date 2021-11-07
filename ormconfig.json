@@ -12,6 +12,18 @@
     "entities": ["./src/entity/*.*"]
   },
   {
+    "name": "local_do",
+    "type": "mysql",
+    "host": "lendlab-backend-do-user-10117491-0-bf77.b.db.ondigitalocean.com",
+    "port": 25060,
+    "username": "doadmin",
+    "password": "KBeyT3caZoCxT6rR",
+    "database": "defaultdb",
+    "synchronize": "true",
+    "logging": "true",
+    "entities": ["./src/entity/*.*"]
+  },
+  {
     "name": "default",
     "type": "mysql",
     "host": "lendlab-backend-do-user-10117491-0-bf77.b.db.ondigitalocean.com",

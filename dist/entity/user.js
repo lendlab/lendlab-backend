@@ -14,12 +14,13 @@ const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const course_1 = require("./course");
 const institution_1 = require("./institution");
-const laboratorist_1 = require("./laboratorist");
 const reservation_1 = require("./reservation");
 var userType;
 (function (userType) {
     userType["laboratorista"] = "Laboratorista";
     userType["alumno"] = "Alumno";
+    userType["director"] = "Director";
+    userType["admin"] = "Admin";
 })(userType || (userType = {}));
 let User = class User extends typeorm_1.BaseEntity {
 };
@@ -76,10 +77,6 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => reservation_1.Reservation, (reservation) => reservation.user),
     __metadata("design:type", Promise)
 ], User.prototype, "reservation", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => laboratorist_1.Laboratorist, (lab) => lab.ci_laboratorist),
-    __metadata("design:type", laboratorist_1.Laboratorist)
-], User.prototype, "laboratorist", void 0);
 User = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()

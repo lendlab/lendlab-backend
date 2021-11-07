@@ -8,7 +8,6 @@ import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import {Laboratorist} from "./laboratorist";
 import {Reservation} from "./reservation";
 
 @ObjectType()
@@ -29,10 +28,6 @@ export class Lend extends BaseEntity {
   @Field(() => String, {nullable: true})
   @Column({nullable: true})
   fecha_devolucion: Date;
-
-  @Field(() => String)
-  @ManyToOne(() => Laboratorist, (laboratorist) => laboratorist.ci_laboratorist)
-  laboratorist: Laboratorist;
 
   @Field(() => Reservation, {nullable: true})
   @ManyToOne(() => Reservation, (reservation) => reservation.lend, {

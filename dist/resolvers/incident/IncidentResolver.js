@@ -17,6 +17,7 @@ const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const incident_input_1 = require("../../inputs/incident/incident.input");
 const incident_1 = require("../../entity/incident");
+const incident_update_input_1 = require("../../inputs/incident/incident.update.input");
 let IncidentResolver = class IncidentResolver {
     async getIncidents() {
         const incident = await (0, typeorm_1.getRepository)(incident_1.Incident)
@@ -26,17 +27,22 @@ let IncidentResolver = class IncidentResolver {
             .getMany();
         return incident;
     }
-    async newIncident(data) {
-        const incident = incident_1.Incident.create(Object.assign({}, data)).save();
+    async newIncident(data, pubsub) {
+        const incident = await incident_1.Incident.create(Object.assign({}, data)).save();
+        pubsub.publish("CREATE_INCIDENT", incident);
         return incident;
     }
-    async updateIncident() {
-        const incident = incident_1.Incident.create({}).save();
-        return incident;
+    async updateIncident(id_incident, data) {
+        await incident_1.Incident.update({ id_incident }, data);
+        const updatedIncident = await incident_1.Incident.findOne({ id_incident });
+        if (!updatedIncident) {
+            throw new Error();
+        }
+        return updatedIncident;
     }
-    async deleteIncident() {
-        const incident = incident_1.Incident.create({}).save();
-        return incident;
+    async deleteIncident(id_incident) {
+        await incident_1.Incident.delete({ id_incident });
+        return true;
     }
 };
 __decorate([
@@ -48,20 +54,25 @@ __decorate([
 __decorate([
     (0, type_graphql_1.Mutation)(() => incident_1.Incident),
     __param(0, (0, type_graphql_1.Arg)("data")),
+    __param(1, (0, type_graphql_1.PubSub)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [incident_input_1.IncidentInput]),
+    __metadata("design:paramtypes", [incident_input_1.IncidentInput,
+        type_graphql_1.PubSubEngine]),
     __metadata("design:returntype", Promise)
 ], IncidentResolver.prototype, "newIncident", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => incident_1.Incident),
+    (0, type_graphql_1.Mutation)(() => incident_1.Incident, { nullable: true }),
+    __param(0, (0, type_graphql_1.Arg)("id_incident", () => type_graphql_1.Int)),
+    __param(1, (0, type_graphql_1.Arg)("data", () => incident_update_input_1.UpdateIncidentInput)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Number, incident_update_input_1.UpdateIncidentInput]),
     __metadata("design:returntype", Promise)
 ], IncidentResolver.prototype, "updateIncident", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => incident_1.Incident),
+    (0, type_graphql_1.Mutation)(() => Boolean),
+    __param(0, (0, type_graphql_1.Arg)("id_incident", () => type_graphql_1.Int)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], IncidentResolver.prototype, "deleteIncident", null);
 IncidentResolver = __decorate([

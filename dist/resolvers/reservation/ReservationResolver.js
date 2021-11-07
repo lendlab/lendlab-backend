@@ -13,20 +13,25 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReservationResolver = void 0;
+const typeorm_1 = require("typeorm");
 const reservation_1 = require("../../entity/reservation");
 const type_graphql_1 = require("type-graphql");
 const ReservationInput_1 = require("../../inputs/reservation/ReservationInput");
 const ReservationEditInput_1 = require("../../inputs/reservation/ReservationEditInput");
-const typeorm_1 = require("typeorm");
+const Reservation_errors_1 = require("../../errors/Reservation.errors");
 let ReservationResolver = class ReservationResolver {
     async hello() {
         return "hello";
     }
     async getReservations() {
-        const reservations = await reservation_1.Reservation.find({
-            relations: ["user", "material"],
-        });
-        return reservations;
+        const rs = (0, typeorm_1.getRepository)(reservation_1.Reservation)
+            .createQueryBuilder("reservation")
+            .innerJoinAndSelect("reservation.material", "material")
+            .innerJoinAndSelect("reservation.user", "user")
+            .innerJoinAndSelect("user.course", "course")
+            .innerJoinAndSelect("user.institution", "institution")
+            .getMany();
+        return rs;
     }
     async getMaxId() {
         const { max } = await (0, typeorm_1.createQueryBuilder)("reservation")
@@ -40,13 +45,15 @@ let ReservationResolver = class ReservationResolver {
             .getRawOne();
         return count;
     }
-    newReservationSubscription(payload) {
-        return payload;
-    }
     async createReservation(data, pubsub) {
         const reservation = await reservation_1.Reservation.create(Object.assign({}, data)).save();
         pubsub.publish("CREATE_RESERVATION", reservation);
-        return reservation;
+        if (!reservation) {
+            return {
+                errors: [{ field: "a", message: "a" }],
+            };
+        }
+        return { reservation };
     }
     async createReservationUserSession(data, { req }) {
         const ci = req.session.cedula;
@@ -91,14 +98,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ReservationResolver.prototype, "getReservationsCount", null);
 __decorate([
-    (0, type_graphql_1.Subscription)({ topics: "CREATE_RESERVATION" }),
-    __param(0, (0, type_graphql_1.Root)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [reservation_1.Reservation]),
-    __metadata("design:returntype", reservation_1.Reservation)
-], ReservationResolver.prototype, "newReservationSubscription", null);
-__decorate([
-    (0, type_graphql_1.Mutation)(() => reservation_1.Reservation),
+    (0, type_graphql_1.Mutation)(() => Reservation_errors_1.ReservationResponse, { nullable: false }),
     __param(0, (0, type_graphql_1.Arg)("data", () => ReservationInput_1.ReservationInput)),
     __param(1, (0, type_graphql_1.PubSub)()),
     __metadata("design:type", Function),

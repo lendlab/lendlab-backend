@@ -47,7 +47,9 @@ export class Material extends BaseEntity {
   estado: string;
 
   @Field(() => Institution)
-  @ManyToOne(() => Institution, (institution) => institution.material)
+  @ManyToOne(() => Institution, (institution) => institution.material, {
+    onDelete: "CASCADE",
+  })
   institution: Institution;
 
   @OneToMany(() => Reservation, (reservation) => reservation.material)

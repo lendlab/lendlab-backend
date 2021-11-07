@@ -19,7 +19,7 @@ __decorate([
 ], ReservationInputa.prototype, "id_reserva", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => Date),
-    __metadata("design:type", String)
+    __metadata("design:type", Date)
 ], ReservationInputa.prototype, "fecha_hora", void 0);
 ReservationInputa = __decorate([
     (0, type_graphql_1.InputType)()
