@@ -49,6 +49,10 @@ export class ReservationResolver {
     const {max} = await createQueryBuilder("reservation")
       .select("MAX(id_reserva)", "max")
       .getRawOne();
+    
+      if(!max) {
+        return 0;
+      }
 
     return max;
   }
