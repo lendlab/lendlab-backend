@@ -6,7 +6,7 @@ class ReservationInputa {
   id_reserva: number;
 
   @Field(() => Date)
-  fecha_hora: Date;
+  fecha_hora: String;
 }
 
 @InputType()
