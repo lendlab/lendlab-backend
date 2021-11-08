@@ -81,10 +81,6 @@ export class LendResolver {
     await Lend.update({id_lend, fecha_hora_presta}, data);
     const lend = await Lend.findOne({id_lend, fecha_hora_presta});
 
-    if (!lend) {
-      return null;
-    }
-
     return lend;
   }
 
