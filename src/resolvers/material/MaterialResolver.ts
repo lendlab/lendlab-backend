@@ -48,7 +48,7 @@ export class MaterialResolver {
     const material = getRepository(Material)
       .createQueryBuilder("material")
       .innerJoinAndSelect("material.institution", "institution")
-      .where("material.institution = :institutionId", { institutionId: id_institution})
+      .where("material.institution.id_institution = :institutionId", { institutionId: id_institution})
       .getMany();
 
     return material;
