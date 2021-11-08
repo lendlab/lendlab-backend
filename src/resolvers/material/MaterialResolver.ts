@@ -43,12 +43,12 @@ export class MaterialResolver {
 
   @Query(() => Material)
   async getMaterialByInstitution(
-    @Arg("id_material", () => Int) id_material: number
+    @Arg("id_institution", () => Int) id_institution: number
   ) {
     const material = getRepository(Material)
       .createQueryBuilder("material")
       .innerJoinAndSelect("material.institution", "institution")
-      .where(`institution.id_institution = ${id_material}`)
+      .where(`institution.id_institution = ${id_institution}`)
       .getOne();
 
     return material;
