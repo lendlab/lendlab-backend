@@ -12,9 +12,6 @@ class ReservationUpdateInput {
 @InputType()
 export class LendUpdateInput {
   @Field(() => String, {nullable: true})
-  fecha_hora_presta: Date;
-
-  @Field(() => String, {nullable: true})
   fecha_vencimiento: Date;
 
   @Field(() => String, {nullable: true})
