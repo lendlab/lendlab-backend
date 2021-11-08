@@ -75,11 +75,11 @@ export class LendResolver {
   @Mutation(() => LendResponse)
   async updateLend(
     @Arg("id_lend", () => Int) id_lend: number,
-    @Arg("fecha_hora_presta", () => Date) fecha_hora_presta: string,
+    @Arg("fecha_hora_presta", () => String) fecha_hora_presta: string,
     @Arg("data", () => LendUpdateInput) data: LendUpdateInput
   ) {
     await Lend.update({id_lend, fecha_hora_presta}, data);
-    const lend = Lend.findOne({id_lend, fecha_hora_presta});
+    const lend = Lend.findOne({id_lend });
 
     if (!lend) {
       return null;
