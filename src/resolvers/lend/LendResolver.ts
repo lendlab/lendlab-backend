@@ -29,6 +29,7 @@ export class LendResolver {
       .innerJoinAndSelect("reservation.user", "user")
       .innerJoinAndSelect("lend.laboratorist", "laboratorist")
       .where("lend.laboratoristCedula")
+      .orderBy("reservation.fecha_hora_presta", "DESC")
       .getMany();
 
     // SELECT * from lend JOIN reservation on lend.reservationIdReserva = reservation.id_reserva JOIN user ON user.cedula = reservation.userCedula
@@ -49,6 +50,7 @@ export class LendResolver {
       .where("lend.institution.id_institution = :institutionId", {
         institutionId: id_institution,
       })
+      .orderBy("reservation.fecha_hora_presta", "DESC")
       .getMany();
 
     // SELECT * from lend JOIN reservation on lend.reservationIdReserva = reservation.id_reserva JOIN user ON user.cedula = reservation.userCedula
@@ -65,6 +67,7 @@ export class LendResolver {
       .innerJoinAndSelect("reservation.user", "user")
       .innerJoinAndSelect("lend.laboratorist", "laboratorist")
       .where("reservation.user.cedula = :cedula", {cedula: cedula})
+      .orderBy("reservation.fecha_hora_presta", "DESC")
       .getMany();
 
     // SELECT * from lend JOIN reservation on lend.reservationIdReserva = reservation.id_reserva JOIN user ON user.cedula = reservation.userCedula
@@ -97,6 +100,7 @@ export class LendResolver {
     @Arg("fecha_hora_presta", () => String) fecha_hora_presta: Date,
     @Arg("data", () => LendUpdateInput) data: LendUpdateInput
   ) {
+<<<<<<< HEAD
     //await getRepository(Lend)
     //  .createQueryBuilder("lend")
     //  .update(Lend)
@@ -127,6 +131,17 @@ export class LendResolver {
     //}
 
     return lend2;
+=======
+
+    await Lend.update({id_lend, fecha_hora_presta}, data);
+    const lend = Lend.findOne({id_lend, fecha_hora_presta});
+
+    if (!lend) {
+      return null;
+    }
+
+    return lend;
+>>>>>>> 5d84bbca483aa8790690dbcce1eb748e1b798e1b
   }
 
   @Mutation(() => Boolean)
