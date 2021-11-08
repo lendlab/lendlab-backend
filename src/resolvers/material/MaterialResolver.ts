@@ -41,7 +41,7 @@ export class MaterialResolver {
     return material;
   }
 
-  @Query(() => Material)
+  @Query(() => [Material])
   async getMaterialsByInstitution(
     @Arg("id_institution", () => Int) id_institution: number
   ) {
