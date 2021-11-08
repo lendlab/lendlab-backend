@@ -21,7 +21,7 @@ export class LendResolver {
   }
 
   @Query(() => [Lend])
-  async lend() {
+  async getLends() {
     const lend = await getRepository(Lend)
       .createQueryBuilder("lend")
       .innerJoinAndSelect("lend.reservation", "reservation")
@@ -36,20 +36,37 @@ export class LendResolver {
   }
 
   @Query(() => [Lend])
-  async getLendByInstitution(
+  async getLendsByInstitution(
     @Arg("id_institution", () => Int) id_institution: number
   ) {
-    const lend = await getRepository(Lend)
+    const lends = await getRepository(Lend)
       .createQueryBuilder("lend")
       .innerJoinAndSelect("lend.reservation", "reservation")
       .innerJoinAndSelect("lend.institution", "institution")
       .innerJoinAndSelect("reservation.material", "material")
       .innerJoinAndSelect("reservation.user", "user")
-      .where(`institution.id_institution = ${id_institution}`)
+      .where("lend.institution.id_institution = :firstName", { institutionId: id_institution })
       .getMany();
 
     // SELECT * from lend JOIN reservation on lend.reservationIdReserva = reservation.id_reserva JOIN user ON user.cedula = reservation.userCedula
-    return lend;
+    return lends;
+  }
+
+  @Query(() => [Lend])
+  async getUserLends(
+    @Arg("cedula", () => Int) cedula: number
+  ) {
+    const lends = await getRepository(Lend)
+      .createQueryBuilder("lend")
+      .innerJoinAndSelect("lend.reservation", "reservation")
+      .innerJoinAndSelect("lend.institution", "institution")
+      .innerJoinAndSelect("reservation.material", "material")
+      .innerJoinAndSelect("reservation.user", "user")
+      .where("lend.reservation.cedula = :cedula", { cedula: cedula })
+      .getMany();
+
+    // SELECT * from lend JOIN reservation on lend.reservationIdReserva = reservation.id_reserva JOIN user ON user.cedula = reservation.userCedula
+    return lends;
   }
 
   @Query(() => Int)
@@ -72,7 +89,7 @@ export class LendResolver {
     return lend;
   }
 
-  @Mutation(() => LendResponse)
+  @Mutation(() => LendResponse, {nullable: true})
   async updateLend(
     @Arg("id_lend", () => Int) id_lend: number,
     @Arg("fecha_hora_presta", () => String) fecha_hora_presta: Date,
