@@ -98,9 +98,9 @@ export class LendResolver {
     @Arg("fecha_hora_presta", () => String) fecha_hora_presta: Date,
     @Arg("data", () => LendUpdateInput) data: LendUpdateInput
   ) {
-    
+
     await Lend.update({id_lend, fecha_hora_presta}, data);
-    const lend = await Lend.findOne({id_lend, fecha_hora_presta});
+    const lend = Lend.findOne({id_lend, fecha_hora_presta});
 
     if (!lend) {
       return null;
