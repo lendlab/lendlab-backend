@@ -92,7 +92,6 @@ export class RegisterResolver {
       institution: data.institution,
       course: data.course,
     })
-    .returning("*")
     .execute();
   
     user = result.raw[0];
