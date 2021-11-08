@@ -53,6 +53,20 @@ export class RegisterResolver {
     return laboratorists;
   }
 
+  @Query(() => [User])
+  async getLaboratoristsByInstitution(@Arg("id_institution", () => Int) id_institution: number) {
+
+    const laboratorists = getRepository(User)
+      .createQueryBuilder("user")
+      .innerJoinAndSelect("user.course", "course")
+      .innerJoinAndSelect("user.institution", "institution")
+      .where(`user.tipo_usuario = "laboratorista"`)
+      .andWhere("user.institution.id_institution = :institution", { institution: {id_institution} })
+      .getMany();
+
+    return laboratorists;
+  }
+
   @Mutation(() => UserResponse)
   async register(
     @Arg("data", () => UserInput)
