@@ -67,6 +67,32 @@ export class RegisterResolver {
     return laboratorists;
   }
 
+  @Query(() => [User])
+  async getStudents() {
+    const students = getRepository(User)
+      .createQueryBuilder("user")
+      .innerJoinAndSelect("user.course", "course")
+      .innerJoinAndSelect("user.institution", "institution")
+      .where("user.tipo_usuario = :tipo", { tipo: "Alumno" })
+      .getMany();
+
+    return students;
+  }
+
+  @Query(() => [User])
+  async getStudentsByInstitution(@Arg("id_institution", () => Int) id_institution: number) {
+
+    const students = getRepository(User)
+      .createQueryBuilder("user")
+      .innerJoinAndSelect("user.course", "course")
+      .innerJoinAndSelect("user.institution", "institution")
+      .where("user.tipo_usuario = :tipo", { tipo: "Alumno" })
+      .andWhere("user.institution.id_institution = :institution", { institution: {id_institution} })
+      .getMany();
+
+    return students;
+  }
+
   @Mutation(() => UserResponse)
   async register(
     @Arg("data", () => UserInput)
