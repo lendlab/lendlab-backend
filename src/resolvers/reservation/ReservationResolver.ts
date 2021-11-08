@@ -67,7 +67,7 @@ export class ReservationResolver {
     @Arg("cedula", () => Int) cedula: number
   ) {
     const reservations = await getRepository(Reservation)
-      .createQueryBuilder("lend")
+      .createQueryBuilder("reservation")
       .innerJoinAndSelect("reservation.institution", "reservationInstitution")
       .innerJoinAndSelect("reservation.material", "material")
       .innerJoinAndSelect("reservation.user", "user")
