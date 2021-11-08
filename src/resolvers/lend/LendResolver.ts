@@ -65,7 +65,7 @@ export class LendResolver {
       .innerJoinAndSelect("reservation.material", "material")
       .innerJoinAndSelect("reservation.user", "user")
       .innerJoinAndSelect("lend.laboratorist", "laboratorist")
-      .where("lend.reservation.user.cedula = :cedula", { cedula: cedula })
+      .where("reservation.user.cedula = :cedula", { cedula: cedula })
       .getMany();
 
     // SELECT * from lend JOIN reservation on lend.reservationIdReserva = reservation.id_reserva JOIN user ON user.cedula = reservation.userCedula
