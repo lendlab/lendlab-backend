@@ -28,6 +28,7 @@ export class LendResolver {
       .innerJoinAndSelect("lend.institution", "institution")
       .innerJoinAndSelect("reservation.material", "material")
       .innerJoinAndSelect("reservation.user", "user")
+      .innerJoinAndSelect("lend.laboratorist", "laboratorist")
       .where("lend.laboratoristCedula")
       .getMany();
 
@@ -45,6 +46,7 @@ export class LendResolver {
       .innerJoinAndSelect("lend.institution", "institution")
       .innerJoinAndSelect("reservation.material", "material")
       .innerJoinAndSelect("reservation.user", "user")
+      .innerJoinAndSelect("lend.laboratorist", "laboratorist")
       .where("lend.institution.id_institution = :firstName", { institutionId: id_institution })
       .getMany();
 
@@ -62,6 +64,7 @@ export class LendResolver {
       .innerJoinAndSelect("lend.institution", "institution")
       .innerJoinAndSelect("reservation.material", "material")
       .innerJoinAndSelect("reservation.user", "user")
+      .innerJoinAndSelect("lend.laboratorist", "laboratorist")
       .where("lend.reservation.cedula = :cedula", { cedula: cedula })
       .getMany();
 
