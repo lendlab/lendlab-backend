@@ -14,7 +14,7 @@ export const cloudConnection = async () => {
     connectTimeout: 60 * 60 * 1000,
     acquireTimeout: 60 * 60 * 1000,
     synchronize: true,
-    logging: true,
+    logging: false,
     ssl: {ca: fs.readFileSync("./ca-certificate.crt")},
     entities: [__dirname, "./dist/entity/*.*"],
   });

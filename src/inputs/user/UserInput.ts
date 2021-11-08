@@ -7,12 +7,6 @@ class user_course {
 }
 
 @InputType()
-class user_institution {
-  @Field()
-  id_institution: number;
-}
-
-@InputType()
 export class UserInput {
   @Field()
   cedula: number;
@@ -37,9 +31,6 @@ export class UserInput {
 
   @Field()
   fecha_nacimiento: string;
-
-  @Field(() => user_institution)
-  institution: user_institution;
 
   @Field(() => user_course)
   course: user_course;

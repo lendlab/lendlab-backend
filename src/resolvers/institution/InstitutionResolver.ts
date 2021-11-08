@@ -1,9 +1,7 @@
 import {Arg, Int, Mutation, Query, Resolver} from "type-graphql";
 
-import {Corresponds} from "../../entity/corresponds";
 import {Institution} from "../../entity/institution";
 import {
-  AddCourseToInstitution,
   InstitutionInput,
   InstitutionUpdateInput,
 } from "../../inputs/institution/InstitutionInput";
@@ -42,13 +40,5 @@ export class InstitutionResolver {
   ): Promise<Boolean> {
     await Institution.delete({id_institution});
     return true;
-  }
-
-  @Mutation(() => Corresponds)
-  async addCourseToInstitution(
-    @Arg("data") data: AddCourseToInstitution
-  ): Promise<Corresponds> {
-    const addCourseToInstitution = await Corresponds.create({...data}).save();
-    return addCourseToInstitution;
   }
 }

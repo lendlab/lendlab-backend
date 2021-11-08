@@ -6,12 +6,11 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import {Corresponds} from "./corresponds";
+import {Course} from "./course";
 import {Lend} from "./lend";
 import {Material} from "./material";
 import {Reservation} from "./reservation";
 import {Room} from "./room";
-import {User} from "./user";
 
 @ObjectType()
 @Entity()
@@ -36,12 +35,6 @@ export class Institution extends BaseEntity {
   @Column()
   phone: number;
 
-  @OneToMany(() => User, (user) => user.institution)
-  user: Promise<User[]>;
-
-  @OneToMany(() => Corresponds, (corresponds) => corresponds.institution)
-  corresponds: Promise<Corresponds[]>;
-
   @OneToMany(() => Material, (material) => material.institution)
   material: Promise<Material[]>;
 
@@ -53,4 +46,9 @@ export class Institution extends BaseEntity {
 
   @OneToMany(() => Lend, (lend) => lend.institution)
   lend: Promise<Lend>;
+
+  @OneToMany(() => Course, (course) => course.institution, {
+    onDelete: "CASCADE",
+  })
+  course: Promise<Course>;
 }

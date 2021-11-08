@@ -7,12 +7,6 @@ class user_course_update {
 }
 
 @InputType()
-class user_institution_update {
-  @Field({nullable: true})
-  id_institution: number;
-}
-
-@InputType()
 export class UserUpdateInput {
   @Field({nullable: true})
   nombre: string;
@@ -34,9 +28,6 @@ export class UserUpdateInput {
 
   @Field({nullable: true})
   fecha_nacimiento: string;
-
-  @Field(() => user_institution_update, {nullable: true})
-  institution: user_institution_update;
 
   @Field(() => user_course_update, {nullable: true})
   course: user_course_update;

@@ -26,12 +26,13 @@ export class CourseResolver {
     //setting up token into course variable
     const token = data.course_token + genToken(10);
 
-    const newCourse = await Course.create({
+    const course = await Course.create({
       course_name: data.course_name,
       course_token: token,
+      institution: data.institution,
     }).save();
 
-    return newCourse;
+    return course;
   }
 
   @Mutation(() => Course)

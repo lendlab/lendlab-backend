@@ -14,8 +14,8 @@ export class MeResolver {
 
     const user = getRepository(User)
       .createQueryBuilder("user")
-      .innerJoinAndSelect("user.institution", "institution")
       .innerJoinAndSelect("user.course", "course")
+      .innerJoinAndSelect("course.institution", "institution")
       .where(`user.cedula = ${ci}`)
       .getOne();
 

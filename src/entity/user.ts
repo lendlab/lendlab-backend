@@ -8,7 +8,6 @@ import {
   ManyToOne,
 } from "typeorm";
 import {Course} from "./course";
-import {Institution} from "./institution";
 import {Lend} from "./lend";
 import {Occupies} from "./occupies";
 import {Reservation} from "./reservation";
@@ -53,10 +52,6 @@ export class User extends BaseEntity {
   @Field()
   @Column({type: "date"})
   fecha_nacimiento: String;
-
-  @Field(() => Institution)
-  @ManyToOne(() => Institution, (institution) => institution.user)
-  institution: Institution;
 
   @Field(() => Course)
   @ManyToOne(() => Course, (course) => course.user)

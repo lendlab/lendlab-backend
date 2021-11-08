@@ -22,8 +22,8 @@ export class RegisterResolver {
   async getUsers() {
     const user = getRepository(User)
       .createQueryBuilder("user")
-      .innerJoinAndSelect("user.institution", "institution")
       .innerJoinAndSelect("user.course", "course")
+      .innerJoinAndSelect("course.corresponds", "corresponds")
       .getMany();
 
     return user;
@@ -47,21 +47,24 @@ export class RegisterResolver {
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.course", "course")
       .innerJoinAndSelect("user.institution", "institution")
-      .where("user.tipo_usuario = :tipo", { tipo: "Laboratorista" })
+      .where("user.tipo_usuario = :tipo", {tipo: "Laboratorista"})
       .getMany();
 
     return laboratorists;
   }
 
   @Query(() => [User])
-  async getLaboratoristsByInstitution(@Arg("id_institution", () => Int) id_institution: number) {
-
+  async getLaboratoristsByInstitution(
+    @Arg("id_institution", () => Int) id_institution: number
+  ) {
     const laboratorists = getRepository(User)
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.course", "course")
       .innerJoinAndSelect("user.institution", "institution")
-      .where("user.tipo_usuario = :tipo", { tipo: "Laboratorista" })
-      .andWhere("user.institution.id_institution = :institution", { institution: {id_institution} })
+      .where("user.tipo_usuario = :tipo", {tipo: "Laboratorista"})
+      .andWhere("user.institution.id_institution = :institution", {
+        institution: {id_institution},
+      })
       .getMany();
 
     return laboratorists;
@@ -72,22 +75,24 @@ export class RegisterResolver {
     const students = getRepository(User)
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.course", "course")
-      .innerJoinAndSelect("user.institution", "institution")
-      .where("user.tipo_usuario = :tipo", { tipo: "Alumno" })
+      .where("user.tipo_usuario = :tipo", {tipo: "Alumno"})
       .getMany();
 
     return students;
   }
 
   @Query(() => [User])
-  async getStudentsByInstitution(@Arg("id_institution", () => Int) id_institution: number) {
-
+  async getStudentsByInstitution(
+    @Arg("id_institution", () => Int) id_institution: number
+  ) {
     const students = getRepository(User)
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.course", "course")
       .innerJoinAndSelect("user.institution", "institution")
-      .where("user.tipo_usuario = :tipo", { tipo: "Alumno" })
-      .andWhere("user.institution.id_institution = :institution", { institution: {id_institution} })
+      .where("user.tipo_usuario = :tipo", {tipo: "Alumno"})
+      .andWhere("user.institution.id_institution = :institution", {
+        institution: {id_institution},
+      })
       .getMany();
 
     return students;
@@ -110,18 +115,15 @@ export class RegisterResolver {
       telefono: data.telefono,
       tipo_usuario: data.tipo_usuario,
       fecha_nacimiento: data.fecha_nacimiento,
-      institution: data.institution,
       course: data.course,
     }).save();
 
-
     const user = await getRepository(User)
       .createQueryBuilder("user")
-      .innerJoinAndSelect("user.institution", "institution")
       .innerJoinAndSelect("user.course", "course")
-      .where("user.cedula = :cedula", { cedula: result.cedula })
+      .innerJoinAndSelect("course.institution", "institution")
+      .where("user.cedula = :cedula", {cedula: result.cedula})
       .getOne();
-
 
     pubsub.publish("CREATE_USER", user);
     //const validationSchema = yup.object().shape({
