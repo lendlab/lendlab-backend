@@ -8,7 +8,7 @@ import {
   Resolver,
 } from "type-graphql";
 import argon2 from "argon2";
-import {getRepository} from "typeorm";
+import {getConnection, getRepository} from "typeorm";
 //import yup from "yup";
 
 import {User} from "../../entity/user";
@@ -60,8 +60,13 @@ export class RegisterResolver {
     @PubSub() pubsub: PubSubEngine
   ): Promise<UserResponse> {
     const hashedPassword = await argon2.hash(data.password);
+    let user;
 
-    const user = await User.create({
+    const result = await getConnection()
+    .createQueryBuilder()
+    .insert()
+    .into(User)
+    .values({
       cedula: data.cedula,
       nombre: data.nombre,
       password: hashedPassword,
@@ -72,7 +77,23 @@ export class RegisterResolver {
       fecha_nacimiento: data.fecha_nacimiento,
       institution: data.institution,
       course: data.course,
-    }).save();
+    })
+    .returning("*")
+    .execute();
+  
+    user = result.raw[0];
+    // const user = await User.create({
+    //   cedula: data.cedula,
+    //   nombre: data.nombre,
+    //   password: hashedPassword,
+    //   direccion: data.direccion,
+    //   foto_usuario: data.foto_usuario,
+    //   telefono: data.telefono,
+    //   tipo_usuario: data.tipo_usuario,
+    //   fecha_nacimiento: data.fecha_nacimiento,
+    //   institution: data.institution,
+    //   course: data.course,
+    // }).save();
 
     pubsub.publish("CREATE_USER", user);
 
