@@ -93,6 +93,8 @@ export class RegisterResolver {
       course: data.course,
     })
     .execute();
+
+    console.log(result)
   
     user = result.raw[0];
     // const user = await User.create({
