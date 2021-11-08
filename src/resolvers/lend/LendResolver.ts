@@ -98,28 +98,9 @@ export class LendResolver {
     @Arg("fecha_hora_presta", () => String) fecha_hora_presta: Date,
     @Arg("data", () => LendUpdateInput) data: LendUpdateInput
   ) {
-    await getRepository(Lend)
-      .createQueryBuilder("lend")
-      .update(Lend)
-      .set({...data})
-      .where("lend.id_lend = :id", {id: id_lend})
-      .andWhere("lend.fecha_hora_presta = :fecha_hora", {
-        fecha_hora: fecha_hora_presta,
-      })
-      .execute();
-
-    const lend = await getRepository(Lend)
-      .createQueryBuilder("lend")
-      .innerJoinAndSelect("lend.reservation", "reservation")
-      .innerJoinAndSelect("lend.institution", "institution")
-      .innerJoinAndSelect("reservation.material", "material")
-      .innerJoinAndSelect("reservation.user", "user")
-      .innerJoinAndSelect("lend.laboratorist", "laboratorist")
-      .where("lend.id_lend = :id", {id: id_lend})
-      .andWhere("lend.fecha_hora_presta = :fecha_hora", {
-        fecha_hora: fecha_hora_presta,
-      })
-      .getOne();
+    
+    await Lend.update({id_lend, fecha_hora_presta}, data);
+    const lend = await Lend.findOne({id_lend, fecha_hora_presta});
 
     if (!lend) {
       return null;
