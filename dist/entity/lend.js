@@ -23,17 +23,17 @@ __decorate([
     __metadata("design:type", Number)
 ], Lend.prototype, "id_lend", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => String, { nullable: true }),
+    (0, type_graphql_1.Field)(() => Date, { nullable: true }),
     (0, typeorm_1.PrimaryColumn)({ default: () => "now()", type: "timestamp" }),
     __metadata("design:type", Date)
 ], Lend.prototype, "fecha_hora_presta", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => String, { nullable: true }),
+    (0, type_graphql_1.Field)(() => Date, { nullable: true }),
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], Lend.prototype, "fecha_vencimiento", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => String, { nullable: true }),
+    (0, type_graphql_1.Field)(() => Date, { nullable: true }),
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Date)
 ], Lend.prototype, "fecha_devolucion", void 0);

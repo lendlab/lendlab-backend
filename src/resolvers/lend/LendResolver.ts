@@ -47,7 +47,9 @@ export class LendResolver {
       .innerJoinAndSelect("reservation.material", "material")
       .innerJoinAndSelect("reservation.user", "user")
       .innerJoinAndSelect("lend.laboratorist", "laboratorist")
-      .where("lend.institution.id_institution = :institutionId", { institutionId: id_institution })
+      .where("lend.institution.id_institution = :institutionId", {
+        institutionId: id_institution,
+      })
       .getMany();
 
     // SELECT * from lend JOIN reservation on lend.reservationIdReserva = reservation.id_reserva JOIN user ON user.cedula = reservation.userCedula
@@ -55,9 +57,7 @@ export class LendResolver {
   }
 
   @Query(() => [Lend])
-  async getUserLends(
-    @Arg("cedula", () => Int) cedula: number
-  ) {
+  async getUserLends(@Arg("cedula", () => Int) cedula: number) {
     const lends = await getRepository(Lend)
       .createQueryBuilder("lend")
       .innerJoinAndSelect("lend.reservation", "reservation")
@@ -65,7 +65,7 @@ export class LendResolver {
       .innerJoinAndSelect("reservation.material", "material")
       .innerJoinAndSelect("reservation.user", "user")
       .innerJoinAndSelect("lend.laboratorist", "laboratorist")
-      .where("reservation.user.cedula = :cedula", { cedula: cedula })
+      .where("reservation.user.cedula = :cedula", {cedula: cedula})
       .getMany();
 
     // SELECT * from lend JOIN reservation on lend.reservationIdReserva = reservation.id_reserva JOIN user ON user.cedula = reservation.userCedula
@@ -99,11 +99,14 @@ export class LendResolver {
     @Arg("data", () => LendUpdateInput) data: LendUpdateInput
   ) {
     await getRepository(Lend)
-    .createQueryBuilder("lend").update(Lend)
-    .set({ ...data })
-    .where("lend.id_lend = :id", { id: id_lend })
-    .andWhere('lend.fecha_hora_presta = :fecha_hora', { fecha_hora: fecha_hora_presta })
-    .execute();
+      .createQueryBuilder("lend")
+      .update(Lend)
+      .set({...data})
+      .where("lend.id_lend = :id", {id: id_lend})
+      .andWhere("lend.fecha_hora_presta = :fecha_hora", {
+        fecha_hora: fecha_hora_presta,
+      })
+      .execute();
 
     const lend = await getRepository(Lend)
       .createQueryBuilder("lend")
@@ -112,11 +115,13 @@ export class LendResolver {
       .innerJoinAndSelect("reservation.material", "material")
       .innerJoinAndSelect("reservation.user", "user")
       .innerJoinAndSelect("lend.laboratorist", "laboratorist")
-      .where("lend.id_lend = :id", { id: id_lend })
-      .andWhere('lend.fecha_hora_presta = :fecha_hora', { fecha_hora: fecha_hora_presta })
+      .where("lend.id_lend = :id", {id: id_lend})
+      .andWhere("lend.fecha_hora_presta = :fecha_hora", {
+        fecha_hora: fecha_hora_presta,
+      })
       .getOne();
 
-    if(!lend) {
+    if (!lend) {
       return null;
     }
 

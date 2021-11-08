@@ -46,13 +46,42 @@ let RegisterResolver = class RegisterResolver {
             .createQueryBuilder("user")
             .innerJoinAndSelect("user.course", "course")
             .innerJoinAndSelect("user.institution", "institution")
-            .where(`user.tipo_usuario = "laboratorista"`)
+            .where("user.tipo_usuario = :tipo", { tipo: "Laboratorista" })
             .getMany();
         return laboratorists;
     }
+    async getLaboratoristsByInstitution(id_institution) {
+        const laboratorists = (0, typeorm_1.getRepository)(user_1.User)
+            .createQueryBuilder("user")
+            .innerJoinAndSelect("user.course", "course")
+            .innerJoinAndSelect("user.institution", "institution")
+            .where("user.tipo_usuario = :tipo", { tipo: "Laboratorista" })
+            .andWhere("user.institution.id_institution = :institution", { institution: { id_institution } })
+            .getMany();
+        return laboratorists;
+    }
+    async getStudents() {
+        const students = (0, typeorm_1.getRepository)(user_1.User)
+            .createQueryBuilder("user")
+            .innerJoinAndSelect("user.course", "course")
+            .innerJoinAndSelect("user.institution", "institution")
+            .where("user.tipo_usuario = :tipo", { tipo: "Alumno" })
+            .getMany();
+        return students;
+    }
+    async getStudentsByInstitution(id_institution) {
+        const students = (0, typeorm_1.getRepository)(user_1.User)
+            .createQueryBuilder("user")
+            .innerJoinAndSelect("user.course", "course")
+            .innerJoinAndSelect("user.institution", "institution")
+            .where("user.tipo_usuario = :tipo", { tipo: "Alumno" })
+            .andWhere("user.institution.id_institution = :institution", { institution: { id_institution } })
+            .getMany();
+        return students;
+    }
     async register(data, pubsub) {
         const hashedPassword = await argon2_1.default.hash(data.password);
-        const user = await user_1.User.create({
+        const result = await user_1.User.create({
             cedula: data.cedula,
             nombre: data.nombre,
             password: hashedPassword,
@@ -64,6 +93,12 @@ let RegisterResolver = class RegisterResolver {
             institution: data.institution,
             course: data.course,
         }).save();
+        const user = await (0, typeorm_1.getRepository)(user_1.User)
+            .createQueryBuilder("user")
+            .innerJoinAndSelect("user.institution", "institution")
+            .innerJoinAndSelect("user.course", "course")
+            .where("user.cedula = :cedula", { cedula: result.cedula })
+            .getOne();
         pubsub.publish("CREATE_USER", user);
         return { user };
     }
@@ -99,6 +134,26 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], RegisterResolver.prototype, "getLaboratorist", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => [user_1.User]),
+    __param(0, (0, type_graphql_1.Arg)("id_institution", () => type_graphql_1.Int)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], RegisterResolver.prototype, "getLaboratoristsByInstitution", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => [user_1.User]),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], RegisterResolver.prototype, "getStudents", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => [user_1.User]),
+    __param(0, (0, type_graphql_1.Arg)("id_institution", () => type_graphql_1.Int)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], RegisterResolver.prototype, "getStudentsByInstitution", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => User_errors_1.UserResponse),
     __param(0, (0, type_graphql_1.Arg)("data", () => UserInput_1.UserInput)),

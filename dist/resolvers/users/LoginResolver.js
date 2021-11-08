@@ -38,13 +38,13 @@ class LoginResolver {
         const user = await user_1.User.findOne({ cedula: options.cedula });
         if (!user) {
             return {
-                errors: [{ field: "cedula", message: "this cedula doesn't exists" }],
+                errors: [{ field: "cedula", message: "Esta cedula no existe" }],
             };
         }
         const valid = await argon2_1.default.verify(user.password, options.password);
         if (!valid) {
             return {
-                errors: [{ field: "password", message: "that password doesn't exists" }],
+                errors: [{ field: "password", message: "La constraseña es incorrecta" }],
             };
         }
         console.log(user);

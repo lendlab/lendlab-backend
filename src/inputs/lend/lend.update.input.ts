@@ -6,15 +6,15 @@ class ReservationUpdateInput {
   id_reserva: number;
 
   @Field(() => Date, {nullable: true})
-  fecha_hora: String;
+  fecha_hora: Date;
 }
 
 @InputType()
 export class LendUpdateInput {
-  @Field(() => String, {nullable: true})
+  @Field(() => Date, {nullable: true})
   fecha_vencimiento: Date;
 
-  @Field(() => String, {nullable: true})
+  @Field(() => Date, {nullable: true})
   fecha_devolucion: Date;
 
   @Field(() => ReservationUpdateInput, {nullable: true})

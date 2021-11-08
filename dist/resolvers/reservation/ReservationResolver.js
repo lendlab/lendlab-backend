@@ -33,10 +33,37 @@ let ReservationResolver = class ReservationResolver {
             .getMany();
         return rs;
     }
+    async getReservationsByInstitution(id_institution) {
+        const reservations = await (0, typeorm_1.getRepository)(reservation_1.Reservation)
+            .createQueryBuilder("reservation")
+            .innerJoinAndSelect("reservation.institution", "reservationInstitution")
+            .innerJoinAndSelect("reservation.material", "material")
+            .innerJoinAndSelect("reservation.user", "user")
+            .innerJoinAndSelect("user.course", "course")
+            .innerJoinAndSelect("user.institution", "institution")
+            .where(`reservationInstitution.id_institution = ${id_institution}`)
+            .getMany();
+        return reservations;
+    }
+    async getUserReservations(cedula) {
+        const reservations = await (0, typeorm_1.getRepository)(reservation_1.Reservation)
+            .createQueryBuilder("reservation")
+            .innerJoinAndSelect("reservation.institution", "reservationInstitution")
+            .innerJoinAndSelect("reservation.material", "material")
+            .innerJoinAndSelect("reservation.user", "user")
+            .innerJoinAndSelect("user.course", "course")
+            .innerJoinAndSelect("user.institution", "institution")
+            .where("reservation.user.cedula = :cedula", { cedula: cedula })
+            .getMany();
+        return reservations;
+    }
     async getMaxId() {
         const { max } = await (0, typeorm_1.createQueryBuilder)("reservation")
             .select("MAX(id_reserva)", "max")
             .getRawOne();
+        if (!max) {
+            return 0;
+        }
         return max;
     }
     async getReservationsCount() {
@@ -85,6 +112,20 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ReservationResolver.prototype, "getReservations", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => [reservation_1.Reservation]),
+    __param(0, (0, type_graphql_1.Arg)("id_institution", () => type_graphql_1.Int)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], ReservationResolver.prototype, "getReservationsByInstitution", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => [reservation_1.Reservation]),
+    __param(0, (0, type_graphql_1.Arg)("cedula", () => type_graphql_1.Int)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], ReservationResolver.prototype, "getUserReservations", null);
 __decorate([
     (0, type_graphql_1.Query)(() => type_graphql_1.Int),
     __metadata("design:type", Function),

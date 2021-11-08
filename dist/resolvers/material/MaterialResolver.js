@@ -34,6 +34,14 @@ let MaterialResolver = class MaterialResolver {
             .getOne();
         return material;
     }
+    async getMaterialsByInstitution(id_institution) {
+        const material = (0, typeorm_1.getRepository)(material_1.Material)
+            .createQueryBuilder("material")
+            .innerJoinAndSelect("material.institution", "institution")
+            .where("material.institution.id_institution = :institutionId", { institutionId: id_institution })
+            .getMany();
+        return material;
+    }
     async getMaterialsCount() {
         const { count } = await (0, typeorm_1.createQueryBuilder)("material")
             .select("COUNT(*)", "count")
@@ -87,6 +95,13 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], MaterialResolver.prototype, "getMaterial", null);
+__decorate([
+    (0, type_graphql_1.Query)(() => [material_1.Material]),
+    __param(0, (0, type_graphql_1.Arg)("id_institution", () => type_graphql_1.Int)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], MaterialResolver.prototype, "getMaterialsByInstitution", null);
 __decorate([
     (0, type_graphql_1.Query)(() => type_graphql_1.Int),
     __metadata("design:type", Function),

@@ -24,7 +24,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Reservation.prototype, "id_reserva", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => String, { nullable: true }),
+    (0, type_graphql_1.Field)(() => Date, { nullable: true }),
     (0, typeorm_1.CreateDateColumn)(),
     (0, typeorm_1.PrimaryColumn)(),
     __metadata("design:type", Date)

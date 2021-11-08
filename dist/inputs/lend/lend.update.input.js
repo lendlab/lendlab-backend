@@ -14,12 +14,12 @@ const type_graphql_1 = require("type-graphql");
 let ReservationUpdateInput = class ReservationUpdateInput {
 };
 __decorate([
-    (0, type_graphql_1.Field)(),
+    (0, type_graphql_1.Field)({ nullable: true }),
     __metadata("design:type", Number)
 ], ReservationUpdateInput.prototype, "id_reserva", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => Date),
-    __metadata("design:type", String)
+    (0, type_graphql_1.Field)(() => Date, { nullable: true }),
+    __metadata("design:type", Date)
 ], ReservationUpdateInput.prototype, "fecha_hora", void 0);
 ReservationUpdateInput = __decorate([
     (0, type_graphql_1.InputType)()
@@ -27,15 +27,11 @@ ReservationUpdateInput = __decorate([
 let LendUpdateInput = class LendUpdateInput {
 };
 __decorate([
-    (0, type_graphql_1.Field)(() => String, { nullable: true }),
-    __metadata("design:type", Date)
-], LendUpdateInput.prototype, "fecha_hora_presta", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => String, { nullable: true }),
+    (0, type_graphql_1.Field)(() => Date, { nullable: true }),
     __metadata("design:type", Date)
 ], LendUpdateInput.prototype, "fecha_vencimiento", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => String, { nullable: true }),
+    (0, type_graphql_1.Field)(() => Date, { nullable: true }),
     __metadata("design:type", Date)
 ], LendUpdateInput.prototype, "fecha_devolucion", void 0);
 __decorate([

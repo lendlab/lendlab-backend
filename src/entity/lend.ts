@@ -19,15 +19,15 @@ export class Lend extends BaseEntity {
   @PrimaryGeneratedColumn()
   id_lend: number;
 
-  @Field(() => String, {nullable: true})
+  @Field(() => Date, {nullable: true})
   @PrimaryColumn({default: () => "now()", type: "timestamp"})
   fecha_hora_presta: Date;
 
-  @Field(() => String, {nullable: true})
+  @Field(() => Date, {nullable: true})
   @CreateDateColumn()
   fecha_vencimiento: Date;
 
-  @Field(() => String, {nullable: true})
+  @Field(() => Date, {nullable: true})
   @Column({nullable: true})
   fecha_devolucion: Date;
 
