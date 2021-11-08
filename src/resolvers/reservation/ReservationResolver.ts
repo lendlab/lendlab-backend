@@ -62,6 +62,24 @@ export class ReservationResolver {
     return reservations;
   }
 
+  @Query(() => [Reservation])
+  async getUserReservations(
+    @Arg("cedula", () => Int) cedula: number
+  ) {
+    const reservations = await getRepository(Reservation)
+      .createQueryBuilder("lend")
+      .innerJoinAndSelect("reservation.institution", "reservationInstitution")
+      .innerJoinAndSelect("reservation.material", "material")
+      .innerJoinAndSelect("reservation.user", "user")
+      .innerJoinAndSelect("user.course", "course")
+      .innerJoinAndSelect("user.institution", "institution")
+      .where("reservation.user.cedula = :cedula", { cedula: cedula })
+      .getMany();
+
+    // SELECT * from lend JOIN reservation on lend.reservationIdReserva = reservation.id_reserva JOIN user ON user.cedula = reservation.userCedula
+    return reservations;
+  }
+
   @Query(() => Int)
   async getMaxId() {
     const {max} = await createQueryBuilder("reservation")
