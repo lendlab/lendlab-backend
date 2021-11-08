@@ -39,7 +39,7 @@ export class ReservationResolver {
       .innerJoinAndSelect("reservation.user", "user")
       .innerJoinAndSelect("user.course", "course")
       .innerJoinAndSelect("user.institution", "institution")
-      .orderBy("reservation.fecha_hora")
+      .orderBy("reservation.fecha_hora", "DESC")
       .getMany();
 
     return rs;
@@ -57,7 +57,7 @@ export class ReservationResolver {
       .innerJoinAndSelect("user.course", "course")
       .innerJoinAndSelect("user.institution", "institution")
       .where(`reservationInstitution.id_institution = ${id_institution}`)
-      .orderBy("reservation.fecha_hora")
+      .orderBy("reservation.fecha_hora", "DESC")
       .getMany();
 
     // SELECT * from lend JOIN reservation on lend.reservationIdReserva = reservation.id_reserva JOIN user ON user.cedula = reservation.userCedula
@@ -76,7 +76,7 @@ export class ReservationResolver {
       .innerJoinAndSelect("user.course", "course")
       .innerJoinAndSelect("user.institution", "institution")
       .where("reservation.user.cedula = :cedula", { cedula: cedula })
-      .orderBy("reservation.fecha_hora")
+      .orderBy("reservation.fecha_hora", "DESC")
       .getMany();
 
     // SELECT * from lend JOIN reservation on lend.reservationIdReserva = reservation.id_reserva JOIN user ON user.cedula = reservation.userCedula
