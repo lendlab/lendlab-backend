@@ -8,7 +8,7 @@ import {
   Resolver,
 } from "type-graphql";
 import argon2 from "argon2";
-import {getConnection, getRepository} from "typeorm";
+import {getRepository} from "typeorm";
 //import yup from "yup";
 
 import {User} from "../../entity/user";
@@ -24,20 +24,6 @@ export class RegisterResolver {
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.institution", "institution")
       .innerJoinAndSelect("user.course", "course")
-      .getMany();
-
-    return user;
-  }
-
-  @Query(() => [User])
-  async getUsersByInstitution(
-    @Arg("id_institution", () => Int) id_institution: number
-  ) {
-    const user = getRepository(User)
-      .createQueryBuilder("user")
-      .innerJoinAndSelect("user.institution", "institution")
-      .innerJoinAndSelect("user.course", "course")
-      .where(`institution.id_institution = ${id_institution}`)
       .getMany();
 
     return user;
@@ -74,13 +60,8 @@ export class RegisterResolver {
     @PubSub() pubsub: PubSubEngine
   ): Promise<UserResponse> {
     const hashedPassword = await argon2.hash(data.password);
-    let user;
 
-    const result = await getConnection()
-    .createQueryBuilder()
-    .insert()
-    .into(User)
-    .values({
+    const result = await User.create({
       cedula: data.cedula,
       nombre: data.nombre,
       password: hashedPassword,
@@ -91,27 +72,18 @@ export class RegisterResolver {
       fecha_nacimiento: data.fecha_nacimiento,
       institution: data.institution,
       course: data.course,
-    })
-    .execute();
+    }).save();
 
-    console.log(result)
-  
-    user = result.raw[0];
-    // const user = await User.create({
-    //   cedula: data.cedula,
-    //   nombre: data.nombre,
-    //   password: hashedPassword,
-    //   direccion: data.direccion,
-    //   foto_usuario: data.foto_usuario,
-    //   telefono: data.telefono,
-    //   tipo_usuario: data.tipo_usuario,
-    //   fecha_nacimiento: data.fecha_nacimiento,
-    //   institution: data.institution,
-    //   course: data.course,
-    // }).save();
+
+    const user = await getRepository(User)
+      .createQueryBuilder("user")
+      .innerJoinAndSelect("user.institution", "institution")
+      .innerJoinAndSelect("user.course", "course")
+      .where("user.cedula = :cedula", { cedula: result.cedula })
+      .getOne();
+
 
     pubsub.publish("CREATE_USER", user);
-
     //const validationSchema = yup.object().shape({
     //  cedula: yup.number().required().moreThan(8).lessThan(8),
     //});
