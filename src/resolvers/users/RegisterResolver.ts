@@ -47,7 +47,7 @@ export class RegisterResolver {
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.course", "course")
       .innerJoinAndSelect("user.institution", "institution")
-      .where(`user.tipo_usuario = "laboratorista"`)
+      .where("user.tipo_usuario = :tipo", { tipo: "Laboratorista" })
       .getMany();
 
     return laboratorists;
@@ -60,7 +60,7 @@ export class RegisterResolver {
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.course", "course")
       .innerJoinAndSelect("user.institution", "institution")
-      .where(`user.tipo_usuario = "laboratorista"`)
+      .where("user.tipo_usuario = :tipo", { tipo: "Laboratorista" })
       .andWhere("user.institution.id_institution = :institution", { institution: {id_institution} })
       .getMany();
 
