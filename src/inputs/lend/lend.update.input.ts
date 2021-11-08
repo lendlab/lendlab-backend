@@ -2,10 +2,10 @@ import {Field, InputType} from "type-graphql";
 
 @InputType()
 class ReservationUpdateInput {
-  @Field()
+  @Field({nullable: true})
   id_reserva: number;
 
-  @Field(() => Date)
+  @Field(() => Date, {nullable: true})
   fecha_hora: String;
 }
 
