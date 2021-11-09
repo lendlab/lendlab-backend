@@ -1,4 +1,4 @@
-import {Arg, Mutation, Query, Resolver} from "type-graphql";
+import {Arg, Int, Mutation, Query, Resolver} from "type-graphql";
 
 import {NewCourse, UpdateCourse} from "../../inputs/course/course.input";
 import {Course} from "../../entity/course";
@@ -9,6 +9,19 @@ export class CourseResolver {
   @Query(() => [Course])
   async getCourses() {
     return Course.find();
+  }
+
+  @Query(() => [Course])
+  async getCoursessByInstitution(
+    @Arg("id_institution", () => Int) id_institution: number
+  ) {
+    const material = getRepository(Course)
+      .createQueryBuilder("course")
+      .innerJoinAndSelect("course.institution", "institution")
+      .where("course.institution.id_institution = :institutionId", { institutionId: id_institution})
+      .getMany();
+
+    return material;
   }
 
   @Mutation(() => Course)
