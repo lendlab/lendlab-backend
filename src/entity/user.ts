@@ -54,7 +54,7 @@ export class User extends BaseEntity {
   fecha_nacimiento: String;
 
   @Field(() => Course)
-  @ManyToOne(() => Course, (course) => course.user)
+  @ManyToOne(() => Course, (course) => course.user,{onDelete:"CASCADE"})
   course: Course;
 
   @OneToMany(() => Reservation, (reservation) => reservation.user)
