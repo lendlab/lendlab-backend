@@ -19,32 +19,32 @@ export class LoginResolver {
   async login(
     @Arg("options") options: CedulaPasswordInput,
     @Ctx() {req}: MyContext
-  ): Promise<UserResponse> {
+  ): Promise<any> {
 
     const user = await getRepository(User)
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.course", "course")
       .innerJoinAndSelect("course.institution", "institution")
       .where("user.cedula = :cedula", { cedula: options.cedula })
-      .getOneOrFail();
+      .getSql();
 
-    if (!user) {
-      return {
-        errors: [{field: "cedula", message: "Esta cedula no existe"}],
-      };
-    }
+    // if (!user) {
+    //   return {
+    //     errors: [{field: "cedula", message: "Esta cedula no existe"}],
+    //   };
+    // }
 
-    const valid = await argon2.verify(user.password, options.password);
+    // const valid = await argon2.verify(user.password, options.password);
 
-    if (!valid) {
-      return {
-        errors: [{field: "password", message: "La constraseña es incorrecta"}],
-      };
-    }
+    // if (!valid) {
+    //   return {
+    //     errors: [{field: "password", message: "La constraseña es incorrecta"}],
+    //   };
+    // }
 
-    console.log(user);
+    // console.log(user);
 
-    req.session.cedula = user.cedula;
-    return {user};
+    // req.session.cedula = user.cedula;
+    return user;
   }
 }
