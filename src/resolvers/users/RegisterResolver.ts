@@ -10,13 +10,14 @@ import {
 import argon2 from "argon2";
 import {getRepository} from "typeorm";
 
-
 import {User} from "../../entity/user";
 import {UserInput} from "../../inputs/user/UserInput";
 import {UserUpdateInput} from "../../inputs/user/UserUpdateInput";
 import {UserResponse} from "../../errors/User.errors";
-import { format, validationSchema } from "../../validators/user/user.validatos";
-import { Course } from "../../entity/course";
+import {Course} from "../../entity/course";
+
+import {format} from "../../validators/index";
+import {userSchema} from "../../validators/user/user.validator";
 
 @Resolver()
 export class RegisterResolver {
@@ -107,42 +108,45 @@ export class RegisterResolver {
     data: UserInput,
     @PubSub() pubsub: PubSubEngine
   ): Promise<UserResponse> {
-
     try {
-      await validationSchema.validate(data, {abortEarly: false})
+      await userSchema.validate(data, {abortEarly: false});
     } catch (error) {
-      return format(error)
+      return format(error);
     }
-
 
     let user;
     const hashedPassword = await argon2.hash(data.password);
 
-      user = await User.findOne(data.cedula);
+    user = await User.findOne(data.cedula);
 
-      const course = await getRepository(Course)
+    const course = await getRepository(Course)
       .createQueryBuilder("course")
-      .where("course.course_token = :course_token", {course_token: data.course.course_token})
-      .getOne()
+      .where("course.course_token = :course_token", {
+        course_token: data.course.course_token,
+      })
+      .getOne();
 
-      if(!course){
-        return{
-          errors:[{
-            path:"course_token",
-            message:"Este curso no existe"
-          }]
-        }
-      }
+    if (!course) {
+      return {
+        errors: [
+          {
+            path: "course_token",
+            message: "Este curso no existe",
+          },
+        ],
+      };
+    }
 
-
-      if(user) {
-        return {
-          errors:[{
-            path:"cedula",
-            message:"cedula en uso"
-          }]
-        }
-      }
+    if (user) {
+      return {
+        errors: [
+          {
+            path: "cedula",
+            message: "cedula en uso",
+          },
+        ],
+      };
+    }
 
     const result = await User.create({
       cedula: data.cedula,
@@ -156,7 +160,6 @@ export class RegisterResolver {
       course: data.course,
     }).save();
 
-
     user = await getRepository(User)
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.course", "course")
@@ -164,10 +167,9 @@ export class RegisterResolver {
       .where("user.cedula = :cedula", {cedula: result.cedula})
       .getOne();
 
-      pubsub.publish("CREATE_USER",result)
+    pubsub.publish("CREATE_USER", result);
 
-
-    return {user}
+    return {user};
   }
 
   @Mutation(() => User, {nullable: true})
