@@ -5,7 +5,7 @@ import {User} from "../entity/user";
 @ObjectType()
 class UserErrors {
   @Field()
-  field: string;
+  path: string;
 
   @Field()
   message: string;
