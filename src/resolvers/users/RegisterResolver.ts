@@ -9,12 +9,13 @@ import {
 } from "type-graphql";
 import argon2 from "argon2";
 import {getRepository} from "typeorm";
-//import yup from "yup";
+
 
 import {User} from "../../entity/user";
 import {UserInput} from "../../inputs/user/UserInput";
 import {UserUpdateInput} from "../../inputs/user/UserUpdateInput";
 import {UserResponse} from "../../errors/User.errors";
+import { format, validationSchema } from "../../validators/user/user.validatos";
 
 @Resolver()
 export class RegisterResolver {
@@ -105,7 +106,26 @@ export class RegisterResolver {
     data: UserInput,
     @PubSub() pubsub: PubSubEngine
   ): Promise<UserResponse> {
+
+    try {
+      await validationSchema.validate(data, {abortEarly: false})
+    } catch (error) {
+      return format(error)
+    }
+
+
+    let user;
     const hashedPassword = await argon2.hash(data.password);
+
+      user = await User.findOne(data.cedula);
+      if(user) {
+        return {
+          errors:[{
+            path:"cedula",
+            message:"cedula en uso"
+          }]
+        }
+      }
 
     const result = await User.create({
       cedula: data.cedula,
@@ -119,19 +139,17 @@ export class RegisterResolver {
       course: data.course,
     }).save();
 
-    const user = await getRepository(User)
+    user = await getRepository(User)
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.course", "course")
       .innerJoinAndSelect("course.institution", "institution")
       .where("user.cedula = :cedula", {cedula: result.cedula})
       .getOne();
 
-    pubsub.publish("CREATE_USER", user);
-    //const validationSchema = yup.object().shape({
-    //  cedula: yup.number().required().moreThan(8).lessThan(8),
-    //});
+      pubsub.publish("CREATE_USER",result)
 
-    return {user};
+
+    return {user}
   }
 
   @Mutation(() => User, {nullable: true})
