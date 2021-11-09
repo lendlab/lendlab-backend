@@ -8,7 +8,12 @@ import { getRepository } from "typeorm";
 export class CourseResolver {
   @Query(() => [Course])
   async getCourses() {
-    return Course.find();
+    const courses = getRepository(Course)
+    .createQueryBuilder("course")
+    .innerJoinAndSelect("course.institution", "institution")
+    .getMany()
+    
+    return courses
   }
 
   @Query(() => [Course])
