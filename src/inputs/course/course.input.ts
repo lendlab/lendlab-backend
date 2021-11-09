@@ -18,8 +18,9 @@ export class NewCourse {
   institution: course_institution;
 }
 
+
 @InputType()
 export class UpdateCourse {
-  @Field({nullable: true})
+  @Field({nullable:true})
   course_name: string;
 }
