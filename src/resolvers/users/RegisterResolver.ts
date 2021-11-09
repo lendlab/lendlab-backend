@@ -174,7 +174,14 @@ export class RegisterResolver {
     @Arg("data", () => UserUpdateInput) data: UserUpdateInput
   ) {
     await User.update({cedula}, data);
-    const updatedUser = User.findOne({cedula});
+
+    const updatedUser = await getRepository(User)
+    .createQueryBuilder("user")
+    .innerJoinAndSelect("user.course", "course")
+    .innerJoinAndSelect("course.institution", "institution")
+    .where("user.cedula = :cedula", {cedula: cedula})
+    .getOne();
+
     if (!updatedUser) {
       return null;
     }
