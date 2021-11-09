@@ -1,5 +1,6 @@
 import {Field, ObjectType} from "type-graphql";
 
+import { Course } from "../entity/course";
 import {User} from "../entity/user";
 
 @ObjectType()
@@ -18,4 +19,7 @@ export class UserResponse {
 
   @Field(() => User, {nullable: true})
   user?: User;
+
+  @Field(() => Course,{nullable: true})
+  course?:Course
 }
