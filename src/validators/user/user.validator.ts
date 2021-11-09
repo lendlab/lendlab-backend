@@ -6,7 +6,7 @@ const user = {
     .test(
       "len",
       "La cedula debe contener al menos ocho caracteres.",
-      (val: any) => val.toString().length === 8
+      (val: any) => val.toString().length
     ),
   password: yup
     .string()
@@ -17,12 +17,6 @@ const user = {
       (val: any) => val.toString().length > 5
     ),
 };
-
-const login = {};
-
-export const loginSchema = yup.object().shape({
-  ...login,
-});
 
 export const userSchema = yup.object().shape({
   ...user,
