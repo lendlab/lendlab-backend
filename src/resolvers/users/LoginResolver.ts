@@ -26,7 +26,7 @@ export class LoginResolver {
       .innerJoinAndSelect("user.course", "course")
       .innerJoinAndSelect("course.institution", "institution")
       .where("user.cedula = :cedula", { cedula: options.cedula })
-      .getOne();
+      .getOneOrFail();
 
     if (!user) {
       return {
