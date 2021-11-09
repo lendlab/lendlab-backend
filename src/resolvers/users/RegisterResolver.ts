@@ -23,7 +23,7 @@ export class RegisterResolver {
     const user = getRepository(User)
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.course", "course")
-      .innerJoinAndSelect("course.corresponds", "corresponds")
+      .innerJoinAndSelect("course.institution", "institution")
       .getMany();
 
     return user;
