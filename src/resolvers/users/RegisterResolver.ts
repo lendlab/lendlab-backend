@@ -94,9 +94,7 @@ export class RegisterResolver {
       .innerJoinAndSelect("user.course", "course")
       .innerJoinAndSelect("course.institution", "institution")
       .where("user.tipo_usuario = :tipo", {tipo: "Alumno"})
-      .andWhere("institution.id_institution = :institutionId", {
-        institutionId: {id_institution},
-      })
+      .andWhere(`institution.id_institution = ${id_institution} `)
       .getMany();
 
     return students;
