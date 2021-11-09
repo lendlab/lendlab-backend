@@ -16,6 +16,7 @@ import {UserInput} from "../../inputs/user/UserInput";
 import {UserUpdateInput} from "../../inputs/user/UserUpdateInput";
 import {UserResponse} from "../../errors/User.errors";
 import { format, validationSchema } from "../../validators/user/user.validatos";
+import { Course } from "../../entity/course";
 
 @Resolver()
 export class RegisterResolver {
@@ -118,6 +119,22 @@ export class RegisterResolver {
     const hashedPassword = await argon2.hash(data.password);
 
       user = await User.findOne(data.cedula);
+
+      const course = await getRepository(Course)
+      .createQueryBuilder("course")
+      .where("course.course_token = :course_token", {course_token: data.course.course_token})
+      .getOne()
+
+      if(!course){
+        return{
+          errors:[{
+            path:"course_token",
+            message:"Este curso no existe"
+          }]
+        }
+      }
+
+
       if(user) {
         return {
           errors:[{
@@ -138,6 +155,7 @@ export class RegisterResolver {
       fecha_nacimiento: data.fecha_nacimiento,
       course: data.course,
     }).save();
+
 
     user = await getRepository(User)
       .createQueryBuilder("user")
