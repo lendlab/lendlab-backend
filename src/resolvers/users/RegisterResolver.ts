@@ -34,7 +34,7 @@ export class RegisterResolver {
     const user = getRepository(User)
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.course", "course")
-      .innerJoinAndSelect("user.institution", "institution")
+      .innerJoinAndSelect("course.institution", "institution")
       .where(`user.cedula = ${cedula} `)
       .getOne();
 
@@ -46,7 +46,7 @@ export class RegisterResolver {
     const laboratorists = getRepository(User)
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.course", "course")
-      .innerJoinAndSelect("user.institution", "institution")
+      .innerJoinAndSelect("course.institution", "institution")
       .where("user.tipo_usuario = :tipo", {tipo: "Laboratorista"})
       .getMany();
 
@@ -60,9 +60,9 @@ export class RegisterResolver {
     const laboratorists = getRepository(User)
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.course", "course")
-      .innerJoinAndSelect("user.institution", "institution")
+      .innerJoinAndSelect("course.institution", "institution")
       .where("user.tipo_usuario = :tipo", {tipo: "Laboratorista"})
-      .andWhere("user.institution.id_institution = :institution", {
+      .andWhere("institution.id_institution = :institution", {
         institution: {id_institution},
       })
       .getMany();
@@ -75,6 +75,7 @@ export class RegisterResolver {
     const students = getRepository(User)
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.course", "course")
+      .innerJoinAndSelect("course.institution", "institution")
       .where("user.tipo_usuario = :tipo", {tipo: "Alumno"})
       .getMany();
 
@@ -88,9 +89,9 @@ export class RegisterResolver {
     const students = getRepository(User)
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.course", "course")
-      .innerJoinAndSelect("user.institution", "institution")
+      .innerJoinAndSelect("course.institution", "institution")
       .where("user.tipo_usuario = :tipo", {tipo: "Alumno"})
-      .andWhere("user.institution.id_institution = :institution", {
+      .andWhere("institution.id_institution = :institution", {
         institution: {id_institution},
       })
       .getMany();
