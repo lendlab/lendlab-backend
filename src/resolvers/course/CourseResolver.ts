@@ -2,6 +2,7 @@ import {Arg, Mutation, Query, Resolver} from "type-graphql";
 
 import {NewCourse, UpdateCourse} from "../../inputs/course/course.input";
 import {Course} from "../../entity/course";
+import { getRepository } from "typeorm";
 
 @Resolver()
 export class CourseResolver {
@@ -37,18 +38,21 @@ export class CourseResolver {
 
   @Mutation(() => Course)
   async updateCourse(
-    @Arg("course_token", () => String) course_token: string,
-    @Arg("course_name", () => UpdateCourse) course_name: UpdateCourse
+    @Arg("data", () => UpdateCourse) data: UpdateCourse,
+    @Arg("course_token", () => String) course_token: string
   ) {
-    await Course.update({course_token}, course_name);
+    await Course.update({course_token}, data);
 
-    const updatedCourse = Course.findOne(course_token);
+    const course = getRepository(Course)
+    .createQueryBuilder("course")
+    .innerJoinAndSelect("course.institution", "institution")
+    .getOne()
 
-    if (!updatedCourse) {
+    if (!course) {
       return null;
     }
 
-    return updatedCourse;
+    return course;
   }
 
   @Mutation(() => Boolean)
