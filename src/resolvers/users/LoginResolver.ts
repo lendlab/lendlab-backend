@@ -4,6 +4,7 @@ import argon2 from "argon2";
 import {UserResponse} from "../../errors/User.errors";
 import {MyContext} from "../../types/MyContext";
 import {User} from "../../entity/user";
+import { getRepository } from "typeorm";
 
 @InputType()
 class CedulaPasswordInput {
@@ -19,7 +20,13 @@ export class LoginResolver {
     @Arg("options") options: CedulaPasswordInput,
     @Ctx() {req}: MyContext
   ): Promise<UserResponse> {
-    const user = await User.findOne({cedula: options.cedula});
+
+    const user = await getRepository(User)
+      .createQueryBuilder("user")
+      .innerJoinAndSelect("user.course", "course")
+      .innerJoinAndSelect("course.institution", "institution")
+      .where("user.cedula = :cedula", { cedula: options.cedula })
+      .getOne();
 
     if (!user) {
       return {
