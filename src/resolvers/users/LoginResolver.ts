@@ -30,7 +30,7 @@ export class LoginResolver {
 
     if (!user) {
       return {
-        errors: [{field: "cedula", message: "Esta cedula no existe"}],
+        errors: [{path: "cedula", message: "Esta cedula no existe"}],
       };
     }
 
@@ -38,7 +38,7 @@ export class LoginResolver {
 
     if (!valid) {
       return {
-        errors: [{field: "password", message: "La constraseña es incorrecta"}],
+        errors: [{path: "password", message: "La constraseña es incorrecta"}],
       };
     }
 
