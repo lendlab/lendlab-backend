@@ -38,7 +38,7 @@ export class ReservationResolver {
       .innerJoinAndSelect("reservation.material", "material")
       .innerJoinAndSelect("reservation.user", "user")
       .innerJoinAndSelect("user.course", "course")
-      .innerJoinAndSelect("user.institution", "institution")
+      .innerJoinAndSelect("course.institution", "institution")
       .orderBy("reservation.fecha_hora", "DESC")
       .getMany();
 
@@ -55,7 +55,7 @@ export class ReservationResolver {
       .innerJoinAndSelect("reservation.material", "material")
       .innerJoinAndSelect("reservation.user", "user")
       .innerJoinAndSelect("user.course", "course")
-      .innerJoinAndSelect("user.institution", "institution")
+      .innerJoinAndSelect("course.institution", "institution")
       .where(`reservationInstitution.id_institution = ${id_institution}`)
       .orderBy("reservation.fecha_hora", "DESC")
       .getMany();
@@ -74,7 +74,7 @@ export class ReservationResolver {
       .innerJoinAndSelect("reservation.material", "material")
       .innerJoinAndSelect("reservation.user", "user")
       .innerJoinAndSelect("user.course", "course")
-      .innerJoinAndSelect("user.institution", "institution")
+      .innerJoinAndSelect("course.institution", "institution")
       .where("reservation.user.cedula = :cedula", { cedula: cedula })
       .orderBy("reservation.fecha_hora", "DESC")
       .getMany();
