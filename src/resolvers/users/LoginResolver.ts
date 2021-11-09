@@ -4,7 +4,7 @@ import argon2 from "argon2";
 import {UserResponse} from "../../errors/User.errors";
 import {MyContext} from "../../types/MyContext";
 import {User} from "../../entity/user";
-import { getRepository } from "typeorm";
+import {getRepository} from "typeorm";
 
 @InputType()
 class CedulaPasswordInput {
@@ -20,17 +20,16 @@ export class LoginResolver {
     @Arg("options") options: CedulaPasswordInput,
     @Ctx() {req}: MyContext
   ): Promise<UserResponse> {
-
     const user = await getRepository(User)
       .createQueryBuilder("user")
       .innerJoinAndSelect("user.course", "course")
       .innerJoinAndSelect("course.institution", "institution")
-      .where("user.cedula = :cedula", { cedula: options.cedula })
+      .where("user.cedula = :cedula", {cedula: options.cedula})
       .getOne();
 
     if (!user) {
       return {
-        errors: [{path: "cedula", message: "Esta cedula no existe"}],
+        errors: [{path: "cedula", message: "Esta cedula no existe. "}],
       };
     }
 
@@ -38,7 +37,13 @@ export class LoginResolver {
 
     if (!valid) {
       return {
-        errors: [{path: "password", message: "La constraseña es incorrecta"}],
+        errors: [
+          {
+            path: "password",
+            message:
+              "La constraseña es incorrecta. Porfavor intentalo de nuevo.",
+          },
+        ],
       };
     }
 
