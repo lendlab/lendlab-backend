@@ -1,7 +1,7 @@
-import {Arg, Int, Mutation, Query, Resolver} from "type-graphql";
+import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
 
-import {NewCourse, UpdateCourse} from "../../inputs/course/course.input";
-import {Course} from "../../entity/course";
+import { NewCourse, UpdateCourse } from "../../inputs/course/course.input";
+import { Course } from "../../entity/course";
 import { getRepository } from "typeorm";
 
 @Resolver()
@@ -9,11 +9,28 @@ export class CourseResolver {
   @Query(() => [Course])
   async getCourses() {
     const courses = getRepository(Course)
-    .createQueryBuilder("course")
-    .innerJoinAndSelect("course.institution", "institution")
-    .getMany()
-    
-    return courses
+      .createQueryBuilder("course")
+      .innerJoinAndSelect("course.institution", "institution")
+      .getMany();
+
+    return courses;
+  }
+
+  @Query(() => Course)
+  async getCourse(
+    @Arg("course_token") course_token: string
+  ): Promise<Course | undefined> {
+    const course = await getRepository(Course)
+      .createQueryBuilder("course")
+      .innerJoinAndSelect("course.institution", "institution")
+      .where("course.course_token = :course_token", {
+        course_token: course_token,
+      })
+      .getOne();
+
+    if (!course) return undefined;
+
+    return course;
   }
 
   @Query(() => [Course])
@@ -23,7 +40,9 @@ export class CourseResolver {
     const material = getRepository(Course)
       .createQueryBuilder("course")
       .innerJoinAndSelect("course.institution", "institution")
-      .where("course.institution.id_institution = :institutionId", { institutionId: id_institution})
+      .where("course.institution.id_institution = :institutionId", {
+        institutionId: id_institution,
+      })
       .getMany();
 
     return material;
@@ -59,12 +78,12 @@ export class CourseResolver {
     @Arg("data", () => UpdateCourse) data: UpdateCourse,
     @Arg("course_token", () => String) course_token: string
   ) {
-    await Course.update({course_token}, data);
+    await Course.update({ course_token }, data);
 
     const course = getRepository(Course)
-    .createQueryBuilder("course")
-    .innerJoinAndSelect("course.institution", "institution")
-    .getOne()
+      .createQueryBuilder("course")
+      .innerJoinAndSelect("course.institution", "institution")
+      .getOne();
 
     if (!course) {
       return null;
