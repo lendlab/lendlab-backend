@@ -78,8 +78,7 @@ export class LendResolver {
   async getLendsCount(
     @Arg("id_institution", () => Int) id_institution: number
   ) {
-    const { count } = await getRepository(Lend);
-    createQueryBuilder("lend")
+    const { count } = await createQueryBuilder("lend")
       .select("COUNT(*)", "count")
       .where("lend.institution.id_institution = :institutionId", {
         institutionId: id_institution,
