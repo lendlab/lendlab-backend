@@ -8,7 +8,7 @@ import { getRepository } from "typeorm";
 export class CourseResolver {
   @Query(() => [Course])
   async getCourses() {
-    const courses = getRepository(Course)
+    const courses = await getRepository(Course)
       .createQueryBuilder("course")
       .innerJoinAndSelect("course.institution", "institution")
       .getMany();
@@ -37,7 +37,7 @@ export class CourseResolver {
   async getCoursessByInstitution(
     @Arg("id_institution", () => Int) id_institution: number
   ) {
-    const material = getRepository(Course)
+    const material = await getRepository(Course)
       .createQueryBuilder("course")
       .innerJoinAndSelect("course.institution", "institution")
       .where("course.institution.id_institution = :institutionId", {

@@ -60,7 +60,8 @@ export class MaterialResolver {
   async getMaterialsCount(
     @Arg("id_institution", () => Int) id_institution: number
   ) {
-    const { count } = await createQueryBuilder("material")
+    const { count } = await getRepository(Material);
+      createQueryBuilder("material")
       .select("COUNT(*)", "count")
       .where("material.institution.id_institution = :institutionId", {
         institutionId: id_institution,

@@ -98,7 +98,8 @@ export class ReservationResolver {
   async getReservationsCount(
     @Arg("id_institution", () => Int) id_institution: number
   ) {
-    const { count } = await createQueryBuilder("reservation")
+    const { count } = await getRepository(Reservation);
+    createQueryBuilder("reservation")
       .select("COUNT(distinct id_reserva)", "count")
       .where(`reservationInstitution.id_institution = ${id_institution}`)
       .getRawOne();
