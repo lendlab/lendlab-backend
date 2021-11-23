@@ -1,6 +1,6 @@
-import {Arg, Int, Mutation, Query, Resolver} from "type-graphql";
+import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
 
-import {Institution} from "../../entity/institution";
+import { Institution } from "../../entity/institution";
 import {
   InstitutionInput,
   InstitutionUpdateInput,
@@ -13,6 +13,19 @@ export class InstitutionResolver {
     return Institution.find();
   }
 
+  @Query(() => Institution, { nullable: true })
+  async getInstitution(
+    @Arg("id_institution") id_institution: number
+  ): Promise<Institution | undefined> {
+    const institution = await Institution.findOne(id_institution);
+
+    if (!institution) {
+      return undefined;
+    }
+
+    return institution;
+  }
+
   @Mutation(() => Institution)
   async newInstitution(
     @Arg("data") data: InstitutionInput
@@ -21,12 +34,12 @@ export class InstitutionResolver {
     return createInstitution;
   }
 
-  @Mutation(() => Institution, {nullable: true})
+  @Mutation(() => Institution, { nullable: true })
   async updateInstitution(
     @Arg("data") data: InstitutionUpdateInput,
     @Arg("id_institution", () => Int) id_institution: number
   ) {
-    await Institution.update({id_institution}, data);
+    await Institution.update({ id_institution }, data);
     const updatedInstitution = Institution.findOne(id_institution);
     if (!updatedInstitution) {
       return null;
@@ -38,7 +51,7 @@ export class InstitutionResolver {
   async deleteInstitution(
     @Arg("id_institution", () => Int) id_institution: number
   ): Promise<Boolean> {
-    await Institution.delete({id_institution});
+    await Institution.delete({ id_institution });
     return true;
   }
 }
