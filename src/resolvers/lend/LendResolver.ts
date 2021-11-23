@@ -74,20 +74,6 @@ export class LendResolver {
     return lends;
   }
 
-  @Query(() => Int)
-  async getLendsCount(
-    @Arg("id_institution", () => Int) id_institution: number
-  ) {
-    const { count } = await createQueryBuilder("lend")
-      .select("COUNT(*)", "count")
-      .where("lend.institution.id_institution = :institutionId", {
-        institutionId: id_institution,
-      })
-      .getRawOne();
-
-    return count;
-  }
-
   @Mutation(() => Lend)
   async createLend(
     @Arg("data", () => LendInput) data: LendInput,

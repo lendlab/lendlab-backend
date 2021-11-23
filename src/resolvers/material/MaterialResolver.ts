@@ -56,20 +56,6 @@ export class MaterialResolver {
     return material;
   }
 
-  @Query(() => Int)
-  async getMaterialsCount(
-    @Arg("id_institution", () => Int) id_institution: number
-  ) {
-    const { count } = await createQueryBuilder("material")
-      .select("COUNT(*)", "count")
-      .where("material.institution.id_institution = :institutionId", {
-        institutionId: id_institution,
-      })
-      .getRawOne();
-
-    return count;
-  }
-
   @Query(() => [Material])
   async getPopularMaterials() {
     const popularMaterials = await getManager()

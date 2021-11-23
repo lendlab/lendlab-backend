@@ -94,18 +94,6 @@ export class ReservationResolver {
     return max;
   }
 
-  @Query(() => Int)
-  async getReservationsCount(
-    @Arg("id_institution", () => Int) id_institution: number
-  ) {
-    const { count } = await createQueryBuilder("reservation")
-      .select("COUNT(distinct id_reserva)", "count")
-      .where(`reservation.id_institution = ${id_institution}`)
-      .getRawOne();
-
-    return count;
-  }
-
   @Mutation(() => ReservationResponse, { nullable: false })
   async createReservation(
     @Arg("data", () => ReservationInput) data: ReservationInput,
