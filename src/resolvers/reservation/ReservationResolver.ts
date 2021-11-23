@@ -1,6 +1,6 @@
-import {createQueryBuilder, getRepository} from "typeorm";
+import { createQueryBuilder, getRepository } from "typeorm";
 
-import {Reservation} from "../../entity/reservation";
+import { Reservation } from "../../entity/reservation";
 import {
   Arg,
   Ctx,
@@ -15,9 +15,9 @@ import {
   ReservationInput,
   ReservationSessionInput,
 } from "../../inputs/reservation/ReservationInput";
-import {ReservationEditInput} from "../../inputs/reservation/ReservationEditInput";
-import {MyContext} from "../../types/MyContext";
-import {ReservationResponse} from "../../errors/Reservation.errors";
+import { ReservationEditInput } from "../../inputs/reservation/ReservationEditInput";
+import { MyContext } from "../../types/MyContext";
+import { ReservationResponse } from "../../errors/Reservation.errors";
 
 @Resolver()
 export class ReservationResolver {
@@ -65,9 +65,7 @@ export class ReservationResolver {
   }
 
   @Query(() => [Reservation])
-  async getUserReservations(
-    @Arg("cedula", () => Int) cedula: number
-  ) {
+  async getUserReservations(@Arg("cedula", () => Int) cedula: number) {
     const reservations = await getRepository(Reservation)
       .createQueryBuilder("reservation")
       .innerJoinAndSelect("reservation.institution", "reservationInstitution")
@@ -85,40 +83,43 @@ export class ReservationResolver {
 
   @Query(() => Int)
   async getMaxId() {
-    const {max} = await createQueryBuilder("reservation")
+    const { max } = await createQueryBuilder("reservation")
       .select("MAX(id_reserva)", "max")
       .getRawOne();
-    
-      if(!max) {
-        return 0;
-      }
+
+    if (!max) {
+      return 0;
+    }
 
     return max;
   }
 
   @Query(() => Int)
-  async getReservationsCount() {
-    const {count} = await createQueryBuilder("reservation")
+  async getReservationsCount(
+    @Arg("id_institution", () => Int) id_institution: number
+  ) {
+    const { count } = await createQueryBuilder("reservation")
       .select("COUNT(distinct id_reserva)", "count")
+      .where(`reservationInstitution.id_institution = ${id_institution}`)
       .getRawOne();
 
     return count;
   }
 
-  @Mutation(() => ReservationResponse, {nullable: false})
+  @Mutation(() => ReservationResponse, { nullable: false })
   async createReservation(
     @Arg("data", () => ReservationInput) data: ReservationInput,
     @PubSub() pubsub: PubSubEngine
   ): Promise<ReservationResponse> {
-    const reservation = await Reservation.create({...data}).save();
+    const reservation = await Reservation.create({ ...data }).save();
     pubsub.publish("CREATE_RESERVATION", reservation);
 
     if (!reservation) {
       return {
-        errors: [{field: "a", message: "a"}],
+        errors: [{ field: "a", message: "a" }],
       };
     }
-    return {reservation};
+    return { reservation };
   }
 
   //Reserva usando sessiones
@@ -126,32 +127,32 @@ export class ReservationResolver {
   @Mutation(() => Reservation)
   async createReservationUserSession(
     @Arg("data", () => ReservationSessionInput) data: ReservationSessionInput,
-    @Ctx() {req}: MyContext
+    @Ctx() { req }: MyContext
   ): Promise<Reservation> {
     const ci = req.session.cedula;
     console.log(ci);
-    const reservationSession = await Reservation.create({...data}).save();
+    const reservationSession = await Reservation.create({ ...data }).save();
     return reservationSession;
   }
 
-  @Mutation(() => [Reservation], {nullable: true})
+  @Mutation(() => [Reservation], { nullable: true })
   async updateReservation(
     @Arg("id_reserva", () => Int) id_reserva: number,
     @Arg("data", () => ReservationEditInput)
     data: ReservationEditInput
   ) {
-    await Reservation.update({id_reserva}, data);
+    await Reservation.update({ id_reserva }, data);
     const updatedReservations = await Reservation.find({
       id_reserva,
     });
     return updatedReservations;
   }
 
-  @Mutation(() => Boolean, {nullable: true})
+  @Mutation(() => Boolean, { nullable: true })
   async deleteReservation(
     @Arg("id_reserva", () => Int) id_reserva: number
   ): Promise<Boolean> {
-    await Reservation.delete({id_reserva});
+    await Reservation.delete({ id_reserva });
     return true;
   }
 }

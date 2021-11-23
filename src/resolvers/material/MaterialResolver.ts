@@ -7,11 +7,11 @@ import {
   Query,
   Resolver,
 } from "type-graphql";
-import {createQueryBuilder, getManager, getRepository, Like} from "typeorm";
+import { createQueryBuilder, getManager, getRepository, Like } from "typeorm";
 
-import {MaterialInput} from "../../inputs/material/MaterialInput";
-import {MaterialUpdateInput} from "../../inputs/material/MaterialUpdateInput";
-import {Material} from "../../entity/material";
+import { MaterialInput } from "../../inputs/material/MaterialInput";
+import { MaterialUpdateInput } from "../../inputs/material/MaterialUpdateInput";
+import { Material } from "../../entity/material";
 
 @Resolver()
 export class MaterialResolver {
@@ -48,16 +48,23 @@ export class MaterialResolver {
     const material = getRepository(Material)
       .createQueryBuilder("material")
       .innerJoinAndSelect("material.institution", "institution")
-      .where("material.institution.id_institution = :institutionId", { institutionId: id_institution})
+      .where("material.institution.id_institution = :institutionId", {
+        institutionId: id_institution,
+      })
       .getMany();
 
     return material;
   }
 
   @Query(() => Int)
-  async getMaterialsCount() {
-    const {count} = await createQueryBuilder("material")
+  async getMaterialsCount(
+    @Arg("id_institution", () => Int) id_institution: number
+  ) {
+    const { count } = await createQueryBuilder("material")
       .select("COUNT(*)", "count")
+      .where("material.institution.id_institution = :institutionId", {
+        institutionId: id_institution,
+      })
       .getRawOne();
 
     return count;
@@ -112,13 +119,13 @@ export class MaterialResolver {
   }
 
   //update
-  @Mutation(() => Material, {nullable: true})
+  @Mutation(() => Material, { nullable: true })
   async updateMaterial(
     @Arg("id_material", () => Int) id_material: number,
     @Arg("data", () => MaterialUpdateInput)
     data: MaterialUpdateInput
   ) {
-    await Material.update({id_material}, data);
+    await Material.update({ id_material }, data);
     const updatedMaterial = Material.findOne(id_material);
     if (!updatedMaterial) {
       return null;
@@ -131,7 +138,7 @@ export class MaterialResolver {
   async deleteMaterial(
     @Arg("id_material", () => Int) id_material: number
   ): Promise<Boolean> {
-    await Material.delete({id_material});
+    await Material.delete({ id_material });
     return true;
   }
 }

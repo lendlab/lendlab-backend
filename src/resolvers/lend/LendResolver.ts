@@ -7,10 +7,10 @@ import {
   Query,
   Resolver,
 } from "type-graphql";
-import {createQueryBuilder, getRepository} from "typeorm";
-import {Lend} from "../../entity/lend";
-import {LendInput} from "../../inputs/lend/lend.input";
-import {LendUpdateInput} from "../../inputs/lend/lend.update.input";
+import { createQueryBuilder, getRepository } from "typeorm";
+import { Lend } from "../../entity/lend";
+import { LendInput } from "../../inputs/lend/lend.input";
+import { LendUpdateInput } from "../../inputs/lend/lend.update.input";
 
 @Resolver()
 export class LendResolver {
@@ -66,7 +66,7 @@ export class LendResolver {
       .innerJoinAndSelect("reservation.material", "material")
       .innerJoinAndSelect("reservation.user", "user")
       .innerJoinAndSelect("lend.laboratorist", "laboratorist")
-      .where("reservation.user.cedula = :cedula", {cedula: cedula})
+      .where("reservation.user.cedula = :cedula", { cedula: cedula })
       .orderBy("lend.fecha_hora_presta", "DESC")
       .getMany();
 
@@ -75,9 +75,14 @@ export class LendResolver {
   }
 
   @Query(() => Int)
-  async getLendsCount() {
-    const {count} = await createQueryBuilder("lend")
+  async getLendsCount(
+    @Arg("id_institution", () => Int) id_institution: number
+  ) {
+    const { count } = await createQueryBuilder("lend")
       .select("COUNT(*)", "count")
+      .where("lend.institution.id_institution = :institutionId", {
+        institutionId: id_institution,
+      })
       .getRawOne();
 
     return count;
@@ -88,13 +93,13 @@ export class LendResolver {
     @Arg("data", () => LendInput) data: LendInput,
     @PubSub() pubsub: PubSubEngine
   ): Promise<Lend> {
-    const lend = await Lend.create({...data}).save();
+    const lend = await Lend.create({ ...data }).save();
     pubsub.publish("CREATE_LEND", lend);
 
     return lend;
   }
 
-  @Mutation(() => Lend, {nullable: true})
+  @Mutation(() => Lend, { nullable: true })
   async updateLend(
     @Arg("id_lend", () => Int) id_lend: number,
     @Arg("fecha_hora_presta", () => String) fecha_hora_presta: Date,
@@ -103,8 +108,8 @@ export class LendResolver {
     await getRepository(Lend)
       .createQueryBuilder("lend")
       .update(Lend)
-      .set({...data})
-      .where("lend.id_lend = :id", {id: id_lend})
+      .set({ ...data })
+      .where("lend.id_lend = :id", { id: id_lend })
       .andWhere("lend.fecha_hora_presta = :fecha_hora", {
         fecha_hora: fecha_hora_presta,
       })
@@ -117,7 +122,7 @@ export class LendResolver {
       .innerJoinAndSelect("reservation.material", "material")
       .innerJoinAndSelect("reservation.user", "user")
       .innerJoinAndSelect("lend.laboratorist", "laboratorist")
-      .where("lend.id_lend = :id", {id: id_lend})
+      .where("lend.id_lend = :id", { id: id_lend })
       .andWhere("lend.fecha_hora_presta = :fecha_hora", {
         fecha_hora: fecha_hora_presta,
       })
@@ -135,7 +140,7 @@ export class LendResolver {
     @Arg("id_lend", () => Int) id_lend: number,
     @Arg("fecha_hora_presta", () => String) fecha_hora_presta: string
   ): Promise<Boolean> {
-    await Lend.delete({id_lend, fecha_hora_presta});
+    await Lend.delete({ id_lend, fecha_hora_presta });
     return true;
   }
 }
