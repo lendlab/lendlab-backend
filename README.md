@@ -1,13 +1,13 @@
 # lendlab
 
-Tu institución, ahora en forma online.
+Your institution, now online
 
-## ¿Como puedo correr el proyecto?
+## How to run the project?
 
-* Clonar este repositorio y el de lendlab https://github.com/LendLab/lendlab
-* Crear una base de datos VACÍA con el nombre `lendlab2`
-* Abrir Xampp e iniciar `Apache` y  `MySql`
-* Ejecutamos en la consola los siguientes comandos:
+* Clone this repository and frontend's https://github.com/LendLab/lendlab
+* Create an empty database called `lendlab2`
+* Run `mysql service`
+* Run the following commands on the console
 
 ```bash
 # npm
@@ -17,126 +17,4 @@ npm install
 npm run dev
 
 ```
-> Ten en cuenta que esto solo crea el backend, para visualizar la página debes también seguir los pasos del repositorio https://github.com/LendLab/lendlab y seguir los pasos que se enlistan allí.  
-## Queries
-
-### Prestamos
-
-* Obtener todos los prestamos
-
-```bash
-query Query {
-  lend {
-    id_lend
-    fecha_hora_presta
-    fecha_vencimiento
-    fecha_devolucion
-    reservation {
-      id_reserva
-    }
-  }
-}
-```
-
-### Materiales
-
-* Obtener todos los materiales
-
-```bash
-query Query {
-  getMaterials {
-    id_material
-    nombre
-    etiqueta
-    categoria
-    descripcion
-    cantidad
-    foto
-    estado
-  }
-}
-```
-
-* Obtener un solo material
-
-```bash
-query Query($idMaterial: Int!) {
-  getMaterial(id_material: $idMaterial) {
-    id_material
-    nombre
-    etiqueta
-    categoria
-    descripcion
-    cantidad
-    foto
-    estado
-  }
-}
-```
-
-### Reservas
-
-* Obtener todas las reservas
-
-```bash
-query Query {
-  getReservations {
-    id_reserva
-    fecha_hora
-    finalizada
-    user {
-      cedula
-      nombre
-      direccion
-      foto_usuario
-      telefono
-      tipo_usuario
-      fecha_nacimiento
-    }
-    material {
-      id_material
-      nombre
-      etiqueta
-      categoria
-      descripcion
-      cantidad
-      foto
-      estado
-    }
-  }
-}
-```
-
-### Usuarios
-
-* Obtener todos los usuarios
-
-```bash
-query Query {
-  getUsers {
-    cedula
-    nombre
-    direccion
-    foto_usuario
-    telefono
-    tipo_usuario
-    fecha_nacimiento
-  }
-}
-```
-
-* Obtener un solo usuario
-
-```bash
-query Query($cedula: Int!) {
-  getUser(cedula: $cedula) {
-    cedula
-    nombre
-    direccion
-    foto_usuario
-    telefono
-    tipo_usuario
-    fecha_nacimiento
-  }
-}
-```
+> Take into account this only creates the backend, in order to see the website please visit https://github.com/LendLab/lendlab and follow the steps listing there.  
